@@ -1,0 +1,89 @@
+.App {
+  background-color: #282c34;
+  min-height: 100vh;
+  text-align: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App header {
+  padding: 1em;
+}
+.chart-wrapper {
+  margin: 1em 0;
+}
+
+p.lead {
+  font-size: medium;
+}
+
+html {
+  font-size: 1rem;
+}
+
+@include media-breakpoint-up(sm) {
+  html {
+    font-size: 1.2rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  html {
+    font-size: 1.4rem;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  html {
+    font-size: 1.6rem;
+  }
+}
+
+.card-text {
+  color: #282c34;
+}
+
+.last .card-text {
+  font-size: xxx-large;
+}
+
+.card-text.highlighted {
+  text-shadow: 2px 2px 8px yellow;
+  color: #ee8b00;
+}
+
+.card-text.inverted {
+  color: #ee8b00;
+}
+
+.card {
+  background-color: #2e3e57;
+}
+.card.last {
+  width: 50%;
+  margin: 0 5px;
+}
+
+header .card {
+  background-color: #ee8b00;
+}
+
+.blockquote-footer {
+  font-size: 60%;
+}
+
+.last .card-title,
+.last p {
+  margin: 0;
+  padding: 0;
+}
+
+.footer {
+  padding: 2em;
+  font-size: small;
+}
+
+.last-counter {
+  display: flex;
+  padding: 2em 0;
+}
