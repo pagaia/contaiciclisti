@@ -11,7 +11,7 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <div className="App">
-      <header>
+      <header className="container"> 
         <h1 id="title">CiCO - Il Conta i Ciclisti Ostinati</h1>
         <About />
       </header>

@@ -39,7 +39,7 @@ function LastCount({ device }) {
       <div className="card last">
         <div className="card-body">
           <h5 className="card-title">Total today</h5>
-          <p className="card-text inverted">{counts.field8}</p>
+          <p className="card-text inverted">{counts.field2}</p>
           <footer className="blockquote-footer">
             {
               // format date string
