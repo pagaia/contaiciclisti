@@ -1,13 +1,10 @@
 import React from "react";
 import "./ViewMap.css";
-
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { CounterIcon } from "./CounterIcon";
 import { Link } from "react-router-dom";
 
 const ViewMap = ({ devices }) => {
-  console.log(devices);
-
   return (
     <MapContainer
       center={[41.804547, 12.3412755]}
@@ -19,7 +16,6 @@ const ViewMap = ({ devices }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {devices?.map?.((device) => {
-        console.log(device);
         const { name } = device.properties;
         return (
           <Marker
