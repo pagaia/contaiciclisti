@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+/.eslintcache
+
+.env
+
 # testing
 /coverage
 
@@ -12,6 +16,7 @@
 /build
 /cico
 /cico.tgz
+/*.zip
 
 # misc
 .DS_Store

@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <p>
-        &copy; copyright 2020 <a href="https://twitter.com/pagaia">pagaia</a>
+        &copy; 2020 <a href="https://twitter.com/pagaia">pagaia</a>
       </p>
       {/* <ScrollTo/> */}
     </footer>
