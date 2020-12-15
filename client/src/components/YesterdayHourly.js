@@ -17,7 +17,7 @@ function YesterdayHourly({ device }) {
   async function fetchDeviceData() {
     // replace with channelID
     const apiEndPoint =
-      deviceUrl.replace(REGEX_DEVICE, device.channelId) +
+      deviceUrl.replace(REGEX_DEVICE, device.properties.channelId) +
       `?start=${yesterdayStart}&end=${yesterdayEnd}`;
 
     // fetch data from a url endpoint

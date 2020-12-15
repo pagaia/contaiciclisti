@@ -44,7 +44,7 @@ export const getLastMonthStartEnd = () => {
  * @param {Object} device
  */
 export const buildDataHourly = (feeds, device) => {
-  const { name: label, bgColor, borderColor, hbgColor } = device;
+  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
 
   const labels = [];
   const datasets = [
@@ -86,7 +86,7 @@ const sumReducer = (accumulator, currentValue) => accumulator + currentValue;
  * @param {Object} device
  */
 export const buildDataDailyAverage = (feeds, device) => {
-  const { name: label, bgColor, borderColor, hbgColor } = device;
+  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
 
   const labels = [
     "Monday",
@@ -139,7 +139,7 @@ export const buildDataDailyAverage = (feeds, device) => {
  * @param {Object} device
  */
 export const buildHourlyAverage = (feeds, device) => {
-  const { name: label, bgColor, borderColor, hbgColor } = device;
+  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
 
   const labels = [...Array(23).keys()];
 

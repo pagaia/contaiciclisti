@@ -6,7 +6,7 @@ import {
   datasetKeyProvider,
   getLastMonthStartEnd,
 } from "../utility/utilityFunctions";
-import PropTypes, { string } from "prop-types";
+import PropTypes from "prop-types";
 import { REGEX_DEVICE } from "../utility/constants";
 
 const deviceUrl = "https://api.thingspeak.com/channels/DEVICE/feeds.json";
@@ -33,7 +33,7 @@ function DailyAverage({ devices }) {
     async function fetchAverage(device, idx) {
       // replace with channelID
       const apiEndPoint =
-        deviceUrl.replace(REGEX_DEVICE, device.channelId) +
+        deviceUrl.replace(REGEX_DEVICE, device.properties.channelId) +
         `?average=daily&start=${lastMonthStart}&end=${lastMonthEnd}`;
 
       // fetch data from a url endpoint
@@ -82,8 +82,8 @@ DailyAverage.propTypes = {
   device: PropTypes.shape({
     name: PropTypes.string,
     channelId: PropTypes.number,
-    bgColor: string,
-    borderColor: string,
+    bgColor: PropTypes.string,
+    borderColor: PropTypes.string,
   }),
 };
 export default DailyAverage;
