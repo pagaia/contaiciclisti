@@ -26,7 +26,6 @@ function LastCount({ device }) {
       <CountCard date={counts.created_at} title="Last" text={counts.field1}/>
       <CountCard date={counts.created_at} title="Today" text={counts.field2}/>
       {/* <CountCard title="Yesterday" text={counts.field8}/> */}
-
     </div>
   );
 }
