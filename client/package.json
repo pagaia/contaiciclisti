@@ -22,6 +22,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "post-build": "rm -rf cico; mv build cico; zip -r cico.zip cico",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -43,5 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "."
+  "homepage": "/"
 }

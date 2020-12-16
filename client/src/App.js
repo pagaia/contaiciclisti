@@ -7,36 +7,27 @@ import DailyAverage from "./components/DailyAverage";
 import About from "./components/About";
 import Footer from "./components/Footer";
 import ViewMap from "./components/map/ViewMap";
+import MainPage from "./pages/MainPage";
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <header className="container">
+        <header className="container-fluid">
           <h1 id="title">
             <Link to="/">CiCO - Il Conta i Ciclisti Ostinati</Link>
           </h1>
-          <About />
         </header>
 
-        <main className="container">
+        <main className="container-fluid">
           <Switch>
             <Route exact path="/">
-              <ViewMap devices={devices} />
+              <MainPage devices={devices} />
             </Route>
             <Route path="/device/:id">
               <Device />
             </Route>
           </Switch>
-
-          <br />
-          <h2>Daily average comparison</h2>
-
-          <div className="row">
-            <div className="col-sm-12">
-              <DailyAverage devices={devices} />
-            </div>
-          </div>
         </main>
         <Footer />
       </div>
