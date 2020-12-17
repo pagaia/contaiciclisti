@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { REGEX_DEVICE } from "../utility/constants";
+import { DEVICE_URL, REGEX_DEVICE } from "../../utility/constants";
 import {
   buildHourlyAverage,
   getLastMonthStartEnd,
-} from "../utility/utilityFunctions";
-
-const deviceUrl = "https://api.thingspeak.com/channels/DEVICE/feeds.json";
+} from "../../utility/utilityFunctions";
 
 const { start, end } = getLastMonthStartEnd();
 
@@ -18,8 +16,8 @@ function HourlyAverage({ device }) {
   async function fetchDeviceData() {
     // replace with channelID
     const apiEndPoint =
-      deviceUrl.replace(REGEX_DEVICE, device.properties.channelId) +
-      `?start=${start}&end=${end}`;
+      DEVICE_URL.replace(REGEX_DEVICE, device.properties.channelId) +
+      `&start=${start}&end=${end}`;
 
     // fetch data from a url endpoint
     const response = await axios.get(apiEndPoint);
@@ -39,6 +37,10 @@ function HourlyAverage({ device }) {
     <div className="row">
       <div className="col-sm">
         <div className="chart-wrapper">
+          <h3 className="d-inline">Last month</h3>
+          <span className="text-muted">
+            <small> - hourly average</small>
+          </span>
           <Bar
             data={datasets}
             width={100}

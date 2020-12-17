@@ -61,35 +61,23 @@ export const devices = [
   },
 ];
 
-// export const devices = [
-//   {
-//     name: "Nomentana",
-//     channelId: 1050873,
-//     bgColor: "rgba(255, 99, 132, 0.2)",
-//     borderColor: "rgba(255, 99, 132, 1)",
-//     hbgColor: "rgba(255, 99, 132, 0.6)",
-//   },
-//   {
-//     name: "Nazzano",
-//     channelId: 1051988,
-//     bgColor: "rgba(54, 162, 235, 0.2)",
-//     borderColor: "rgba(54, 162, 235, 1)",
-//     hbgColor: "rgba(54, 162, 235, 0.6)",
-//   },
-//   {
-//     name: "Sublicio",
-//     channelId: 1011480,
-//     bgColor: "rgba(154, 162, 235, 0.2)",
-//     borderColor: "rgba(154, 162, 235, 1)",
-//     hbgColor: "rgba(154, 162, 235, 0.6)",
-//   },
-//   {
-//     name: "Risorgimento",
-//     channelId: 959807,
-//     bgColor: "rgba(75, 192, 192, 0.2)",
-//     borderColor: "rgba(75, 192, 192, 1)",
-//     hbgColor: "rgba(75, 192, 192, 0.6)",
-//   },
-// ];
+export const DEVICE_URL =
+  "https://api.thingspeak.com/channels/DEVICE/feeds.json?timezone=Europe/Rome";
+
+export const DEVICE_URL_LAST =
+  "https://api.thingspeak.com/channels/DEVICE/feeds/last.json?timezone=Europe/Rome";
 
 export const REGEX_DEVICE = /DEVICE/i;
+
+/**
+ * days of the week to be converted from number to string 0=Sunday ...
+ */
+export const DAYS = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];

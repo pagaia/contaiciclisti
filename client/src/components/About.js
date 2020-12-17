@@ -7,7 +7,7 @@ const About = () => {
       <div className="about card">
         <img
           className="card-img-top"
-          src="http://www.salvaiciclistiroma.it/wp-content/uploads/2020/12/copertina-fundme-1536x1026.jpg"
+          src="https://www.salvaiciclistiroma.it/wp-content/uploads/2020/12/copertina-fundme-1536x1026.jpg"
           alt="Immagine di copertina per Conta i Ciclisti"
         />
         <div className="card-body">

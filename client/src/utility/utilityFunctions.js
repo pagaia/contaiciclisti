@@ -1,3 +1,5 @@
+import { DAYS } from "./constants";
+
 /**
  * calculate the start and end date for today
  */
@@ -36,7 +38,6 @@ export const getLastMonthStartEnd = () => {
   return { start, end };
 };
 
-
 /**
  * This function gets the list of counts and device information and build labels and datasets for hourly counts
  *
@@ -73,6 +74,43 @@ export const buildDataHourly = (feeds, device) => {
 };
 
 /**
+ * This function gets the list of counts and device information and build labels and datasets for hourly counts
+ *
+ * @param {Array} feeds
+ * @param {Object} device
+ */
+export const buildDataDaily = (feeds, device) => {
+  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
+
+  const labels = [];
+  const datasets = [
+    {
+      label,
+      backgroundColor: bgColor || "rgba(54, 162, 235, 0.2)",
+      borderColor: borderColor || "rgba(54, 162, 235, 1)",
+      borderWidth: 1,
+      hoverBackgroundColor: hbgColor || "rgba(255,99,132,0.4)",
+      // hoverBorderColor: "rgba(255,99,132,1)",
+      data: [],
+      fill: false,
+    },
+  ];
+
+  feeds.forEach((feed) => {
+    if (feed.field3) {
+      const day = new Date(feed.created_at).getDay();
+      if (day === 0 || day === 6) {
+        labels.push(DAYS[day]);
+      } else {
+        labels.push(feed.created_at.substring(0, 10));
+      }
+      datasets[0].data.push(parseInt(feed.field3, 10));
+    }
+  });
+  return { labels, datasets };
+};
+
+/**
  * Utility function to sum up an array of numbers
  * @param {Number} accumulator
  * @param {Number} currentValue
@@ -87,16 +125,6 @@ const sumReducer = (accumulator, currentValue) => accumulator + currentValue;
  */
 export const buildDataDailyAverage = (feeds, device) => {
   const { name: label, bgColor, borderColor, hbgColor } = device.properties;
-
-  const labels = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
 
   const dataset = {
     label,
@@ -121,12 +149,15 @@ export const buildDataDailyAverage = (feeds, device) => {
   });
 
   for (let i = 1; i < 7; i++) {
-    dataset.data.push(
-      parseInt(weekDays[i].reduce(sumReducer) / weekDays[i].length, 10)
-    );
+    console.log(weekDays[i]);
+    weekDays[i] &&
+      dataset.data.push(
+        parseInt(weekDays[i].reduce(sumReducer) / weekDays[i].length, 10)
+      );
   }
   dataset.data.push(
-    parseInt(weekDays[0].reduce(sumReducer) / weekDays[0].length, 10)
+    weekDays[0] &&
+      parseInt(weekDays[0].reduce(sumReducer) / weekDays[0].length, 10)
   );
 
   return dataset;

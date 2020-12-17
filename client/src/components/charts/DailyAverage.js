@@ -5,11 +5,10 @@ import {
   buildDataDailyAverage,
   datasetKeyProvider,
   getLastMonthStartEnd,
-} from "../utility/utilityFunctions";
+} from "../../utility/utilityFunctions";
 import PropTypes from "prop-types";
-import { REGEX_DEVICE } from "../utility/constants";
+import { DEVICE_URL, REGEX_DEVICE } from "../../utility/constants";
 
-const deviceUrl = "https://api.thingspeak.com/channels/DEVICE/feeds.json";
 
 const { start: lastMonthStart, end: lastMonthEnd } = getLastMonthStartEnd();
 
@@ -33,8 +32,8 @@ function DailyAverage({ devices }) {
     async function fetchAverage(device, idx) {
       // replace with channelID
       const apiEndPoint =
-        deviceUrl.replace(REGEX_DEVICE, device.properties.channelId) +
-        `?average=daily&start=${lastMonthStart}&end=${lastMonthEnd}`;
+        DEVICE_URL.replace(REGEX_DEVICE, device.properties.channelId) +
+        `&average=daily&start=${lastMonthStart}&end=${lastMonthEnd}`;
 
       // fetch data from a url endpoint
       const response = await axios.get(apiEndPoint);

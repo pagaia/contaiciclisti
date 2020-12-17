@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import About from "../components/About";
-import DailyAverage from "../components/DailyAverage";
+import DailyAverage from "../components/charts/DailyAverage";
 import ViewMap from "../components/map/ViewMap";
 
 const MainPage = ({devices}) => {

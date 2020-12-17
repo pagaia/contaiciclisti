@@ -3,10 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Device from "./pages/Device";
 import "./App.css";
 import { devices } from "./utility/constants";
-import DailyAverage from "./components/DailyAverage";
-import About from "./components/About";
 import Footer from "./components/Footer";
-import ViewMap from "./components/map/ViewMap";
 import MainPage from "./pages/MainPage";
 
 function App() {

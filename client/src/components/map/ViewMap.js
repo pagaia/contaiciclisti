@@ -12,7 +12,7 @@ const ViewMap = ({ devices }) => {
       scrollWheelZoom={true}
     >
       <TileLayer
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors Icons made by <a href="https://icon54.com/" title="Pixel perfect">Pixel perfect</a>'
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors.         Icons made by <a href="https://icon54.com/" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {devices?.map?.((device) => {

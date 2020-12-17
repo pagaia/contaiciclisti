@@ -1,8 +1,9 @@
 import React, { Fragment } from "react";
 import { useParams } from "react-router-dom";
-import HourlyAverage from "../components/HourlyAverage";
-import LastCount from "../components/LastCount";
-import YesterdayHourly from "../components/YesterdayHourly";
+import DailyTotal from "../components/charts/DailyTotal";
+import HourlyAverage from "../components/charts/HourlyAverage";
+import LastCount from "../components/charts/LastCount";
+import YesterdayHourly from "../components/charts/YesterdayHourly";
 import { devices } from "../utility/constants";
 
 const Device = (props) => {
@@ -16,12 +17,7 @@ const Device = (props) => {
 
   return (
     <Fragment key={device.properties.name}>
-      <h2>Hourly counts</h2>
-      <h3 className="d-inline">{device.properties.name}</h3>
-      <span className="text-muted">
-        <small> - yesterday</small>
-      </span>
-
+      <h2>{device.properties.name}</h2>
       <div className="row">
         <div className="col-sm-12 col-md-6">
           <YesterdayHourly device={device} />
@@ -31,8 +27,11 @@ const Device = (props) => {
         </div>
       </div>
       <div className="row">
-        <div className="col-sm-12">
+        <div className="col-md-6">
           <HourlyAverage device={device} />
+        </div>
+        <div className="col-md-6">
+          <DailyTotal device={device} />
         </div>
       </div>
       <hr className="mb-5 bg-warning" />
