@@ -1,4 +1,4 @@
-# README
+# CiCO - Conta i Ciclisti Ostinati
 
 Conta i Ciclisti is a bottom-up project organized by #Associazione #SalvaiCiclisti #Roma to count cyclists who cycle through Rome every day for any reason: work, leisure or simply go shopping. If  you want to contribute to the funding raising, more info on the project can be found on the page 
 [http://www.salvaiciclistiroma.it/](http://www.salvaiciclistiroma.it/sostieni-il-progetto-contaiciclisti/)
