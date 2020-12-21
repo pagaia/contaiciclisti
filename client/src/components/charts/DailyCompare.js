@@ -5,9 +5,9 @@ import {
   buildDailyCompare,
   datasetKeyProvider,
   getDatesBetweenDates,
-} from "../../utility/utilityFunctions";
+} from "utility/utilityFunctions";
 import PropTypes from "prop-types";
-import { DEVICE_URL, REGEX_DEVICE } from "../../utility/constants";
+import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 
 function DailyCompare({ devices, startDate, endDate }) {
   // initialize dataset with empty array

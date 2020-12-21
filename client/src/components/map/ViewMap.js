@@ -36,7 +36,7 @@ const ViewMap = ({ devices }) => {
                 <h2>{name}</h2>
                 <div>{device.properties.description}</div>
                 <div>
-                  <Link to={`/device/${name}`}>Go to the page</Link>
+                  <Link to={`/devices/${name}`}>Go to the page</Link>
                 </div>
               </div>
             </Popup>

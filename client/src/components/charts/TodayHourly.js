@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { DEVICE_URL, REGEX_DEVICE } from "../../utility/constants";
+import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 import {
   buildDataHourly,
-} from "../../utility/utilityFunctions";
+} from "utility/utilityFunctions";
 
 
 function TodayHourly({ device }) {

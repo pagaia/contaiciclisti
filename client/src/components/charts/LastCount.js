@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { DEVICE_URL_LAST, REGEX_DEVICE } from "../../utility/constants";
-import CountCard from "../CountCard";
+import { DEVICE_URL_LAST, REGEX_DEVICE } from "utility/constants";
+import CountCard from "components/CountCard";
 
 function LastCount({ device }) {
   const [counts, setCounts] = useState({});

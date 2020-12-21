@@ -1,10 +1,14 @@
-import React, { Fragment, useState } from "react";
-import DailyCompare from "../components/charts/DailyCompare";
-import CompareForm from "../components/CompareForm";
+import React, { Fragment, useEffect, useState } from "react";
+import DailyCompare from "components/charts/DailyCompare";
+import CompareForm from "components/CompareForm";
 import "./DevicesCompare.css";
 
 const DevicesCompare = (props) => {
   const [search, setSearch] = useState(null);
+
+  useEffect(() => {
+    document.title = `CiCO - Il Conta i Ciclisti Ostinati - Compare devices`;
+  }, []);
 
   return (
     <Fragment>
