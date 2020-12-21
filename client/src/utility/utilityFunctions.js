@@ -39,6 +39,32 @@ export const getLastMonthStartEnd = () => {
 };
 
 /**
+ * calculate the start and end date for previous month
+ */
+export const getLastMonthStartEndDatePicker = () => {
+  // let end = new Date();
+  var date = new Date();
+  var end = new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      0,
+      0,
+      0
+    )
+  );
+
+  // end.setHours(0, 0, 0);
+  end.setDate(1);
+  let start = new Date(end);
+  start.setMonth(start.getMonth() - 1); // set previous month
+  start.setHours(0, 0, 0);
+  end.setDate(end.getDate() - 1); // set previous day
+  return { start, end };
+};
+
+/**
  * This function gets the list of counts and device information and build labels and datasets for hourly counts
  *
  * @param {Array} feeds
@@ -47,7 +73,8 @@ export const getLastMonthStartEnd = () => {
 export const buildDataHourly = (feeds, device) => {
   const { name: label, bgColor, borderColor, hbgColor } = device.properties;
 
-  const labels = [];
+  const labels = [...Array(24).keys()];
+
   const datasets = [
     {
       label,
@@ -66,7 +93,6 @@ export const buildDataHourly = (feeds, device) => {
         feed.created_at.substring(11, 12) === "0"
           ? feed.created_at.substring(12, 13)
           : feed.created_at.substring(11, 13);
-      labels.push(hour);
       datasets[0].data.push(parseInt(feed.field1, 10));
     }
   });
@@ -111,6 +137,60 @@ export const buildDataDaily = (feeds, device) => {
 };
 
 /**
+ * Gets 2 dates and returns an array with all days
+ *
+ * @param {Date} startDate
+ * @param {Date} endDate
+ */
+export const getDatesBetweenDates = (startDate, endDate) => {
+  let dates = [];
+  //to avoid modifying the original date
+  const theDate = new Date(startDate);
+  const end = new Date(endDate);
+
+  while (theDate < end) {
+    const currentDay = new Date(theDate).toISOString().substring(0, 10);
+    dates = [...dates, currentDay];
+    theDate.setDate(theDate.getDate() + 1);
+  }
+  return dates;
+};
+
+/**
+ * This function gets the list of counts and device information and build labels and datasets for hourly counts
+ *
+ * @param {Array} feeds
+ * @param {Object} device
+ */
+export const buildDailyCompare = (feeds, device, labels) => {
+  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
+
+  const dataset = {
+    label,
+    backgroundColor: bgColor || "rgba(54, 162, 235, 0.2)",
+    borderColor: borderColor || "rgba(54, 162, 235, 1)",
+    borderWidth: 1,
+    hoverBackgroundColor: hbgColor || "rgba(255,99,132,0.4)",
+    data: [],
+    fill: false,
+  };
+
+  const dateFound = {};
+  feeds.forEach((feed) => {
+    if (feed.field3) {
+      dateFound[feed.created_at.substring(0, 10)] = parseInt(feed.field3, 10);
+    }
+  });
+
+  // double check data per day
+  labels.forEach((day) => {
+    dataset.data.push(dateFound[day]);
+  });
+
+  return dataset;
+};
+
+/**
  * Utility function to sum up an array of numbers
  * @param {Number} accumulator
  * @param {Number} currentValue
@@ -149,7 +229,6 @@ export const buildDataDailyAverage = (feeds, device) => {
   });
 
   for (let i = 1; i < 7; i++) {
-    console.log(weekDays[i]);
     weekDays[i] &&
       dataset.data.push(
         parseInt(weekDays[i].reduce(sumReducer) / weekDays[i].length, 10)
@@ -172,7 +251,7 @@ export const buildDataDailyAverage = (feeds, device) => {
 export const buildHourlyAverage = (feeds, device) => {
   const { name: label, bgColor, borderColor, hbgColor } = device.properties;
 
-  const labels = [...Array(23).keys()];
+  const labels = [...Array(24).keys()];
 
   const datasets = [
     {
@@ -257,8 +336,25 @@ export const buildHourlyAverage = (feeds, device) => {
 };
 
 /**
- * random key genrator for ChartJs
+ * random key generator for ChartJs
  */
 export const datasetKeyProvider = () => {
   return btoa(Math.random()).substring(0, 12);
+};
+
+const resolvePath = (object, path, defaultValue) =>
+  path.split(".").reduce((o, p) => (o ? o[p] : defaultValue), object);
+
+/**
+ *  This function gets an array and a property and create a map with key the property of the object
+ * @param {array} array
+ */
+export const convertArrayToObject = (array) => {
+  return array.reduce(
+    (obj, item) => ({
+      ...obj,
+      [item["properties"]["channelId"]]: item,
+    }),
+    {}
+  );
 };

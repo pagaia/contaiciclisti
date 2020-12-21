@@ -2,21 +2,23 @@ import React, { Fragment } from "react";
 import { useParams } from "react-router-dom";
 import DailyTotal from "../components/charts/DailyTotal";
 import HourlyAverage from "../components/charts/HourlyAverage";
-import LastCount from "../components/charts/LastCount";
+import TodayHourly from "../components/charts/TodayHourly";
 import YesterdayHourly from "../components/charts/YesterdayHourly";
-import { devices } from "../utility/constants";
+import LastCount from "../components/charts/LastCount";
+import { DEVICES } from "../utility/constants";
+import NotFound from "./NotFound";
 
 const Device = (props) => {
   let { id } = useParams();
 
-  const device = devices.find((el) => el.properties.name === id);
+  const device = DEVICES.find((el) => el.properties.name === id);
 
   if (!device) {
-    return null;
+    return <NotFound />;
   }
 
   return (
-    <Fragment key={device.properties.name}>
+    <Fragment>
       <h2>{device.properties.name}</h2>
       <div className="row">
         <div className="col-sm-12 col-md-6">
@@ -24,6 +26,12 @@ const Device = (props) => {
         </div>
         <div className="col-sm-12 col-md-6">
           <LastCount device={device} />
+          <TodayHourly device={device} />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-12">
+          {/* <TodayHourly device={device} /> */}
         </div>
       </div>
       <div className="row">

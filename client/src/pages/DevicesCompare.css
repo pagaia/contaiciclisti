@@ -1,0 +1,12 @@
+.react-datepicker-wrapper {
+  display: block;
+}
+
+.compare .form-check {
+  display: flex;
+  align-items: center;
+}
+
+.compare label {
+  cursor: pointer;
+}

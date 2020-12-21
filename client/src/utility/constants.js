@@ -1,4 +1,4 @@
-export const devices = [
+export const DEVICES = [
   {
     type: "Feature",
     geometry: {
@@ -57,6 +57,21 @@ export const devices = [
       bgColor: "rgba(54, 162, 235, 0.2)",
       borderColor: "rgba(54, 162, 235, 1)",
       hbgColor: "rgba(54, 162, 235, 0.6)",
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [12.436309, 41.907121],
+    },
+    properties: {
+      name: "TerreDelNord",
+      description: "Device located around TerreDelNord",
+      channelId: 1249861,
+      bgColor: "rgba(54, 102, 235, 0.2)",
+      borderColor: "rgba(54, 102, 235, 1)",
+      hbgColor: "rgba(54, 102, 235, 0.6)",
     },
   },
 ];

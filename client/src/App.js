@@ -2,9 +2,11 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Device from "./pages/Device";
 import "./App.css";
-import { devices } from "./utility/constants";
+import { DEVICES } from "./utility/constants";
 import Footer from "./components/Footer";
 import MainPage from "./pages/MainPage";
+import DevicesCompare from "./pages/DevicesCompare";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -15,14 +17,19 @@ function App() {
             <Link to="/">CiCO - Il Conta i Ciclisti Ostinati</Link>
           </h1>
         </header>
-
         <main className="container-fluid">
           <Switch>
             <Route exact path="/">
-              <MainPage devices={devices} />
+              <MainPage devices={DEVICES} />
             </Route>
             <Route path="/device/:id">
               <Device />
+            </Route>
+            <Route path="/compare">
+              <DevicesCompare />
+            </Route>
+            <Route path="*">
+              <NotFound />
             </Route>
           </Switch>
         </main>

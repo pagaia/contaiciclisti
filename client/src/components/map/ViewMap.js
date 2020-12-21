@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const ViewMap = ({ devices }) => {
   return (
     <MapContainer
-      center={[41.804547, 12.3412755]}
+      center={[41.878808, 12.489960]}
       zoom={10}
       scrollWheelZoom={true}
     >
