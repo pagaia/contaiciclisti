@@ -5,7 +5,7 @@ Conta i Ciclisti is a bottom-up project organized by #Associazione #SalvaiCiclis
 
 Data is collected and provided by [Federico Occhionero](https://nl.mathworks.com/matlabcentral/profile/authors/17274098)
 
-![Entry page of the client app](client/src/images/entry-page.png)
+![Entry page of the client app](client/src/images/entry-page.jpg)
 
 ## How to start
 

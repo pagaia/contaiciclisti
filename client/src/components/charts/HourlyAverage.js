@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { DEVICE_URL, REGEX_DEVICE } from "../../utility/constants";
+import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 import {
   buildHourlyAverage,
   getLastMonthStartEnd,
-} from "../../utility/utilityFunctions";
+} from "utility/utilityFunctions";
 
 const { start, end } = getLastMonthStartEnd();
 

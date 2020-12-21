@@ -5,9 +5,9 @@ import {
   buildDataDailyAverage,
   datasetKeyProvider,
   getLastMonthStartEnd,
-} from "../../utility/utilityFunctions";
+} from "utility/utilityFunctions";
 import PropTypes from "prop-types";
-import { DEVICE_URL, REGEX_DEVICE } from "../../utility/constants";
+import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 
 
 const { start: lastMonthStart, end: lastMonthEnd } = getLastMonthStartEnd();

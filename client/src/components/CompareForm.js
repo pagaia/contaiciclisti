@@ -1,10 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
-import DatePicker from "../components/DatePicker";
-import { DEVICES } from "../utility/constants";
-import {
-  getLastMonthStartEndDatePicker,
-  convertArrayToObject,
-} from "../utility/utilityFunctions";
+import DatePicker from "components/DatePicker";
+import { DEVICES } from "utility/constants";
+import { getLastMonthStartEndDatePicker } from "utility/utilityFunctions";
 import { CSSTransitionGroup } from "react-transition-group"; // ES6
 import "./CompareForm.css";
 
@@ -16,16 +13,15 @@ const CompareForm = ({ updateSearch }) => {
   const [form, setForm] = useState({
     endDate,
     startDate,
-    devices: {} //convertArrayToObject(DEVICES, "properties.channelId"),
+    devices: {}, //convertArrayToObject(DEVICES, "properties.channelId"),
   });
 
   console.log({ form });
 
-//   useEffect(() => {
-//     // hit search on mounting 
-//     handleSearch();
-//   }, []);
-
+  //   useEffect(() => {
+  //     // hit search on mounting
+  //     handleSearch();
+  //   }, []);
 
   const handleChange = (e) => {
     const channelId = e.target.value;

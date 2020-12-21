@@ -1,21 +1,29 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import DailyTotal from "../components/charts/DailyTotal";
-import HourlyAverage from "../components/charts/HourlyAverage";
-import TodayHourly from "../components/charts/TodayHourly";
-import YesterdayHourly from "../components/charts/YesterdayHourly";
-import LastCount from "../components/charts/LastCount";
-import { DEVICES } from "../utility/constants";
+import DailyTotal from "components/charts/DailyTotal";
+import HourlyAverage from "components/charts/HourlyAverage";
+import TodayHourly from "components/charts/TodayHourly";
+import YesterdayHourly from "components/charts/YesterdayHourly";
+import LastCount from "components/charts/LastCount";
+import { DEVICES } from "utility/constants";
 import NotFound from "./NotFound";
 
 const Device = (props) => {
   let { id } = useParams();
-
   const device = DEVICES.find((el) => el.properties.name === id);
+
+  useEffect(() => {
+    if (device) {
+      const { name } = device.properties;
+      document.title = `CiCO - Il Conta i Ciclisti Ostinati - ${name} device`;
+    }
+  }, []);
 
   if (!device) {
     return <NotFound />;
   }
+
+  const { name } = device.properties;
 
   return (
     <Fragment>
@@ -30,9 +38,7 @@ const Device = (props) => {
         </div>
       </div>
       <div className="row">
-        <div className="col-sm-12">
-          {/* <TodayHourly device={device} /> */}
-        </div>
+        <div className="col-sm-12">{/* <TodayHourly device={device} /> */}</div>
       </div>
       <div className="row">
         <div className="col-md-6">
