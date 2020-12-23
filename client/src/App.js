@@ -1,37 +1,46 @@
-import React, { useEffect } from "react";
+import React, { Suspense, lazy } from "react";
 import { Switch, Route, Link, useLocation } from "react-router-dom";
 import "./App.css";
 import Footer from "components/Footer";
 import routes from "config/routing/routes";
+import { REGEX_SINGLE } from "utility/constants";
+import SingleContext from "utility/SingleContext";
 
 function App() {
   let location = useLocation();
 
-  useEffect(() => {
-    console.log({ location });
-  }, [location]);
-  
+  // update the context
+  const singleChart = REGEX_SINGLE.test(location.pathname);
+
   return (
-    <div className="App">
-      <header className="container-fluid">
-        <h1 id="title">
-          <Link to="/">CiCO - Il Conta i Ciclisti Ostinati</Link>
-        </h1>
-      </header>
-      <main className="container-fluid">
-        <Switch>
-          {routes.map((route) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              exact
-              component={route.component}
-            />
-          ))}
-        </Switch>
-      </main>
-      <Footer />
-    </div>
+    <SingleContext.Provider value={singleChart}>
+      <div className="App">
+        {/* remove title if single chart */}
+        {!singleChart && (
+          <header className="container-fluid">
+            <h1 id="title">
+              <Link to="/">CiCO - Il Conta i Ciclisti Ostinati</Link>
+            </h1>
+          </header>
+        )}
+        {/* remove container if single chart */}
+        <main className={singleChart ? "" : "container-fluid"}>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Switch>
+              {routes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  exact
+                  component={lazy(() => import(`${route.component}`))}
+                />
+              ))}
+            </Switch>
+          </Suspense>
+        </main>
+        <Footer singleChart={singleChart} />
+      </div>
+    </SingleContext.Provider>
   );
 }
 

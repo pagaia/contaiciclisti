@@ -37,9 +37,11 @@ const Device = (props) => {
           <TodayHourly device={device} />
         </div>
       </div>
-      <div className="row">
-        <div className="col-sm-12">{/* <TodayHourly device={device} /> */}</div>
-      </div>
+      {/* <div className="row">
+        <div className="col-sm-12">
+          <TodayHourly device={device} />
+        </div>
+      </div> */}
       <div className="row">
         <div className="col-md-6">
           <HourlyAverage device={device} />

@@ -1,10 +1,12 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import DailyCompare from "components/charts/DailyCompare";
 import CompareForm from "components/CompareForm";
 import "./DevicesCompare.css";
+import SingleContext from "utility/SingleContext";
 
-const DevicesCompare = (props) => {
+const DevicesCompare = ( props) => {
   const [search, setSearch] = useState(null);
+  const singleChart = useContext(SingleContext);
 
   useEffect(() => {
     document.title = `CiCO - Il Conta i Ciclisti Ostinati - Compare devices`;
@@ -12,8 +14,7 @@ const DevicesCompare = (props) => {
 
   return (
     <Fragment>
-      <h2>Compare devices</h2>
-
+      {!singleChart && <h2>Compare devices</h2>}
       <CompareForm updateSearch={setSearch} />
       {search && (
         <DailyCompare
@@ -22,7 +23,7 @@ const DevicesCompare = (props) => {
           endDate={search.endDate}
         />
       )}
-      <hr className="mb-5 bg-warning" />
+      {!singleChart && <hr className="mb-5 bg-warning" />}
     </Fragment>
   );
 };

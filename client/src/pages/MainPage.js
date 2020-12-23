@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-import About from "components/About";
-import DailyAverage from "components/charts/DailyAverage";
 import ViewMap from "components/map/ViewMap";
-import DevicesCompare from "./DevicesCompare";
 import { DEVICES } from "utility/constants";
+import DailyAverage from "components/charts/DailyAverage";
+import DevicesCompare from "./DevicesCompare";
+import About from "components/About";
 
 const MainPage = (props) => {
   return (

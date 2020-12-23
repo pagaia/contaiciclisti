@@ -96,3 +96,8 @@ export const DAYS = [
   "Friday",
   "Saturday",
 ];
+
+/**
+ * used to match the location path
+ */
+export const REGEX_SINGLE = /^\/single/;
