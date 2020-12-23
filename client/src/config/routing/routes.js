@@ -1,55 +1,45 @@
-import Device from "pages/Device";
-import DevicesCompare from "pages/DevicesCompare";
-import MainPage from "pages/MainPage";
-import NotFound from "pages/NotFound";
-import DeviceToday from "pages/DeviceToday";
-import DeviceAverage from "pages/DeviceAverage";
-import DeviceTotalDay from "pages/DeviceTotalDay";
-import DeviceYesterday from "pages/DeviceYesterday";
-
 export const ROUTES = {
   MAIN_PAGE: "/",
   DEVICE_VIEW: "/devices/:id",
-  DEVICE_YESTERDAY: "/devices/:id/yesterday",
-  DEVICE_TODAY: "/devices/:id/today",
-  DEVICE_LAST_MONTH_AVERAGE: "/devices/:id/lastMonth/average",
-  DEVICE_LAST_MONTH_DAY_TOTAL: "/devices/:id/lastMonth/dayTotal",
-  DEVICES_COMPARE: "/devices/compare",
+  DEVICE_YESTERDAY: "/single/devices/:id/yesterday",
+  DEVICE_TODAY: "/single/devices/:id/today",
+  DEVICE_LAST_MONTH_AVERAGE: "/single/devices/:id/lastMonth/average",
+  DEVICE_LAST_MONTH_DAY_TOTAL: "/single/devices/:id/lastMonth/dayTotal",
+  DEVICES_COMPARE: "/single/devices/compare",
   ALL_PAGES: "*",
 };
 
-
 const routes = [
   {
-    component: MainPage,
+    component: "./pages/MainPage",
     path: ROUTES.MAIN_PAGE,
   },
   {
-    component: DevicesCompare,
+    component: "./pages/DevicesCompare",
     path: ROUTES.DEVICES_COMPARE,
   },
   {
-    component: Device,
+    component: "./pages/Device",
     path: ROUTES.DEVICE_VIEW,
   },
   {
-    component: DeviceYesterday,
+    component: "./pages/DeviceYesterday",
     path: ROUTES.DEVICE_YESTERDAY,
   },
   {
-    component: DeviceToday,
+    component: "./pages/DeviceToday",
     path: ROUTES.DEVICE_TODAY,
   },
   {
-    component: DeviceAverage,
+    component: "./pages/DeviceAverage",
     path: ROUTES.DEVICE_LAST_MONTH_AVERAGE,
   },
   {
-    component: DeviceTotalDay,
+    component: "./pages/DeviceTotalDay",
     path: ROUTES.DEVICE_LAST_MONTH_DAY_TOTAL,
   },
   {
-    component: NotFound,
+    component: "./pages/NotFound",
     path: ROUTES.ALL_PAGES,
   },
 ];

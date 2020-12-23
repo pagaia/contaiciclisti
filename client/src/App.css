@@ -6,7 +6,6 @@ html {
   background-color: #282c34;
   min-height: 100vh;
   text-align: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 
@@ -34,12 +33,7 @@ p.lead {
 }
 
 .card-text.highlighted {
-  text-shadow: 2px 2px 8px yellow;
-  color: #ee8b00;
-}
-
-.card-text.inverted {
-  color: #ee8b00;
+  color: #ffbe00;
   overflow-wrap: normal;
 }
 
@@ -47,10 +41,28 @@ p.lead {
   background-color: #2e3e57;
 }
 .card.last {
-  margin: 0 5px;
-  width: 48%;
-  margin: 5px;
-  min-width: 150px;
+  margin: 5px 2px;
+  width: 30%;
+  min-width: 130px;
+  min-height: 140px;
+  border: 1px solid #ffbe00;
+}
+
+@media only screen and (max-width: 600px) {
+  .card.last .card-text {
+    font-size: 14vw;
+  }
+  .card.last{
+    width: 48%;
+  }
+  .card.last.big-counter {
+    width: 100%;
+  }
+}
+
+.card.last .card-title {
+  text-transform: uppercase;
+  font-size: small;
 }
 
 header .card {
@@ -72,11 +84,71 @@ header .card {
   font-size: small;
 }
 
+.footer.single {
+  padding: 0;
+  font-size: small;
+}
+
 .last-counter {
   display: flex;
   padding: 2em 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .compare {
   text-align: justify;
+  overflow: hidden;
+}
+
+.fade-in {
+  animation: fadeIn ease 1s;
+  -webkit-animation: fadeIn ease 1s;
+  -moz-animation: fadeIn ease 1s;
+  -o-animation: fadeIn ease 1s;
+  -ms-animation: fadeIn ease 1s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
