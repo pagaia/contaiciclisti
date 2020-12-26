@@ -2,8 +2,9 @@ import React, { Fragment } from "react";
 import ViewMap from "components/map/ViewMap";
 import { DEVICES } from "utility/constants";
 import DailyAverage from "components/charts/DailyAverage";
-import DevicesCompare from "./DevicesCompare";
+import DevicesCompare from "./singlePages/DevicesCompare";
 import About from "components/About";
+import HourlyComparePage from "./singlePages/HourlyComparePage";
 
 const MainPage = (props) => {
   return (
@@ -20,6 +21,9 @@ const MainPage = (props) => {
             </div>
             <div className="col-sm-12">
               <DevicesCompare />
+            </div>
+            <div className="col-sm-12">
+              <HourlyComparePage />
             </div>
             <div className="col-sm-12">
               <About />

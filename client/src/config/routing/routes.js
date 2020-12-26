@@ -6,6 +6,9 @@ export const ROUTES = {
   DEVICE_LAST_MONTH_AVERAGE: "/single/devices/:id/lastMonth/average",
   DEVICE_LAST_MONTH_DAY_TOTAL: "/single/devices/:id/lastMonth/dayTotal",
   DEVICES_COMPARE: "/single/devices/compare",
+  DEVICES_AVERAGE: "/single/devices/average",
+  DEVICES_HOURLY_COMPARE: "/single/devices/compare/hourly",
+  DEVICES_MAP: "/single/devices/map",
   ALL_PAGES: "*",
 };
 
@@ -15,28 +18,40 @@ const routes = [
     path: ROUTES.MAIN_PAGE,
   },
   {
-    component: "./pages/DevicesCompare",
-    path: ROUTES.DEVICES_COMPARE,
-  },
-  {
     component: "./pages/Device",
     path: ROUTES.DEVICE_VIEW,
   },
   {
-    component: "./pages/DeviceYesterday",
+    component: "./pages/singlePages/DevicesCompare",
+    path: ROUTES.DEVICES_COMPARE,
+  },
+  {
+    component: "./pages/singlePages/DeviceYesterday",
     path: ROUTES.DEVICE_YESTERDAY,
   },
   {
-    component: "./pages/DeviceToday",
+    component: "./pages/singlePages/DeviceToday",
     path: ROUTES.DEVICE_TODAY,
   },
   {
-    component: "./pages/DeviceAverage",
+    component: "./pages/singlePages/DeviceAverage",
     path: ROUTES.DEVICE_LAST_MONTH_AVERAGE,
   },
   {
-    component: "./pages/DeviceTotalDay",
+    component: "./pages/singlePages/DeviceTotalDay",
     path: ROUTES.DEVICE_LAST_MONTH_DAY_TOTAL,
+  },
+  {
+    component: "./pages/singlePages/OnlyMap",
+    path: ROUTES.DEVICES_MAP,
+  },
+  {
+    component: "./pages/singlePages/DailyAveragePage",
+    path: ROUTES.DEVICES_AVERAGE,
+  },
+  {
+    component: "./pages/singlePages/HourlyComparePage",
+    path: ROUTES.DEVICES_HOURLY_COMPARE,
   },
   {
     component: "./pages/NotFound",

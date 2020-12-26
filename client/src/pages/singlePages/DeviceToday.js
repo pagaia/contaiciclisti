@@ -1,11 +1,11 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import YesterdayHourly from "components/charts/YesterdayHourly";
+import TodayHourly from "components/charts/TodayHourly";
 import { DEVICES } from "utility/constants";
-import NotFound from "./NotFound";
+import NotFound from "../NotFound";
 import SingleContext from "utility/SingleContext";
 
-const DeviceYesterday = (props) => {
+const DeviceToday = (props) => {
   let { id } = useParams();
   const singleChart = useContext(SingleContext);
 
@@ -14,7 +14,7 @@ const DeviceYesterday = (props) => {
   useEffect(() => {
     if (device) {
       const { name } = device.properties;
-      document.title = `CiCO - Il Conta i Ciclisti Ostinati - ${name} yesterday counts`;
+      document.title = `CiCO - Il Conta i Ciclisti Ostinati - ${name} today counts`;
     }
   }, []);
 
@@ -27,11 +27,12 @@ const DeviceYesterday = (props) => {
       {!singleChart && <h2>{device.properties.name}</h2>}
       <div className="row">
         <div className="col-sm-12">
-          <YesterdayHourly device={device} />
+          <TodayHourly device={device} />
         </div>
       </div>
+      {!singleChart && <hr className="mb-5 bg-warning" />}
     </Fragment>
   );
 };
 
-export default DeviceYesterday;
+export default DeviceToday;

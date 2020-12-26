@@ -10,7 +10,7 @@ import {
 const { start, end } = getLastMonthStartEnd();
 
 function HourlyAverage({ device }) {
-  // initialize dataset with empty array
+  // initialize dataset with empty object
   const [datasets, setDatasets] = useState({});
 
   async function fetchDeviceData() {

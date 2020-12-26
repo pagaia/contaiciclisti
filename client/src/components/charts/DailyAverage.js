@@ -7,8 +7,7 @@ import {
   getLastMonthStartEnd,
 } from "utility/utilityFunctions";
 import PropTypes from "prop-types";
-import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
-
+import { DEVICE_FIELDS, REGEX_FIELD, REGEX_DEVICE } from "utility/constants";
 
 const { start: lastMonthStart, end: lastMonthEnd } = getLastMonthStartEnd();
 
@@ -32,8 +31,11 @@ function DailyAverage({ devices }) {
     async function fetchAverage(device, idx) {
       // replace with channelID
       const apiEndPoint =
-        DEVICE_URL.replace(REGEX_DEVICE, device.properties.channelId) +
-        `&average=daily&start=${lastMonthStart}&end=${lastMonthEnd}`;
+        DEVICE_FIELDS.replace(
+          REGEX_DEVICE,
+          device.properties.channelId
+        ).replace(REGEX_FIELD, "field3") +
+        `?start=${lastMonthStart}&end=${lastMonthEnd}`;
 
       // fetch data from a url endpoint
       const response = await axios.get(apiEndPoint);

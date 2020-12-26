@@ -9,6 +9,10 @@ html {
   color: white;
 }
 
+.App.single {
+  padding: 10px;
+}
+
 .App header {
   padding: 1em;
 }
@@ -52,7 +56,7 @@ p.lead {
   .card.last .card-text {
     font-size: 14vw;
   }
-  .card.last{
+  .card.last {
     width: 48%;
   }
   .card.last.big-counter {
@@ -85,7 +89,7 @@ header .card {
 }
 
 .footer.single {
-  padding: 0;
+  padding: 10px;
   font-size: small;
 }
 
@@ -100,7 +104,7 @@ header .card {
   text-align: justify;
   overflow: hidden;
 }
-
+/* 
 .fade-in {
   animation: fadeIn ease 1s;
   -webkit-animation: fadeIn ease 1s;
@@ -151,4 +155,10 @@ header .card {
   100% {
     opacity: 1;
   }
+}
+ */
+
+h2,
+h3 {
+  font-size: 1rem;
 }

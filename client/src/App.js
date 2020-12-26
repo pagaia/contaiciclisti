@@ -14,7 +14,7 @@ function App() {
 
   return (
     <SingleContext.Provider value={singleChart}>
-      <div className="App">
+      <div className={`App ${singleChart ? "single" : ""}`}>
         {/* remove title if single chart */}
         {!singleChart && (
           <header className="container-fluid">
