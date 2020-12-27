@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Bar, Line } from "react-chartjs-2";
 import PropTypes from "prop-types";
 import { CHART } from "utility/constants";
@@ -49,18 +49,21 @@ const SimpleChart = ({ data, name }) => {
 
   return (
     <div>
-      <div className="form-check">
+      <div className="custom-control custom-switch">
         <input
           type="checkbox"
-          className="form-check-input"
+          className="custom-control-input"
           id={`switch-chart-${name}`}
           name={`switch-chart-${name}`}
           onChange={handleChart}
           value="switch-chart"
           checked={chart === CHART.LINE}
         />
-        <label className="form-check-label" htmlFor={`switch-chart-${name}`}>
-          Change Chart
+        <label
+          className="custom-control-label"
+          htmlFor={`switch-chart-${name}`}
+        >
+          Switch Line/Bar
         </label>
       </div>
 
