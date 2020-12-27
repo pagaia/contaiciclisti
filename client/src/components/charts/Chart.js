@@ -49,7 +49,21 @@ const SimpleChart = ({ data, name }) => {
 
   return (
     <div>
-      <div className="form-check">
+      <div className="custom-control custom-switch">
+        <input
+          type="checkbox"
+          className="custom-control-input"
+          id={`switch-chart-${name}`}
+          name={`switch-chart-${name}`}
+          onChange={handleChart}
+          value="switch-chart"
+          checked={chart === CHART.LINE}
+        />
+        <label className="custom-control-label" htmlFor={`switch-chart-${name}`}>
+          Switch Line/Bar
+        </label>
+      </div>
+      {/* <div className="form-check">
         <input
           type="checkbox"
           className="form-check-input"
@@ -62,7 +76,7 @@ const SimpleChart = ({ data, name }) => {
         <label className="form-check-label" htmlFor={`switch-chart-${name}`}>
           Change Chart
         </label>
-      </div>
+      </div> */}
 
       {myChart}
     </div>
