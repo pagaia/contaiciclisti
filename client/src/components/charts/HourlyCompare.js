@@ -1,13 +1,12 @@
 import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
-import { Bar, Line } from "react-chartjs-2";
 import {
   buildHourlyCompare,
-  datasetKeyProvider,
 } from "utility/utilityFunctions";
 import PropTypes from "prop-types";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 import { format } from "date-fns";
+import SimpleChart from "./Chart";
 
 function HourlyCompare({ devices, day }) {
   // initialize dataset with empty array
@@ -59,15 +58,7 @@ function HourlyCompare({ devices, day }) {
     <Fragment>
       <h3>Counts on {format(day, "yyyy-MM-dd")}</h3>
       <div className="chart-wrapper">
-        <Line
-          data={data}
-          width={100}
-          height={50}
-          options={{
-            maintainAspectRatio: true,
-          }}
-          datasetKeyProvider={datasetKeyProvider}
-        />
+        <SimpleChart data={data} name="HourlyCompare"/>
       </div>
     </Fragment>
   );

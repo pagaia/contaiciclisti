@@ -94,3 +94,5 @@ export const DAYS = [
  * used to match the location path
  */
 export const REGEX_SINGLE = /^\/single/;
+
+export const CHART = { BAR: "BAR", LINE: "LINE" };

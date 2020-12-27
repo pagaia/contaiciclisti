@@ -109,15 +109,15 @@ const CompareForm = ({ updateSearch }) => {
                   <input
                     type="checkbox"
                     className="form-check-input"
-                    id={device.properties.name}
-                    name={device.properties.name}
+                    id={`${device.properties.name}-CompareForm`}
+                    name={`${device.properties.name}-CompareForm`}
                     onChange={handleChange}
                     value={device.properties.channelId}
                     checked={!!form.devices[device.properties.channelId]}
                   />
                   <label
                     className="form-check-label"
-                    htmlFor={device.properties.name}
+                    htmlFor={`${device.properties.name}-CompareForm`}
                   >
                     {device.properties.name}
                   </label>

@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useEffect, useState } from "react";
 import DailyCompare from "components/charts/DailyCompare";
 import CompareForm from "components/CompareForm";
 import "./DevicesCompare.css";
-import SingleContext from "utility/SingleContext";
+import { SingleContext } from "utility/MyContext";
 
 const DevicesCompare = ( props) => {
   const [search, setSearch] = useState(null);

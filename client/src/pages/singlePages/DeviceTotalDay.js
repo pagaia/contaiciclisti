@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import DailyTotal from "components/charts/DailyTotal";
 import { DEVICES } from "utility/constants";
 import NotFound from "../NotFound";
-import SingleContext from "utility/SingleContext";
+import { SingleContext } from "utility/MyContext";
 
 const DeviceTotalDay = (props) => {
   let { id } = useParams();

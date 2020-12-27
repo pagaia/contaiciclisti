@@ -1,13 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
 import {
   buildDataDailyAverage,
-  datasetKeyProvider,
   getLastMonthStartEnd,
 } from "utility/utilityFunctions";
 import PropTypes from "prop-types";
 import { DEVICE_FIELDS, REGEX_FIELD, REGEX_DEVICE } from "utility/constants";
+import SimpleChart from "./Chart";
 
 const { start: lastMonthStart, end: lastMonthEnd } = getLastMonthStartEnd();
 
@@ -65,15 +64,7 @@ function DailyAverage({ devices }) {
     <div>
       <h3>Last month</h3>
       <div className="chart-wrapper">
-        <Bar
-          data={data}
-          width={100}
-          height={50}
-          options={{
-            maintainAspectRatio: true,
-          }}
-          datasetKeyProvider={datasetKeyProvider}
-        />
+        <SimpleChart data={data} name="DailyAverage" />
       </div>
     </div>
   );

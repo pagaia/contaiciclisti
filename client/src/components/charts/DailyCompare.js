@@ -1,13 +1,12 @@
 import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
-import { Bar, Line } from "react-chartjs-2";
 import {
   buildDailyCompare,
-  datasetKeyProvider,
   getDatesBetweenDates,
 } from "utility/utilityFunctions";
 import PropTypes from "prop-types";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
+import SimpleChart from "./Chart";
 
 function DailyCompare({ devices, startDate, endDate }) {
   // initialize dataset with empty array
@@ -55,15 +54,7 @@ function DailyCompare({ devices, startDate, endDate }) {
         Counts between {startDate} and {endDate}
       </h3>
       <div className="chart-wrapper">
-        <Bar
-          data={data}
-          width={100}
-          height={50}
-          options={{
-            maintainAspectRatio: true,
-          }}
-          datasetKeyProvider={datasetKeyProvider}
-        />
+        <SimpleChart data={data} name="DailyCompare" />
       </div>
     </Fragment>
   );

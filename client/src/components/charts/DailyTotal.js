@@ -1,10 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Bar, Line } from "react-chartjs-2";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
-import {
-  buildDataDaily, getLastMonthStartEnd,
-} from "utility/utilityFunctions";
+import { buildDataDaily, getLastMonthStartEnd } from "utility/utilityFunctions";
+import SimpleChart from "./Chart";
 
 const { start: lastMonthStart, end: lastMonthEnd } = getLastMonthStartEnd();
 
@@ -33,18 +31,11 @@ function DailyTotal({ device }) {
     <div className="row">
       <div className="col-sm">
         <div className="chart-wrapper">
-        <h3 className="d-inline">Last month</h3>
+          <h3 className="d-inline">Last month</h3>
           <span className="text-muted">
             <small> - total per day </small>
           </span>
-          <Line
-            data={month}
-            width={100}
-            height={50}
-            options={{
-              maintainAspectRatio: true,
-            }}
-          />
+          <SimpleChart data={month} name="DailyTotal" />
         </div>
       </div>
     </div>

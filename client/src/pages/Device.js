@@ -30,18 +30,13 @@ const Device = (props) => {
       <h2>{device.properties.name}</h2>
       <div className="row">
         <div className="col-sm-12 col-md-6">
-          <YesterdayHourly device={device} />
-        </div>
-        <div className="col-sm-12 col-md-6">
           <LastCount device={device} />
           <TodayHourly device={device} />
         </div>
-      </div>
-      {/* <div className="row">
-        <div className="col-sm-12">
-          <TodayHourly device={device} />
+        <div className="col-sm-12 col-md-6">
+          <YesterdayHourly device={device} />
         </div>
-      </div> */}
+      </div>
       <div className="row">
         <div className="col-md-6">
           <HourlyAverage device={device} />

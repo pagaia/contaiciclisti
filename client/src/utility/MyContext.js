@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export const myContext = {
   single: true,
@@ -6,4 +6,4 @@ export const myContext = {
 
 const SingleContext = React.createContext(myContext.light);
 
-export default SingleContext;
+export { SingleContext };

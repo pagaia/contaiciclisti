@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import "./DevicesCompare.css";
-import SingleContext from "utility/SingleContext";
+import { SingleContext } from "utility/MyContext";
 import HourlyCompare from "components/charts/HourlyCompare";
 import HourlyCompareForm from "components/HourlyCompareForm";
 

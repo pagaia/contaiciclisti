@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import SingleContext from "utility/SingleContext";
+import { SingleContext } from "utility/MyContext";
 import ScrollTo from "./ScrollTo";
 
 const Footer = (props) => {
