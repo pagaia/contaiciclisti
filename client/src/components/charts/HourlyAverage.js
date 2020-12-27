@@ -1,16 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 import {
   buildHourlyAverage,
   getLastMonthStartEnd,
 } from "utility/utilityFunctions";
+import SimpleChart from "./Chart";
 
 const { start, end } = getLastMonthStartEnd();
 
 function HourlyAverage({ device }) {
-  // initialize dataset with empty array
+  // initialize dataset with empty object
   const [datasets, setDatasets] = useState({});
 
   async function fetchDeviceData() {
@@ -41,14 +41,7 @@ function HourlyAverage({ device }) {
           <span className="text-muted">
             <small> - hourly average</small>
           </span>
-          <Bar
-            data={datasets}
-            width={100}
-            height={50}
-            options={{
-              maintainAspectRatio: true,
-            }}
-          />
+          <SimpleChart data={datasets} name="HourlyAverage" />
         </div>
       </div>
     </div>

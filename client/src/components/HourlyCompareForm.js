@@ -1,21 +1,16 @@
 import React, { Fragment, useEffect, useState } from "react";
 import DatePicker from "components/DatePicker";
 import { DEVICES } from "utility/constants";
-import {
-  convertArrayToObject,
-  getLastMonthStartEndDatePicker,
-} from "utility/utilityFunctions";
+import { convertArrayToObject } from "utility/utilityFunctions";
 import "./CompareForm.css";
 import Fade from "./Fade";
 
-const { start: startDate, end: endDate } = getLastMonthStartEndDatePicker();
-
-const CompareForm = ({ updateSearch }) => {
+const HourlyCompareForm = ({ updateSearch }) => {
   const [viewForm, toggleForm] = useState(true);
 
+  // const day = new Date();.setHours(0, 0, 0);
   const [form, setForm] = useState({
-    endDate,
-    startDate,
+    day:  new Date(), //day.toISOString(), // set today starting from 0 0 0
     devices: convertArrayToObject(DEVICES, "properties.channelId"),
   });
 
@@ -55,20 +50,13 @@ const CompareForm = ({ updateSearch }) => {
     });
   };
 
-  const handleStartDate = (startDate) => {
-    setForm({ ...form, startDate });
-  };
-
-  const handleEndDate = (endDate) => {
-    setForm({ ...form, endDate });
+  const handleChangeDay = (day) => {
+    setForm({ ...form, day });
   };
 
   const validateForm = (form) => {
     const error = [];
-    const period = (form.endDate - form.startDate) / (1000 * 60 * 60 * 24);
-    if (period > 31 || period < 1) {
-      error.push("-reduce the date period to max 1 month");
-    }
+
     if (Object.entries(form.devices).length === 0) {
       error.push("-select at least 2 devices");
     }
@@ -83,13 +71,10 @@ const CompareForm = ({ updateSearch }) => {
       return;
     }
     toggle();
-    let endDate = form.endDate;
-    endDate.setHours(23, 59);
-    endDate = endDate.toISOString().split("T")[0];
+    let { day } = form;
     updateSearch({
       ...form,
-      endDate,
-      startDate: form.startDate.toISOString().split("T")[0],
+      day,
     });
   };
 
@@ -100,7 +85,7 @@ const CompareForm = ({ updateSearch }) => {
   const renderForm = () => {
     return (
       <div className="compare">
-        <h3>Please select minimun 2 devices and a window of max 1 month</h3>
+        <h3>Please select minimun 2 devices</h3>
         <div className="row">
           <div className="col-md-3">
             {DEVICES.map((device, idx) => (
@@ -109,15 +94,15 @@ const CompareForm = ({ updateSearch }) => {
                   <input
                     type="checkbox"
                     className="form-check-input"
-                    id={`${device.properties.name}-CompareForm`}
-                    name={`${device.properties.name}-CompareForm`}
+                    id={`${device.properties.name}-HourlyCompareForm`}
+                    name={`${device.properties.name}-HourlyCompareForm`}
                     onChange={handleChange}
                     value={device.properties.channelId}
                     checked={!!form.devices[device.properties.channelId]}
                   />
                   <label
                     className="form-check-label"
-                    htmlFor={`${device.properties.name}-CompareForm`}
+                    htmlFor={`${device.properties.name}-HourlyCompareForm`}
                   >
                     {device.properties.name}
                   </label>
@@ -130,25 +115,8 @@ const CompareForm = ({ updateSearch }) => {
         <div className="row">
           <div className="col-sm-6 col-md-3">
             <div className="form-group">
-              <label htmlFor="startDate">Start date</label>
-              <DatePicker
-                selected={form.startDate}
-                onChange={handleStartDate}
-              />
-
-              <small id="startHelp" className="form-text text-muted">
-                This is the start day for the comparison
-              </small>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group">
-              <label htmlFor="endDate">End date</label>
-
-              <DatePicker selected={form.endDate} onChange={handleEndDate} />
-              <small id="endHelp" className="form-text text-muted">
-                This is the end day for the comparison
-              </small>
+              <label htmlFor="day">Day</label>
+              <DatePicker selected={form.day} onChange={handleChangeDay} />
             </div>
           </div>
         </div>
@@ -185,4 +153,4 @@ const CompareForm = ({ updateSearch }) => {
   );
 };
 
-export default CompareForm;
+export default HourlyCompareForm;

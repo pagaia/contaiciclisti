@@ -4,7 +4,7 @@ import "./App.css";
 import Footer from "components/Footer";
 import routes from "config/routing/routes";
 import { REGEX_SINGLE } from "utility/constants";
-import SingleContext from "utility/SingleContext";
+import { SingleContext } from "utility/MyContext";
 
 function App() {
   let location = useLocation();
@@ -14,7 +14,7 @@ function App() {
 
   return (
     <SingleContext.Provider value={singleChart}>
-      <div className="App">
+      <div className={`App ${singleChart ? "single" : ""}`}>
         {/* remove title if single chart */}
         {!singleChart && (
           <header className="container-fluid">

@@ -48,30 +48,15 @@ export const DEVICES = [
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [12.396309, 41.727121],
-    },
-    properties: {
-      name: "Nazzano",
-      description: "Device located around Nazzano",
-      channelId: 1051988,
-      bgColor: "rgba(54, 162, 235, 0.2)",
-      borderColor: "rgba(54, 162, 235, 1)",
-      hbgColor: "rgba(54, 162, 235, 0.6)",
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
       coordinates: [12.436309, 41.907121],
     },
     properties: {
       name: "TerreDelNord",
       description: "Device located around TerreDelNord",
       channelId: 1249861,
-      bgColor: "rgba(54, 102, 235, 0.2)",
-      borderColor: "rgba(54, 102, 235, 1)",
-      hbgColor: "rgba(54, 102, 235, 0.6)",
+      bgColor: "rgba(54, 162, 235, 0.2)",
+      borderColor: "rgba(54, 162, 235, 1)",
+      hbgColor: "rgba(54, 162, 235, 0.6)",
     },
   },
 ];
@@ -79,10 +64,18 @@ export const DEVICES = [
 export const DEVICE_URL =
   "https://api.thingspeak.com/channels/DEVICE/feeds.json?timezone=Europe/Rome";
 
+export const DEVICE_FIELDS =
+  "https://api.thingspeak.com/channels/DEVICE/fields/FIELD.json";
+
 export const DEVICE_URL_LAST =
   "https://api.thingspeak.com/channels/DEVICE/feeds/last.json?timezone=Europe/Rome";
 
-export const REGEX_DEVICE = /DEVICE/i;
+export const REGEX_DEVICE = /DEVICE/;
+
+/**
+ *
+ */
+export const REGEX_FIELD = /FIELD/;
 
 /**
  * days of the week to be converted from number to string 0=Sunday ...
@@ -101,3 +94,5 @@ export const DAYS = [
  * used to match the location path
  */
 export const REGEX_SINGLE = /^\/single/;
+
+export const CHART = { BAR: "BAR", LINE: "LINE" };

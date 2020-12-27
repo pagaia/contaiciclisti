@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { DAYS } from "./constants";
 
 /**
@@ -5,7 +6,7 @@ import { DAYS } from "./constants";
  */
 export const getBeginningOfToday = () => {
   let start = new Date();
-  return start.toISOString().split("T")[0];
+  return format(start, "yyyy-MM-dd");
 };
 
 /**
@@ -17,8 +18,8 @@ export const getYesterdayStartEnd = () => {
 
   start.setDate(start.getDate() - 1);
 
-  end = end.toISOString().split("T")[0];
-  start = start.toISOString().split("T")[0];
+  end = format(end, "yyyy-MM-dd");
+  start = format(start, "yyyy-MM-dd");
 
   return { start, end };
 };
@@ -32,8 +33,8 @@ export const getLastMonthStartEnd = () => {
   let start = new Date(end);
   start.setMonth(start.getMonth() - 1);
 
-  end = end.toISOString().split("T")[0];
-  start = start.toISOString().split("T")[0];
+  end = format(end, "yyyy-MM-dd");
+  start = format(start, "yyyy-MM-dd");
 
   return { start, end };
 };
@@ -45,14 +46,7 @@ export const getLastMonthStartEndDatePicker = () => {
   // let end = new Date();
   var date = new Date();
   var end = new Date(
-    Date.UTC(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDate(),
-      0,
-      0,
-      0
-    )
+    Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0)
   );
 
   // end.setHours(0, 0, 0);
@@ -149,7 +143,7 @@ export const getDatesBetweenDates = (startDate, endDate) => {
   const end = new Date(endDate);
 
   while (theDate < end) {
-    const currentDay = new Date(theDate).toISOString().substring(0, 10);
+    const currentDay = format(theDate, "yyyy-MM-dd");
     dates = [...dates, currentDay];
     theDate.setDate(theDate.getDate() + 1);
   }
@@ -157,7 +151,7 @@ export const getDatesBetweenDates = (startDate, endDate) => {
 };
 
 /**
- * This function gets the list of counts and device information and build labels and datasets for hourly counts
+ * This function gets the list of counts and device information and build labels and datasets for total daily counts
  *
  * @param {Array} feeds
  * @param {Object} device
@@ -191,6 +185,43 @@ export const buildDailyCompare = (feeds, device, labels) => {
 };
 
 /**
+ * This function gets the list of counts and device information and build labels and datasets for hourly counts
+ *
+ * @param {Array} feeds
+ * @param {Object} device
+ */
+export const buildHourlyCompare = (feeds, device, labels) => {
+  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
+
+  const dataset = {
+    label,
+    backgroundColor: bgColor || "rgba(54, 162, 235, 0.2)",
+    borderColor: borderColor || "rgba(54, 162, 235, 1)",
+    borderWidth: 1,
+    hoverBackgroundColor: hbgColor || "rgba(255,99,132,0.4)",
+    data: [],
+    fill: false,
+  };
+
+  const dateFound = {};
+  feeds.forEach((feed) => {
+    const hour =
+      feed.created_at.substring(11, 12) === "0"
+        ? feed.created_at.substring(12, 13)
+        : feed.created_at.substring(11, 13);
+    // set the key as the day and time
+    dateFound[hour] = parseInt(feed.field1, 10);
+  });
+
+  // double check data per day
+  labels.forEach((day) => {
+    dataset.data.push(dateFound[day]);
+  });
+
+  return dataset;
+};
+
+/**
  * Utility function to sum up an array of numbers
  * @param {Number} accumulator
  * @param {Number} currentValue
@@ -199,6 +230,7 @@ const sumReducer = (accumulator, currentValue) => accumulator + currentValue;
 
 /**
  *  This function gets the list of counts and device information and build labels and datasets for Daily Average counts
+ *  for days of the week
  *
  * @param {Array} feeds
  * @param {Object} device
@@ -218,12 +250,14 @@ export const buildDataDailyAverage = (feeds, device) => {
   const weekDays = [];
 
   feeds.forEach((feed) => {
-    if (feed.field1) {
-      const day = new Date(feed.created_at);
-      if (weekDays[day.getDay()]) {
-        weekDays[day.getDay()].push(parseInt(feed.field1, 10));
+    if (feed.field3) {
+      // 0 Sunday, 1 Monday, etc...
+      const dayNumber = new Date(feed.created_at).getDay();
+      const field = parseInt(feed.field3, 10);
+      if (weekDays[dayNumber]) {
+        weekDays[dayNumber].push(field);
       } else {
-        weekDays[day.getDay()] = [parseInt(feed.field1, 10)];
+        weekDays[dayNumber] = [field];
       }
     }
   });

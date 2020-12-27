@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 import {
   buildDataHourly,
   getYesterdayStartEnd,
 } from "utility/utilityFunctions";
+import SimpleChart from "./Chart";
 
 const { start: yesterdayStart, end: yesterdayEnd } = getYesterdayStartEnd();
 
@@ -38,14 +38,7 @@ function YesterdayHourly({ device }) {
           <span className="text-muted">
             <small> - yesterday</small>
           </span>
-          <Bar
-            data={yesterday}
-            width={100}
-            height={50}
-            options={{
-              maintainAspectRatio: true,
-            }}
-          />
+          <SimpleChart  data={yesterday} name="YesterdayHourly"/>
         </div>
       </div>
     </div>

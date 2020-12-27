@@ -1,13 +1,12 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import DailyTotal from "components/charts/DailyTotal";
+import TodayHourly from "components/charts/TodayHourly";
 import { DEVICES } from "utility/constants";
-import NotFound from "./NotFound";
-import SingleContext from "utility/SingleContext";
+import NotFound from "../NotFound";
+import { SingleContext } from "utility/MyContext";
 
-const DeviceTotalDay = (props) => {
+const DeviceToday = (props) => {
   let { id } = useParams();
-
   const singleChart = useContext(SingleContext);
 
   const device = DEVICES.find((el) => el.properties.name === id);
@@ -15,7 +14,7 @@ const DeviceTotalDay = (props) => {
   useEffect(() => {
     if (device) {
       const { name } = device.properties;
-      document.title = `CiCO - Il Conta i Ciclisti Ostinati - ${name} total counts last month`;
+      document.title = `CiCO - Il Conta i Ciclisti Ostinati - ${name} today counts`;
     }
   }, []);
 
@@ -27,8 +26,8 @@ const DeviceTotalDay = (props) => {
     <Fragment>
       {!singleChart && <h2>{device.properties.name}</h2>}
       <div className="row">
-        <div className="col-md-12">
-          <DailyTotal device={device} />
+        <div className="col-sm-12">
+          <TodayHourly device={device} />
         </div>
       </div>
       {!singleChart && <hr className="mb-5 bg-warning" />}
@@ -36,4 +35,4 @@ const DeviceTotalDay = (props) => {
   );
 };
 
-export default DeviceTotalDay;
+export default DeviceToday;

@@ -1,11 +1,11 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import TodayHourly from "components/charts/TodayHourly";
+import HourlyAverage from "components/charts/HourlyAverage";
 import { DEVICES } from "utility/constants";
-import NotFound from "./NotFound";
-import SingleContext from "utility/SingleContext";
+import NotFound from "../NotFound";
+import { SingleContext } from "utility/MyContext";
 
-const DeviceToday = (props) => {
+const DeviceAverage = ( props) => {
   let { id } = useParams();
   const singleChart = useContext(SingleContext);
 
@@ -14,7 +14,7 @@ const DeviceToday = (props) => {
   useEffect(() => {
     if (device) {
       const { name } = device.properties;
-      document.title = `CiCO - Il Conta i Ciclisti Ostinati - ${name} today counts`;
+      document.title = `CiCO - Il Conta i Ciclisti Ostinati - ${name} Average counts`;
     }
   }, []);
 
@@ -26,8 +26,8 @@ const DeviceToday = (props) => {
     <Fragment>
       {!singleChart && <h2>{device.properties.name}</h2>}
       <div className="row">
-        <div className="col-sm-12">
-          <TodayHourly device={device} />
+        <div className="col-md-12">
+          <HourlyAverage device={device} />
         </div>
       </div>
       {!singleChart && <hr className="mb-5 bg-warning" />}
@@ -35,4 +35,4 @@ const DeviceToday = (props) => {
   );
 };
 
-export default DeviceToday;
+export default DeviceAverage;
