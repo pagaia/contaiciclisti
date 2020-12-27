@@ -66,7 +66,6 @@ const SimpleChart = ({ data, name }) => {
           Switch Line/Bar
         </label>
       </div>
-
       {myChart}
     </div>
   );
