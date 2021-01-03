@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 const ViewMap = ({ devices }) => {
   return (
     <MapContainer
-      center={[41.878808, 12.489960]}
-      zoom={10}
+      center={[41.883446, 12.475011]}
+      zoom={11}
       scrollWheelZoom={true}
     >
       <TileLayer
@@ -16,10 +16,10 @@ const ViewMap = ({ devices }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {devices?.map?.((device) => {
-        const { name } = device.properties;
+        const { channelId, name } = device.properties;
         return (
           <Marker
-            key={name}
+            key={channelId}
             position={[
               device.geometry.coordinates[1],
               device.geometry.coordinates[0],
@@ -36,7 +36,7 @@ const ViewMap = ({ devices }) => {
                 <h2>{name}</h2>
                 <div>{device.properties.description}</div>
                 <div>
-                  <Link to={`/devices/${name}`}>Go to the page</Link>
+                  <Link to={`/devices/${channelId}`}>Go to the page</Link>
                 </div>
               </div>
             </Popup>

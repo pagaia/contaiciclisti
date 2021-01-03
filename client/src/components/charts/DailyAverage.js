@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { DEVICE_FIELDS, REGEX_FIELD, REGEX_DEVICE } from "utility/constants";
 import SimpleChart from "./Chart";
 
-const { start: lastMonthStart, end: lastMonthEnd } = getLastMonthStartEnd();
+const { start, end } = getLastMonthStartEnd();
 
 function DailyAverage({ devices }) {
   // initialize dataset with empty array
@@ -33,8 +33,7 @@ function DailyAverage({ devices }) {
         DEVICE_FIELDS.replace(
           REGEX_DEVICE,
           device.properties.channelId
-        ).replace(REGEX_FIELD, "field3") +
-        `?start=${lastMonthStart}&end=${lastMonthEnd}`;
+        ).replace(REGEX_FIELD, "field3") + `?start=${start}&end=${end}`;
 
       // fetch data from a url endpoint
       const response = await axios.get(apiEndPoint);
@@ -63,6 +62,11 @@ function DailyAverage({ devices }) {
   return (
     <div>
       <h3>Last month</h3>
+      <span className="text-muted">
+        <small>
+          &nbsp;({start} - {end})
+        </small>
+      </span>
       <div className="chart-wrapper">
         <SimpleChart data={data} name="DailyAverage" />
       </div>

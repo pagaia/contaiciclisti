@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import {
-  buildHourlyCompare,
+  buildHourlyCompare, formatDate,
 } from "utility/utilityFunctions";
 import PropTypes from "prop-types";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
@@ -56,7 +56,7 @@ function HourlyCompare({ devices, day }) {
 
   return (
     <Fragment>
-      <h3>Counts on {format(day, "yyyy-MM-dd")}</h3>
+      <h3>Counts on {formatDate(day)}</h3>
       <div className="chart-wrapper">
         <SimpleChart data={data} name="HourlyCompare"/>
       </div>

@@ -3,6 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import {
   buildDailyCompare,
   getDatesBetweenDates,
+  replaceWeekendDays,
 } from "utility/utilityFunctions";
 import PropTypes from "prop-types";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
@@ -41,7 +42,7 @@ function DailyCompare({ devices, startDate, endDate }) {
   }, [devices, startDate, endDate]);
 
   const data = {
-    labels,
+    labels: replaceWeekendDays(labels),
     datasets: datasets.filter(function (element) {
       // filter out dataset not defined yet
       return element !== undefined;

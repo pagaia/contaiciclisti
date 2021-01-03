@@ -1,62 +1,77 @@
+export const CHART_COLORS = {
+  RED: {
+    backgroundColor: "rgba(185, 33, 3, 0.2)",
+    borderColor: "rgba(185, 33, 3, 1)",
+    hoverBackgroundColor: "rgba(185, 33, 3, 0.6)",
+  },
+  ORANGE: {
+    backgroundColor: "rgba(233, 122, 24, 0.2)",
+    borderColor: "rgba(233, 122, 24, 1)",
+    hoverBackgroundColor: "rgba(233, 122, 24, 0.6)",
+  },
+  BLUE: {
+    backgroundColor: "rgba(17, 162, 220, 0.2)",
+    borderColor: "rgba(17, 162, 220, 1)",
+    hoverBackgroundColor: "rgba(17, 162, 220, 0.6)",
+  },
+  YELLOW: {
+    backgroundColor: "rgba(254, 182, 1, 0.2)",
+    borderColor: "rgba(254, 182, 1, 1)",
+    hoverBackgroundColor: "rgba(254, 182, 1, 0.6)",
+  },
+};
+
 export const DEVICES = [
   {
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [12.525027, 41.928555],
+      coordinates: [12.524668, 41.927647],
     },
     properties: {
       name: "Nomentana",
       description: "Device located around Nomentana",
       channelId: 1050873,
-      bgColor: "rgba(255, 99, 132, 0.2)",
-      borderColor: "rgba(255, 99, 132, 1)",
-      hbgColor: "rgba(255, 99, 132, 0.6)",
+      ...CHART_COLORS.ORANGE,
     },
   },
   {
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [12.33979, 41.805035],
+      coordinates: [12.475011, 41.883446],
     },
     properties: {
-      name: "Sublicio",
-      description: "Device located around Sublicio",
+      name: "Campi Elisi",
+      description: "Device located around Campi Elisi",
       channelId: 1011480,
-      bgColor: "rgba(154, 162, 235, 0.2)",
-      borderColor: "rgba(154, 162, 235, 1)",
-      hbgColor: "rgba(154, 162, 235, 0.6)",
+      ...CHART_COLORS.YELLOW,
     },
   },
   {
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [12.446309, 41.827121],
+      coordinates: [12.470728, 41.918736],
     },
     properties: {
-      name: "Risorgimento",
-      description: "Device located around Risorgimento",
+      name: "Città Eterna",
+      description: "Device located around Città Eterna",
       channelId: 959807,
-      bgColor: "rgba(75, 192, 192, 0.2)",
-      borderColor: "rgba(75, 192, 192, 1)",
-      hbgColor: "rgba(75, 192, 192, 0.6)",
+      ...CHART_COLORS.RED,
     },
   },
   {
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [12.436309, 41.907121],
+      coordinates: [12.489475, 41.943323],
     },
     properties: {
-      name: "TerreDelNord",
-      description: "Device located around TerreDelNord",
+      name: "Terre Del Nord",
+      description: "Device located around Terre Del Nord",
       channelId: 1249861,
-      bgColor: "rgba(54, 162, 235, 0.2)",
-      borderColor: "rgba(54, 162, 235, 1)",
-      hbgColor: "rgba(54, 162, 235, 0.6)",
+      ...CHART_COLORS.BLUE,
     },
   },
 ];

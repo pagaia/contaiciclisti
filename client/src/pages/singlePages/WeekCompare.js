@@ -1,21 +1,21 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import DailyCompare from "components/charts/DailyCompare";
-import CompareForm from "components/CompareForm";
 import "./DevicesCompare.css";
 import { SingleContext } from "utility/MyContext";
+import WeekForm from "components/WeekForm";
 
-const DevicesCompare = (props) => {
+const WeekCompare = (props) => {
   const [search, setSearch] = useState(null);
   const singleChart = useContext(SingleContext);
 
   useEffect(() => {
-    document.title = `CiCO - Il Conta i Ciclisti Ostinati - Compare devices`;
+    document.title = `CiCO - Il Conta i Ciclisti Ostinati - Compare devices by week`;
   }, []);
 
   return (
     <Fragment>
-      {!singleChart && <h2>Compare devices</h2>}
-      <CompareForm updateSearch={setSearch} />
+      {!singleChart && <h2>Week comparison</h2>}
+      <WeekForm updateSearch={setSearch} />
       {search && (
         <DailyCompare
           devices={Object.values(search.devices)}
@@ -28,4 +28,4 @@ const DevicesCompare = (props) => {
   );
 };
 
-export default DevicesCompare;
+export default WeekCompare;
