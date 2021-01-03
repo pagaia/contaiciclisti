@@ -8,7 +8,7 @@ const OnlyMap = (props) => {
   }, []);
 
   return (
-    <div className="row">
+    <div className="row single">
       <div className="col-lg-12">
         <ViewMap devices={DEVICES} />
       </div>

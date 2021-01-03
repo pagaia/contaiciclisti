@@ -7,7 +7,7 @@ const Fade = ({ children, showMessage, button }) => {
   const [showButton, setShowButton] = useState(true);
 
   return (
-    <div className="container">
+    <div className="container mb-2">
       {showButton && button}
       <CSSTransition
         in={showMessage}

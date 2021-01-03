@@ -1,23 +1,24 @@
 import React, { Fragment, useEffect, useState } from "react";
-import DatePicker from "components/DatePicker";
 import { DEVICES } from "utility/constants";
 import {
   convertArrayToObject,
-  formatDate,
+  getWeeks,
   formatDateAndHours,
-  getLastMonthStartEndDatePicker,
+  formatDate,
 } from "utility/utilityFunctions";
 import "./CompareForm.css";
 import Fade from "./Fade";
 
-const { start: startDate, end: endDate } = getLastMonthStartEndDatePicker();
 
-const CompareForm = ({ updateSearch }) => {
+const WeekForm = ({ updateSearch }) => {
   const [viewForm, toggleForm] = useState(true);
 
+  const weeks = getWeeks(new Date(), 5).reverse();
+
   const [form, setForm] = useState({
-    endDate,
-    startDate,
+    week: 0,
+    startDate: weeks[0]?.monday,
+    endDate: weeks[0]?.sunday,
     devices: convertArrayToObject(DEVICES, "properties.channelId"),
   });
 
@@ -57,12 +58,14 @@ const CompareForm = ({ updateSearch }) => {
     });
   };
 
-  const handleStartDate = (startDate) => {
-    setForm({ ...form, startDate });
-  };
-
-  const handleEndDate = (endDate) => {
-    setForm({ ...form, endDate });
+  const handleChangeWeek = (event) => {
+    const { value: number } = event.target;
+    setForm({
+      ...form,
+      startDate: weeks[number]?.monday,
+      endDate: weeks[number]?.sunday,
+      week: number,
+    });
   };
 
   const validateForm = (form) => {
@@ -85,16 +88,14 @@ const CompareForm = ({ updateSearch }) => {
       return;
     }
     toggle();
+
     let endDate = form.endDate;
     endDate.setHours(23, 59);
     endDate = formatDateAndHours(endDate);
-
-    let startDate = formatDate(form.startDate);
-
     updateSearch({
       ...form,
       endDate,
-      startDate,
+      startDate: formatDate(form.startDate),
     });
   };
 
@@ -105,7 +106,7 @@ const CompareForm = ({ updateSearch }) => {
   const renderForm = () => {
     return (
       <div className="compare">
-        <h3>Please select minimun 2 devices and a window of max 1 month</h3>
+        <h3>Please select minimun 2 devices and a week</h3>
         <div className="row">
           <div className="col-md-3">
             {DEVICES.map((device, idx) => (
@@ -114,8 +115,8 @@ const CompareForm = ({ updateSearch }) => {
                   <input
                     type="checkbox"
                     className="form-check-input"
-                    id={`${device.properties.name}-CompareForm`}
-                    name={`${device.properties.name}-CompareForm`}
+                    id={`${device.properties.name}-WeekForm`}
+                    name={`${device.properties.name}-WeekForm`}
                     onChange={handleChange}
                     value={device.properties.channelId}
                     checked={!!form.devices[device.properties.channelId]}
@@ -135,25 +136,28 @@ const CompareForm = ({ updateSearch }) => {
         <div className="row">
           <div className="col-sm-6 col-md-3">
             <div className="form-group">
-              <label htmlFor="startDate">Start date</label>
-              <DatePicker
-                selected={form.startDate}
-                onChange={handleStartDate}
-              />
-
-              <small id="startHelp" className="form-text text-muted">
-                This is the start day for the comparison
-              </small>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group">
-              <label htmlFor="endDate">End date</label>
-
-              <DatePicker selected={form.endDate} onChange={handleEndDate} />
-              <small id="endHelp" className="form-text text-muted">
-                This is the end day for the comparison
-              </small>
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <label className="input-group-text" htmlFor="week">
+                    Week
+                  </label>
+                </div>
+                <select
+                  className="custom-select"
+                  id="week"
+                  value={form.week}
+                  onChange={handleChangeWeek}
+                >
+                  <option>Choose...</option>
+                  {weeks.map((week, idx) => {
+                    return (
+                      <option key={idx} value={idx}>
+                        {formatDate(week.monday)} - {formatDate(week.sunday)}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -190,4 +194,4 @@ const CompareForm = ({ updateSearch }) => {
   );
 };
 
-export default CompareForm;
+export default WeekForm;

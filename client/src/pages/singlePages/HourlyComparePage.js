@@ -14,7 +14,7 @@ const HourlyComparePage = (props) => {
 
   return (
     <Fragment>
-      {!singleChart && <h2>Hour count comparison</h2>}
+      {!singleChart && <h2>Hour comparison</h2>}
       <HourlyCompareForm updateSearch={setSearch} />
       {search && (
         <HourlyCompare

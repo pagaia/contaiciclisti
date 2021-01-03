@@ -3,3 +3,7 @@
   height: 50vh;
   border-radius: 7px;
 }
+
+.single .leaflet-container {
+  height: 90vh;
+}

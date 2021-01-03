@@ -4,7 +4,7 @@ import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 import { buildDataDaily, getLastMonthStartEnd } from "utility/utilityFunctions";
 import SimpleChart from "./Chart";
 
-const { start: lastMonthStart, end: lastMonthEnd } = getLastMonthStartEnd();
+const { start, end } = getLastMonthStartEnd();
 
 function DailyTotal({ device }) {
   const [month, setMonth] = useState({});
@@ -13,7 +13,7 @@ function DailyTotal({ device }) {
     // replace with channelID
     const apiEndPoint =
       DEVICE_URL.replace(REGEX_DEVICE, device.properties.channelId) +
-      `&start=${lastMonthStart}&end=${lastMonthEnd}`;
+      `&start=${start}&end=${end}`;
 
     // fetch data from a url endpoint
     const response = await axios.get(apiEndPoint);
@@ -33,6 +33,8 @@ function DailyTotal({ device }) {
         <div className="chart-wrapper">
           <h3 className="d-inline">Last month</h3>
           <span className="text-muted">
+            <small>&nbsp;({start} - {end})
+            </small>
             <small> - total per day </small>
           </span>
           <SimpleChart data={month} name="DailyTotal" />

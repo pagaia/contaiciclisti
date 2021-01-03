@@ -1,12 +1,31 @@
 import { format } from "date-fns";
-import { DAYS } from "./constants";
+import { CHART_COLORS, DAYS } from "./constants";
+import { eachWeekOfInterval } from "date-fns";
+
+/**
+ * This function get the date and return a string in format "yyyy-MM-dd"
+ * @param {Date} date
+ * return {String}
+ */
+export const formatDate = (date) => {
+  return format(date, "yyyy-MM-dd");
+};
+
+/**
+ * This function get the date and return a string in format "yyyy-MM-dd HH:mm"
+ * @param {Date} date
+ * return {String}
+ */
+export const formatDateAndHours = (date) => {
+  return format(date, "yyyy-MM-dd HH:mm");
+};
 
 /**
  * calculate the start and end date for today
  */
 export const getBeginningOfToday = () => {
   let start = new Date();
-  return format(start, "yyyy-MM-dd");
+  return formatDate(start);
 };
 
 /**
@@ -18,8 +37,8 @@ export const getYesterdayStartEnd = () => {
 
   start.setDate(start.getDate() - 1);
 
-  end = format(end, "yyyy-MM-dd");
-  start = format(start, "yyyy-MM-dd");
+  end = formatDate(end);
+  start = formatDate(start);
 
   return { start, end };
 };
@@ -28,33 +47,51 @@ export const getYesterdayStartEnd = () => {
  * calculate the start and end date for previous month
  */
 export const getLastMonthStartEnd = () => {
-  let end = new Date();
-  end.setDate(1);
+  let end = new Date(); // get today
+  end.setDate(end.getDate() - 1); // get yesterday
   let start = new Date(end);
-  start.setMonth(start.getMonth() - 1);
-
-  end = format(end, "yyyy-MM-dd");
-  start = format(start, "yyyy-MM-dd");
+  start.setDate(start.getDate() - 31); // get 30 days before yesterday
+  end = formatDate(end);
+  start = formatDate(start);
 
   return { start, end };
+};
+
+/**
+ * This function return an array of {number} weeks from {date} backwards
+ */
+export const getWeeks = (date, number) => {
+  let monday = new Date(date);
+  const start = new Date(date);
+
+  start.setDate(start.getDate() - number * 7);
+
+  const result = eachWeekOfInterval(
+    {
+      start,
+      end: monday,
+    },
+    { weekStartsOn: 1 }
+  );
+
+  return result.map((week) => {
+    const sunday = new Date(week);
+    sunday.setDate(sunday.getDate() + 6);
+    return {
+      monday: week,
+      sunday,
+    };
+  });
 };
 
 /**
  * calculate the start and end date for previous month
  */
 export const getLastMonthStartEndDatePicker = () => {
-  // let end = new Date();
-  var date = new Date();
-  var end = new Date(
-    Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0)
-  );
-
-  // end.setHours(0, 0, 0);
-  end.setDate(1);
+  let end = new Date(); // get today
+  end.setDate(end.getDate() - 1); // get yesterday
   let start = new Date(end);
-  start.setMonth(start.getMonth() - 1); // set previous month
-  start.setHours(0, 0, 0);
-  end.setDate(end.getDate() - 1); // set previous day
+  start.setDate(start.getDate() - 31); // get 30 days before yesterday
   return { start, end };
 };
 
@@ -65,17 +102,22 @@ export const getLastMonthStartEndDatePicker = () => {
  * @param {Object} device
  */
 export const buildDataHourly = (feeds, device) => {
-  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
+  const {
+    name: label,
+    backgroundColor,
+    borderColor,
+    hoverBackgroundColor,
+  } = device.properties;
 
   const labels = [...Array(24).keys()];
 
   const datasets = [
     {
       label,
-      backgroundColor: bgColor || "rgba(54, 162, 235, 0.2)",
+      backgroundColor: backgroundColor || "rgba(54, 162, 235, 0.2)",
       borderColor: borderColor || "rgba(54, 162, 235, 1)",
       borderWidth: 1,
-      hoverBackgroundColor: hbgColor || "rgba(255,99,132,0.4)",
+      hoverBackgroundColor: hoverBackgroundColor || "rgba(255,99,132,0.4)",
       // hoverBorderColor: "rgba(255,99,132,1)",
       data: [],
     },
@@ -100,16 +142,21 @@ export const buildDataHourly = (feeds, device) => {
  * @param {Object} device
  */
 export const buildDataDaily = (feeds, device) => {
-  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
+  const {
+    name: label,
+    backgroundColor,
+    borderColor,
+    hoverBackgroundColor,
+  } = device.properties;
 
   const labels = [];
   const datasets = [
     {
       label,
-      backgroundColor: bgColor || "rgba(54, 162, 235, 0.2)",
+      backgroundColor: backgroundColor || "rgba(54, 162, 235, 0.2)",
       borderColor: borderColor || "rgba(54, 162, 235, 1)",
       borderWidth: 1,
-      hoverBackgroundColor: hbgColor || "rgba(255,99,132,0.4)",
+      hoverBackgroundColor: hoverBackgroundColor || "rgba(255,99,132,0.4)",
       // hoverBorderColor: "rgba(255,99,132,1)",
       data: [],
       fill: false,
@@ -133,8 +180,8 @@ export const buildDataDaily = (feeds, device) => {
 /**
  * Gets 2 dates and returns an array with all days
  *
- * @param {Date} startDate
- * @param {Date} endDate
+ * @param {Date} startDate - start date
+ * @param {Date} endDate - end date
  */
 export const getDatesBetweenDates = (startDate, endDate) => {
   let dates = [];
@@ -143,7 +190,7 @@ export const getDatesBetweenDates = (startDate, endDate) => {
   const end = new Date(endDate);
 
   while (theDate < end) {
-    const currentDay = format(theDate, "yyyy-MM-dd");
+    const currentDay = formatDate(theDate);
     dates = [...dates, currentDay];
     theDate.setDate(theDate.getDate() + 1);
   }
@@ -157,14 +204,19 @@ export const getDatesBetweenDates = (startDate, endDate) => {
  * @param {Object} device
  */
 export const buildDailyCompare = (feeds, device, labels) => {
-  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
+  const {
+    name: label,
+    backgroundColor,
+    borderColor,
+    hoverBackgroundColor,
+  } = device.properties;
 
   const dataset = {
     label,
-    backgroundColor: bgColor || "rgba(54, 162, 235, 0.2)",
+    backgroundColor: backgroundColor || "rgba(54, 162, 235, 0.2)",
     borderColor: borderColor || "rgba(54, 162, 235, 1)",
     borderWidth: 1,
-    hoverBackgroundColor: hbgColor || "rgba(255,99,132,0.4)",
+    hoverBackgroundColor: hoverBackgroundColor || "rgba(255,99,132,0.4)",
     data: [],
     fill: false,
   };
@@ -191,14 +243,19 @@ export const buildDailyCompare = (feeds, device, labels) => {
  * @param {Object} device
  */
 export const buildHourlyCompare = (feeds, device, labels) => {
-  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
+  const {
+    name: label,
+    backgroundColor,
+    borderColor,
+    hoverBackgroundColor,
+  } = device.properties;
 
   const dataset = {
     label,
-    backgroundColor: bgColor || "rgba(54, 162, 235, 0.2)",
+    backgroundColor: backgroundColor || "rgba(54, 162, 235, 0.2)",
     borderColor: borderColor || "rgba(54, 162, 235, 1)",
     borderWidth: 1,
-    hoverBackgroundColor: hbgColor || "rgba(255,99,132,0.4)",
+    hoverBackgroundColor: hoverBackgroundColor || "rgba(255,99,132,0.4)",
     data: [],
     fill: false,
   };
@@ -236,14 +293,19 @@ const sumReducer = (accumulator, currentValue) => accumulator + currentValue;
  * @param {Object} device
  */
 export const buildDataDailyAverage = (feeds, device) => {
-  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
+  const {
+    name: label,
+    backgroundColor,
+    borderColor,
+    hoverBackgroundColor,
+  } = device.properties;
 
   const dataset = {
     label,
-    backgroundColor: bgColor || "rgba(54, 162, 235, 0.2)",
+    backgroundColor: backgroundColor || "rgba(54, 162, 235, 0.2)",
     borderColor: borderColor || "rgba(54, 162, 235, 1)",
     borderWidth: 1,
-    hoverBackgroundColor: hbgColor || "rgba(255,99,132,0.4)",
+    hoverBackgroundColor: hoverBackgroundColor || "rgba(255,99,132,0.4)",
     data: [],
   };
 
@@ -277,39 +339,111 @@ export const buildDataDailyAverage = (feeds, device) => {
 };
 
 /**
+ *  this function gets a list of labels for date and replace the weekdays with the name Sunday/Saturday
+ * @param {Array} days 
+ */
+export const replaceWeekendDays = (days) => {
+  return days?.map?.((day) => {
+    let currentDay = new Date(day);
+
+    // Sunday
+    if (currentDay.getDay() === 0) {
+      currentDay = "Sunday";
+    }
+    // Saturday
+    else if (currentDay.getDay() === 6) {
+      currentDay = "Saturday";
+    } else {
+      currentDay = day;
+    }
+
+    return currentDay;
+  });
+};
+
+/**
+ * This function gets the list of counts and days array and build datasets for Peak time
+ *
+ * @param {Array} feeds
+ * @param {Array} labels - days array
+ */
+export const buildPeakTime = (feeds, labels) => {
+  const datasets = [
+    {
+      label: "Peak hours",
+      ...CHART_COLORS.ORANGE,
+      borderWidth: 1,
+      data: [],
+      yAxisID: "y-axis-1",
+    },
+    {
+      label: "Counts",
+      borderWidth: 1,
+      ...CHART_COLORS.BLUE,
+      data: [],
+      yAxisID: "y-axis-2",
+    },
+  ];
+
+  const peak = {};
+
+  feeds.forEach((feed) => {
+    if (feed.field1) {
+      const day = formatDate(new Date(feed.created_at));
+      const hour = new Date(feed.created_at).getHours();
+      const counts = parseInt(feed.field1, 10);
+
+      if (peak[day]) {
+        peak[day].push({ hour, counts });
+      } else {
+        peak[day] = [{ hour, counts }];
+      }
+    }
+  });
+
+  // double check data per day
+  labels.forEach((day) => {
+    if (peak[day]) {
+      const arrayCounts = peak[day].map((el) => el.counts);
+      const max = Math.max(...arrayCounts);
+      const peakTime = peak[day].find((el) => el.counts === max).hour;
+      datasets[0].data.push(peakTime);
+      datasets[1].data.push(max);
+    } else {
+      // added placeholder for missing counts
+      datasets[0].data.push(null);
+      datasets[1].data.push(null);
+    }
+  });
+
+  return datasets;
+};
+
+/**
  * This function gets the list of counts and device information and build labels and datasets for hourly Average counts
  *
  * @param {Array} feeds
- * @param {Object} device
  */
-export const buildHourlyAverage = (feeds, device) => {
-  const { name: label, bgColor, borderColor, hbgColor } = device.properties;
-
+export const buildHourlyAverage = (feeds) => {
   const labels = [...Array(24).keys()];
 
   const datasets = [
     {
       label: "Weekdays",
-      backgroundColor: "rgba(255, 99, 132, 0.2)",
-      borderColor: "rgba(255, 99, 132, 1)",
-      hoverBackgroundColor: "rgba(255, 99, 132, 0.6)",
+      ...CHART_COLORS.ORANGE,
       borderWidth: 1,
       data: [],
     },
     {
       label: "Saturday",
       borderWidth: 1,
-      backgroundColor: "rgba(54, 162, 235, 0.2)",
-      borderColor: "rgba(54, 162, 235, 1)",
-      hoverBackgroundColor: "rgba(54, 162, 235, 0.6)",
+      ...CHART_COLORS.BLUE,
       data: [],
     },
     {
       label: "Sunday",
       borderWidth: 1,
-      backgroundColor: "rgba(154, 162, 235, 0.2)",
-      borderColor: "rgba(154, 162, 235, 1)",
-      hoverBackgroundColor: "rgba(154, 162, 235, 0.6)",
+      ...CHART_COLORS.YELLOW,
       data: [],
     },
   ];
