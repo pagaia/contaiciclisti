@@ -28,9 +28,11 @@ function LastCount({ device }) {
       const secondLast = res?.data?.feeds?.[res?.data?.feeds?.length - 2];
       let feed = {
         yesterday: yesterday?.field3,
+        yesterdayDate: yesterday?.created_at,
         last: last?.field1 || secondLast?.field1,
         subTotal: last?.field2 || secondLast?.field2,
         total: last?.field3 || secondLast?.field3,
+        created_at: last?.created_at,
       };
 
       setCounts(feed);
@@ -48,6 +50,7 @@ function LastCount({ device }) {
         text={counts.subTotal}
       />
       <CountCard
+        date={counts.yesterdayDate}
         title="Yesterday"
         text={counts.yesterday}
         className="big-counter"

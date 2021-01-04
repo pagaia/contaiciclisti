@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import DailyCompare from "components/charts/DailyCompare";
 import "./DevicesCompare.css";
-import { SingleContext } from "utility/MyContext";
+import { SingleContext } from "utility/contexts/MyContext";
 import WeekForm from "components/WeekForm";
 
 const WeekCompare = (props) => {

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import YesterdayHourly from "components/charts/YesterdayHourly";
 import { DEVICES } from "utility/constants";
 import NotFound from "../NotFound";
-import { SingleContext } from "utility/MyContext";
+import { SingleContext } from "utility/contexts/MyContext";
 
 const DeviceYesterday = (props) => {
   let { id } = useParams();

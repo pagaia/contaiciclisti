@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Bar, Line } from "react-chartjs-2";
 import PropTypes from "prop-types";
 import { CHART } from "utility/constants";
 import { datasetKeyProvider } from "utility/utilityFunctions";
+import DownLoadChart from "components/DownloadChart";
 
 const SimpleChart = ({ data, name }) => {
   const [chart, setChart] = useState(CHART.LINE);
+
+  const chartRef = useRef(null);
+
+  const chartName = `chart${name}`;
 
   if (!data) {
     return false;
@@ -21,6 +26,7 @@ const SimpleChart = ({ data, name }) => {
   };
 
   let myChart;
+
   if (chart === CHART.BAR) {
     myChart = (
       <Bar
@@ -31,6 +37,8 @@ const SimpleChart = ({ data, name }) => {
           maintainAspectRatio: true,
         }}
         datasetKeyProvider={datasetKeyProvider}
+        id={chartName}
+        ref={chartRef}
       />
     );
   } else {
@@ -43,13 +51,15 @@ const SimpleChart = ({ data, name }) => {
           maintainAspectRatio: true,
         }}
         datasetKeyProvider={datasetKeyProvider}
+        id={chartName}
+        ref={chartRef}
       />
     );
   }
 
   return (
     <div>
-      <div className="custom-control custom-switch">
+      <div className="custom-control custom-switch d-inline-block">
         <input
           type="checkbox"
           className="custom-control-input"
@@ -66,6 +76,7 @@ const SimpleChart = ({ data, name }) => {
           Switch Line/Bar
         </label>
       </div>
+      <DownLoadChart chartId={chartName} chartRef={chartRef} />
       {myChart}
     </div>
   );
