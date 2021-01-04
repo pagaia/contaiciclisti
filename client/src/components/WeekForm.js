@@ -134,7 +134,7 @@ const WeekForm = ({ updateSearch }) => {
         </div>
 
         <div className="row">
-          <div className="col-sm-6 col-md-3">
+          <div className="col-sm-6">
             <div className="form-group">
               <div className="input-group mb-3">
                 <div className="input-group-prepend">

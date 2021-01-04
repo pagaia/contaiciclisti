@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import HourlyAverage from "components/charts/HourlyAverage";
 import { DEVICES } from "utility/constants";
 import NotFound from "../NotFound";
-import { SingleContext } from "utility/MyContext";
+import { SingleContext } from "utility/contexts/MyContext";
 
 const DeviceAverage = ( props) => {
   let { id } = useParams();

@@ -1,7 +1,7 @@
 import React from "react";
 import "./ViewMap.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { CounterIcon } from "./CounterIcon";
+import { OrangeIcon } from "./OrangeIcon";
 import { Link } from "react-router-dom";
 
 const ViewMap = ({ devices }) => {
@@ -12,7 +12,7 @@ const ViewMap = ({ devices }) => {
       scrollWheelZoom={true}
     >
       <TileLayer
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors.         Icons made by <a href="https://icon54.com/" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>'
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors.         Icons made by <a href="https://github.com/pointhi/leaflet-color-markers" title="leaflet-color-markers">leaflet-color-markers</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {devices?.map?.((device) => {
@@ -24,7 +24,7 @@ const ViewMap = ({ devices }) => {
               device.geometry.coordinates[1],
               device.geometry.coordinates[0],
             ]}
-            icon={CounterIcon}
+            icon={OrangeIcon}
           >
             <Popup
               position={[
