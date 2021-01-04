@@ -1,6 +1,6 @@
 {
   "name": "contaiciclisti",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "license": "MIT",
   "author": {
@@ -34,7 +34,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "post-build": "rm -rf cico; mv build cico; zip -r cico.zip cico",
+    "post-build": "REACT_APP_VERSION=$npm_package_version; rm -rf cico*; mv build cico-v$REACT_APP_VERSION; zip -r cico-v$REACT_APP_VERSION.zip cico*",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "./node_modules/react-scripts/node_modules/.bin/eslint src"

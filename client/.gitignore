@@ -14,9 +14,7 @@
 
 # production
 /build
-/cico
-/cico.tgz
-/*.zip
+/cico*
 
 # misc
 .DS_Store
