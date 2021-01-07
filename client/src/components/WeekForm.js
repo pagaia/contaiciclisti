@@ -16,9 +16,9 @@ const WeekForm = ({ updateSearch }) => {
   const weeks = getWeeks(new Date(), 5).reverse();
 
   const [form, setForm] = useState({
-    week: 0,
-    startDate: weeks[0]?.monday,
-    endDate: weeks[0]?.sunday,
+    week: 1,
+    startDate: weeks[1]?.monday,
+    endDate: weeks[1]?.sunday,
     devices: convertArrayToObject(DEVICES, "properties.channelId"),
   });
 

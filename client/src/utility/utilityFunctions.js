@@ -1,7 +1,9 @@
 import { format } from "date-fns";
 import { CHART_COLORS, DAYS } from "./constants";
 import { eachWeekOfInterval } from "date-fns";
-
+import {
+  useLocation
+} from "react-router-dom";
 /**
  * This function get the date and return a string in format "yyyy-MM-dd"
  * @param {Date} date
@@ -332,7 +334,7 @@ export const buildDataDailyAverage = (feeds, device) => {
   }
   dataset.data.push(
     weekDays[0] &&
-      parseInt(weekDays[0].reduce(sumReducer) / weekDays[0].length, 10)
+    parseInt(weekDays[0].reduce(sumReducer) / weekDays[0].length, 10)
   );
 
   return dataset;
@@ -526,3 +528,9 @@ export const convertArrayToObject = (array) => {
     {}
   );
 };
+
+// A custom hook that builds on useLocation to parse
+// the query string for you.
+export function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}

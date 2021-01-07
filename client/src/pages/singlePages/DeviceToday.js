@@ -12,7 +12,7 @@ const DeviceToday = (props) => {
   const device = DEVICES.find((el) => el.properties.name === id);
 
   useEffect(() => {
-    if (device) {
+    if (device && singleChart) {
       const { name } = device.properties;
       document.title = `CiCO - Il Conta i Ciclisti Ostinati - ${name} today counts`;
     }

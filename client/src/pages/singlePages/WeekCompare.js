@@ -9,7 +9,9 @@ const WeekCompare = (props) => {
   const singleChart = useContext(SingleContext);
 
   useEffect(() => {
-    document.title = `CiCO - Il Conta i Ciclisti Ostinati - Compare devices by week`;
+    if(singleChart) {
+       document.title = `CiCO - Il Conta i Ciclisti Ostinati - Compare devices by week`;
+    }
   }, []);
 
   return (

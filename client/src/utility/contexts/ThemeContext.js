@@ -1,8 +1,13 @@
 import React from "react"
 
+export const THEMES = {
+  DARK: "dark",
+  LIGTH: "light"
+}
+
 const ThemeContext = React.createContext({
-  theme: "dark",
-  setTheme: () => {},
+  theme: THEMES.DARK,
+  setTheme: () => { },
 })
 
 export default ThemeContext

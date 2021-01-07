@@ -13,7 +13,7 @@ const DeviceTotalDay = (props) => {
   const device = DEVICES.find((el) => el.properties.name === id);
 
   useEffect(() => {
-    if (device) {
+    if (device && singleChart) {
       const { name } = device.properties;
       document.title = `CiCO - Il Conta i Ciclisti Ostinati - ${name} total counts last month`;
     }

@@ -9,7 +9,9 @@ const HourlyComparePage = (props) => {
   const singleChart = useContext(SingleContext);
 
   useEffect(() => {
-    document.title = `CiCO - Il Conta i Ciclisti Ostinati - Devices hours count comparision`;
+    if(singleChart) {
+      document.title = `CiCO - Il Conta i Ciclisti Ostinati - Devices hours count comparision`;
+    }
   }, []);
 
   return (
