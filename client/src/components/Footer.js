@@ -9,9 +9,9 @@ const Footer = (props) => {
     <footer className={`footer ${singleChart ? "single" : ""}`}>
       <p>
         &copy; 2020 <a href="https://twitter.com/pagaia">pagaia</a> &nbsp;
-        {singleChart && (
+        {/* {singleChart && (
           <a href="https://www.contaiciclisti.tk">www.contaiciclisti.tk</a>
-        )}
+        )} */}
         <span className="float-right">{`v${process.env.REACT_APP_VERSION}`}</span>
       </p>
     </footer>

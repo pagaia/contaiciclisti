@@ -1,22 +1,25 @@
 import React, { Fragment, useEffect, useState } from "react";
 import DatePicker from "components/DatePicker";
-import { DEVICES } from "utility/constants";
 import { convertArrayToObject } from "utility/utilityFunctions";
 import "./CompareForm.css";
 import Fade from "./Fade";
+import { useSelector } from "react-redux";
 
 const HourlyCompareForm = ({ updateSearch }) => {
   const [viewForm, toggleForm] = useState(true);
+  const { devices: devicesStore } = useSelector((state) => state.devices);
 
   // const day = new Date();.setHours(0, 0, 0);
   const [form, setForm] = useState({
-    day:  new Date(), //day.toISOString(), // set today starting from 0 0 0
-    devices: convertArrayToObject(DEVICES, "properties.channelId"),
+    day: new Date(), //day.toISOString(), // set today starting from 0 0 0
+    devices: convertArrayToObject(devicesStore, "properties.channelId"),
   });
 
   useEffect(() => {
     // hit search on mounting
-    handleSearch();
+    if (devicesStore?.length > 0) {
+      handleSearch();
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -26,7 +29,7 @@ const HourlyCompareForm = ({ updateSearch }) => {
 
     if (checked) {
       // add the device to the form
-      const found = DEVICES.find(
+      const found = devicesStore.find(
         (device) => device.properties.channelId == channelId
       );
       devices = {
@@ -88,7 +91,7 @@ const HourlyCompareForm = ({ updateSearch }) => {
         <h3>Please select minimun 2 devices</h3>
         <div className="row">
           <div className="col-md-3">
-            {DEVICES.map((device, idx) => (
+            {devicesStore.map((device, idx) => (
               <Fragment key={idx}>
                 <div className="form-check">
                   <input

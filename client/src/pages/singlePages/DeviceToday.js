@@ -1,20 +1,21 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import TodayHourly from "components/charts/TodayHourly";
-import { DEVICES } from "utility/constants";
 import NotFound from "../NotFound";
 import { SingleContext } from "utility/contexts/MyContext";
+import { useSelector } from "react-redux";
 
 const DeviceToday = (props) => {
   let { id } = useParams();
   const singleChart = useContext(SingleContext);
+  const { devices: devicesStore } = useSelector((state) => state.devices);
 
-  const device = DEVICES.find((el) => el.properties.name === id);
+  const device = devicesStore.find((el) => el.properties.name === id);
 
   useEffect(() => {
     if (device && singleChart) {
       const { name } = device.properties;
-      document.title = `CiCO - Il Conta i Ciclisti Ostinati - ${name} today counts`;
+      document.title = `Portale Sperimentale - ${name} today counts`;
     }
   }, []);
 

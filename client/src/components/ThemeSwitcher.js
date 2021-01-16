@@ -10,7 +10,7 @@ function ThemeSwitcher() {
     if (theme === "dark") {
       return (
         <Fragment>
-          <span class="sr-only">Switch the theme to ligth</span>
+          <span className="sr-only">Switch the theme to ligth</span>
           <FontAwesomeIcon
             icon="lightbulb"
             style={{ color: "yellow" }}
@@ -22,7 +22,7 @@ function ThemeSwitcher() {
 
     return (
       <Fragment>
-        <span class="sr-only">Switch the theme to dark</span>
+        <span className="sr-only">Switch the theme to dark</span>
         <FontAwesomeIcon
           icon="lightbulb"
           style={{ color: "black" }}

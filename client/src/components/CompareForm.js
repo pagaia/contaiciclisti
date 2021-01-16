@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
 import DatePicker from "components/DatePicker";
-import { DEVICES } from "utility/constants";
 import {
   convertArrayToObject,
   formatDate,
@@ -9,21 +8,26 @@ import {
 } from "utility/utilityFunctions";
 import "./CompareForm.css";
 import Fade from "./Fade";
+import { useSelector } from "react-redux";
 
 const { start: startDate, end: endDate } = getLastMonthStartEndDatePicker();
 
 const CompareForm = ({ updateSearch }) => {
   const [viewForm, toggleForm] = useState(true);
 
+  const { devices: devicesStore } = useSelector((state) => state.devices);
+
   const [form, setForm] = useState({
     endDate,
     startDate,
-    devices: convertArrayToObject(DEVICES, "properties.channelId"),
+    devices: convertArrayToObject(devicesStore, "properties.channelId"),
   });
 
   useEffect(() => {
     // hit search on mounting
-    handleSearch();
+    if (devicesStore?.length > 0) {
+      handleSearch();
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -33,7 +37,7 @@ const CompareForm = ({ updateSearch }) => {
 
     if (checked) {
       // add the device to the form
-      const found = DEVICES.find(
+      const found = devicesStore.find(
         (device) => device.properties.channelId == channelId
       );
       devices = {
@@ -108,27 +112,30 @@ const CompareForm = ({ updateSearch }) => {
         <h3>Please select minimun 2 devices and a window of max 1 month</h3>
         <div className="row">
           <div className="col-md-3">
-            {DEVICES.map((device, idx) => (
-              <Fragment key={idx}>
-                <div className="form-check">
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id={`${device.properties.name}-CompareForm`}
-                    name={`${device.properties.name}-CompareForm`}
-                    onChange={handleChange}
-                    value={device.properties.channelId}
-                    checked={!!form.devices[device.properties.channelId]}
-                  />
-                  <label
-                    className="form-check-label"
-                    htmlFor={`${device.properties.name}-CompareForm`}
-                  >
-                    {device.properties.name}
-                  </label>
-                </div>
-              </Fragment>
-            ))}
+            {devicesStore.map((device, idx) => {
+              const id = `${device.properties.name.replace(
+                " ",
+                "-"
+              )}-CompareForm`;
+              return (
+                <Fragment key={idx}>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id={id}
+                      name={id}
+                      onChange={handleChange}
+                      value={device.properties.channelId}
+                      checked={!!form.devices[device.properties.channelId]}
+                    />
+                    <label className="form-check-label" htmlFor={id}>
+                      {device.properties.name}
+                    </label>
+                  </div>
+                </Fragment>
+              );
+            })}
           </div>
         </div>
 

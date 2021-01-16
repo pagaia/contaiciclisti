@@ -1,9 +1,7 @@
 import { format } from "date-fns";
 import { CHART_COLORS, DAYS } from "./constants";
 import { eachWeekOfInterval } from "date-fns";
-import {
-  useLocation
-} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 /**
  * This function get the date and return a string in format "yyyy-MM-dd"
  * @param {Date} date
@@ -334,7 +332,7 @@ export const buildDataDailyAverage = (feeds, device) => {
   }
   dataset.data.push(
     weekDays[0] &&
-    parseInt(weekDays[0].reduce(sumReducer) / weekDays[0].length, 10)
+      parseInt(weekDays[0].reduce(sumReducer) / weekDays[0].length, 10)
   );
 
   return dataset;
@@ -342,7 +340,7 @@ export const buildDataDailyAverage = (feeds, device) => {
 
 /**
  *  this function gets a list of labels for date and replace the weekdays with the name Sunday/Saturday
- * @param {Array} days 
+ * @param {Array} days
  */
 export const replaceWeekendDays = (days) => {
   return days?.map?.((day) => {
@@ -533,4 +531,36 @@ export const convertArrayToObject = (array) => {
 // the query string for you.
 export function useQuery() {
   return new URLSearchParams(useLocation().search);
+}
+
+/**
+ * return true if the 2 objects have the same properties and values·
+ * @param {object} object1
+ * @param {object} object2
+ */
+export function deepEqual(object1, object2) {
+  const keys1 = Object.keys(object1);
+  const keys2 = Object.keys(object2);
+
+  if (keys1.length !== keys2.length) {
+    return false;
+  }
+
+  for (const key of keys1) {
+    const val1 = object1[key];
+    const val2 = object2[key];
+    const areObjects = isObject(val1) && isObject(val2);
+    if (
+      (areObjects && !deepEqual(val1, val2)) ||
+      (!areObjects && val1 !== val2)
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isObject(object) {
+  return object != null && typeof object === "object";
 }

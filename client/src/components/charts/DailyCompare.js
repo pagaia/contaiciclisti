@@ -1,19 +1,32 @@
 import axios from "axios";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import {
   buildDailyCompare,
   getDatesBetweenDates,
   replaceWeekendDays,
+  deepEqual,
 } from "utility/utilityFunctions";
 import PropTypes from "prop-types";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 import SimpleChart from "./Chart";
+import { useDispatch, useSelector } from "react-redux";
+import { receiveDailyCompare, selectDailyCompare } from "store/chartsSlide";
 
-function DailyCompare({ devices, startDate, endDate }) {
-  // initialize dataset with empty array
-  const [datasets, setDatasets] = useState(Array(devices?.length).fill([]));
+function DailyCompare({ search, name }) {
+  const dailyCompare = useSelector(selectDailyCompare);
+  const dispatch = useDispatch();
+
+  const devices = Object.values(search.devices);
+  const { startDate, endDate } = search;
 
   const labels = getDatesBetweenDates(startDate, endDate);
+
+  // create an object with just list of channelId and start/end date
+  const simpleSearch = {
+    startDate: search.startDate,
+    endDate: search.endDate,
+    devices: devices.map((device) => device.properties.channelId),
+  };
 
   useEffect(() => {
     const newDatasets = [];
@@ -30,23 +43,53 @@ function DailyCompare({ devices, startDate, endDate }) {
 
       const builtDataset = buildDailyCompare(data.feeds, device, labels);
       newDatasets[idx] = builtDataset;
+
       return data;
     }
 
-    // fetch data per each device
-    devices.map((device, idx) => {
-      fetchData(device, idx).then(() => {
-        setDatasets([...newDatasets]);
-      });
-    });
-  }, [devices, startDate, endDate]);
+    // fetch data if not loaded yet
+    if (
+      !dailyCompare[name] ||
+      !deepEqual(dailyCompare[name].search, simpleSearch) ||
+      !dailyCompare[name].results
+    ) {
+      // initialize the array for all chart lines
+      dispatch(
+        receiveDailyCompare({
+          name: [name],
+          [name]: {
+            search: simpleSearch,
+            results: Array(devices.length).fill(null),
+          },
+        })
+      );
 
+      // fetch data per each device
+      devices.map((device, idx) => {
+        fetchData(device, idx).then(() => {
+          dispatch(
+            receiveDailyCompare({
+              name: [name],
+              [name]: {
+                search: simpleSearch,
+                results: [...newDatasets],
+              },
+            })
+          );
+        });
+      });
+    }
+  }, [search]);
+
+  const datasets = dailyCompare[name]?.results
+    ? JSON.parse(
+        JSON.stringify(dailyCompare[name].results.filter((element) => element))
+      )
+    : [];
+    
   const data = {
     labels: replaceWeekendDays(labels),
-    datasets: datasets.filter(function (element) {
-      // filter out dataset not defined yet
-      return element !== undefined;
-    }),
+    datasets,
   };
 
   return (
@@ -55,7 +98,7 @@ function DailyCompare({ devices, startDate, endDate }) {
         Counts between {startDate} and {endDate}
       </h3>
       <div className="chart-wrapper">
-        <SimpleChart data={data} name="DailyCompare" />
+        <SimpleChart data={data} name={name} />
       </div>
     </Fragment>
   );

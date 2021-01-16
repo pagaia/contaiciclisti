@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { DEVICES } from "utility/constants";
+import { useSelector } from "react-redux";
 import {
   convertArrayToObject,
   getWeeks,
@@ -9,9 +9,9 @@ import {
 import "./CompareForm.css";
 import Fade from "./Fade";
 
-
 const WeekForm = ({ updateSearch }) => {
   const [viewForm, toggleForm] = useState(true);
+  const { devices: devicesStore } = useSelector((state) => state.devices);
 
   const weeks = getWeeks(new Date(), 5).reverse();
 
@@ -19,12 +19,14 @@ const WeekForm = ({ updateSearch }) => {
     week: 1,
     startDate: weeks[1]?.monday,
     endDate: weeks[1]?.sunday,
-    devices: convertArrayToObject(DEVICES, "properties.channelId"),
+    devices: convertArrayToObject(devicesStore, "properties.channelId"),
   });
 
   useEffect(() => {
     // hit search on mounting
-    handleSearch();
+    if (devicesStore?.length > 0) {
+      handleSearch();
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -34,7 +36,7 @@ const WeekForm = ({ updateSearch }) => {
 
     if (checked) {
       // add the device to the form
-      const found = DEVICES.find(
+      const found = devicesStore.find(
         (device) => device.properties.channelId == channelId
       );
       devices = {
@@ -109,27 +111,27 @@ const WeekForm = ({ updateSearch }) => {
         <h3>Please select minimun 2 devices and a week</h3>
         <div className="row">
           <div className="col-md-3">
-            {DEVICES.map((device, idx) => (
-              <Fragment key={idx}>
-                <div className="form-check">
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id={`${device.properties.name}-WeekForm`}
-                    name={`${device.properties.name}-WeekForm`}
-                    onChange={handleChange}
-                    value={device.properties.channelId}
-                    checked={!!form.devices[device.properties.channelId]}
-                  />
-                  <label
-                    className="form-check-label"
-                    htmlFor={`${device.properties.name}-CompareForm`}
-                  >
-                    {device.properties.name}
-                  </label>
-                </div>
-              </Fragment>
-            ))}
+            {devicesStore.map((device, idx) => {
+              const id = `${device.properties.name.replace(" ", "-")}-WeekForm`;
+              return (
+                <Fragment key={idx}>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id={id}
+                      name={id}
+                      onChange={handleChange}
+                      value={device.properties.channelId}
+                      checked={!!form.devices[device.properties.channelId]}
+                    />
+                    <label className="form-check-label" htmlFor={id}>
+                      {device.properties.name}
+                    </label>
+                  </div>
+                </Fragment>
+              );
+            })}
           </div>
         </div>
 

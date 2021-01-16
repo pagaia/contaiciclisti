@@ -1,28 +1,37 @@
-import React, { Suspense, lazy, useState, useEffect } from "react";
-import { Switch, Route, Link, useLocation } from "react-router-dom";
+import React, { useState, useEffect, Suspense, lazy } from "react";
+import { Route, Switch, useLocation } from "react-router-dom";
 import "./App.css";
 import Footer from "components/Footer";
-import routes from "config/routing/routes";
 import { REGEX_SINGLE } from "utility/constants";
 import { SingleContext } from "utility/contexts/MyContext";
 import ThemeContext, { THEMES } from "utility/contexts/ThemeContext";
-import ThemeSwitcher from "components/ThemeSwitcher";
 import "images/imageLibrary";
 import { useQuery } from "utility/utilityFunctions";
+import routes from "config/routing/routes";
+import { fetchDevices } from "store/devicesSlide";
+import { useDispatch } from "react-redux";
+import Header from "components/Header";
 
 function App() {
   let location = useLocation();
-  const [theme, setTheme] = useState(THEMES.DARK);
-  const themeValue = { theme, setTheme };
   let query = useQuery();
 
-  useEffect(()=>{
+  const [theme, setTheme] = useState(THEMES.DARK);
+  const themeValue = { theme, setTheme };
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
     const queryTheme = query.get("theme");
-    if ( queryTheme && queryTheme != theme && Object.values(THEMES).includes(queryTheme)) {
+    if (
+      queryTheme &&
+      queryTheme !== theme &&
+      Object.values(THEMES).includes(queryTheme)
+    ) {
       setTheme(queryTheme);
     }
-  },[])
-  
+    dispatch(fetchDevices());
+  }, []);
 
   // update the context
   const singleChart = REGEX_SINGLE.test(location.pathname);
@@ -32,19 +41,11 @@ function App() {
       <ThemeContext.Provider value={themeValue}>
         <div className={`App ${singleChart ? "single" : ""} ${theme}`}>
           {/* remove title if single chart */}
-          {!singleChart && (
-            <header className="container-fluid">
-              <h1 id="title">
-                <Link to="/">CiCO - Il Conta i Ciclisti Ostinati</Link>
-              </h1>
-              <ThemeSwitcher />
-            </header>
-          )}
-          {/* remove container if single chart */}
+          <Header />
           <main className={singleChart ? "" : "container-fluid"}>
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
-                {routes.map((route) => (
+                {routes.map((route, idx) => (
                   <Route
                     key={route.path}
                     path={route.path}
@@ -55,7 +56,7 @@ function App() {
               </Switch>
             </Suspense>
           </main>
-          <Footer singleChart={singleChart} />
+          <Footer />
         </div>
       </ThemeContext.Provider>
     </SingleContext.Provider>

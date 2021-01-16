@@ -21,61 +21,6 @@ export const CHART_COLORS = {
   },
 };
 
-export const DEVICES = [
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [12.524668, 41.927647],
-    },
-    properties: {
-      name: "Nomentana",
-      description: "Device located around Nomentana",
-      channelId: 1050873,
-      ...CHART_COLORS.ORANGE,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [12.475011, 41.883446],
-    },
-    properties: {
-      name: "Campi Elisi",
-      description: "Device located around Campi Elisi",
-      channelId: 1011480,
-      ...CHART_COLORS.YELLOW,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [12.470728, 41.918736],
-    },
-    properties: {
-      name: "Città Eterna",
-      description: "Device located around Città Eterna",
-      channelId: 959807,
-      ...CHART_COLORS.RED,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [12.489475, 41.943323],
-    },
-    properties: {
-      name: "Terre Del Nord",
-      description: "Device located around Terre Del Nord",
-      channelId: 1249861,
-      ...CHART_COLORS.BLUE,
-    },
-  },
-];
-
 export const DEVICE_URL =
   "https://api.thingspeak.com/channels/DEVICE/feeds.json?timezone=Europe/Rome";
 

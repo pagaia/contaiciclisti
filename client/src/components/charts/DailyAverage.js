@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   buildDataDailyAverage,
   getLastMonthStartEnd,
@@ -7,12 +7,17 @@ import {
 import PropTypes from "prop-types";
 import { DEVICE_FIELDS, REGEX_FIELD, REGEX_DEVICE } from "utility/constants";
 import SimpleChart from "./Chart";
+import { useDispatch, useSelector } from "react-redux";
+import { receiveDailyAverage, selectDailyAverage } from "store/chartsSlide";
+import { selectDevices } from "store/devicesSlide";
 
 const { start, end } = getLastMonthStartEnd();
 
-function DailyAverage({ devices }) {
-  // initialize dataset with empty array
-  const [datasets, setDatasets] = useState(Array(devices.length).fill([]));
+function DailyAverage(props) {
+  const dailyAverage = useSelector(selectDailyAverage);
+  const devices = useSelector(selectDevices);
+
+  const dispatch = useDispatch();
 
   const labels = [
     "Monday",
@@ -33,7 +38,7 @@ function DailyAverage({ devices }) {
         DEVICE_FIELDS.replace(
           REGEX_DEVICE,
           device.properties.channelId
-        ).replace(REGEX_FIELD, "field3") + `?start=${start}&end=${end}`;
+        ).replace(REGEX_FIELD, "3") + `?start=${start}&end=${end}`;
 
       // fetch data from a url endpoint
       const response = await axios.get(apiEndPoint);
@@ -41,23 +46,33 @@ function DailyAverage({ devices }) {
 
       const builtDataset = buildDataDailyAverage(data.feeds, device);
       newDatasets[idx] = builtDataset;
-      return data;
+
+      return builtDataset;
     }
 
-    // fetch data per each device
-    devices.map((device, idx) => {
-      fetchAverage(device, idx).then(() => {
-        setDatasets([...newDatasets]);
+    if (!dailyAverage?.length && devices?.length) {
+      // initialize the array for all chart lines
+      dispatch(receiveDailyAverage(Array(devices.length).fill(null)));
+
+      // fetch data per each device
+      devices.map((device, idx) => {
+        fetchAverage(device, idx).then((data) => {
+          dispatch(receiveDailyAverage([...newDatasets]));
+        });
       });
-    });
-  }, []);
+    }
+  }, [devices]);
 
   const data = {
     labels,
-    datasets: datasets.filter(function (element) {
-      return element !== undefined;
-    }),
+    datasets: JSON.parse(
+      JSON.stringify(dailyAverage.filter((element) => element))
+    ),
   };
+
+  if (!devices?.length) {
+    return null;
+  }
 
   return (
     <div>
@@ -82,4 +97,4 @@ DailyAverage.propTypes = {
     borderColor: PropTypes.string,
   }),
 };
-export default DailyAverage;
+export default React.memo(DailyAverage);

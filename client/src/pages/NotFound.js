@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const NotFound = () => {
   useEffect(() => {
-    document.title = `CiCO - Il Conta i Ciclisti Ostinati - Page not found`;
+    document.title = `Portale Sperimentale - Page not found`;
   }, []);
 
   return (

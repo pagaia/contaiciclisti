@@ -5,20 +5,22 @@ import HourlyAverage from "components/charts/HourlyAverage";
 import TodayHourly from "components/charts/TodayHourly";
 import YesterdayHourly from "components/charts/YesterdayHourly";
 import LastCount from "components/charts/LastCount";
-import { DEVICES } from "utility/constants";
 import NotFound from "./NotFound";
 import PeakCount from "components/charts/PeakCount";
+import { useSelector } from "react-redux";
 
 const Device = (props) => {
   let { id } = useParams();
-  const device = DEVICES.find(
+  const { devices: devicesStore } = useSelector((state) => state.devices);
+
+  const device = devicesStore.find(
     (el) => el.properties.channelId === parseInt(id, 10)
   );
 
   useEffect(() => {
     if (device) {
       const { name } = device.properties;
-      document.title = `CiCO - Il Conta i Ciclisti Ostinati - ${name} device`;
+      document.title = `Portale Sperimentale - ${name} device`;
     }
   }, []);
 

@@ -1,16 +1,29 @@
 import axios from "axios";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import {
-  buildHourlyCompare, formatDate,
+  buildHourlyCompare,
+  deepEqual,
+  formatDate,
 } from "utility/utilityFunctions";
 import PropTypes from "prop-types";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 import { format } from "date-fns";
 import SimpleChart from "./Chart";
+import { useSelector, useDispatch } from "react-redux";
+import { selectHourlyCompare, receiveHourlyCompare } from "store/chartsSlide";
 
-function HourlyCompare({ devices, day }) {
-  // initialize dataset with empty array
-  const [datasets, setDatasets] = useState(Array(devices?.length).fill([]));
+function HourlyCompare({ search }) {
+ 
+  const hourlyCompareState = useSelector(selectHourlyCompare);
+  const dispatch = useDispatch();
+
+  const devices = Object.values(search.devices);
+  const { day } = search;
+
+  const simpleSearch = {
+    devices: devices.map((device) => device.properties.channelId),
+    day: format(day, "yyyy-MM-dd"),
+  };
 
   // label for day hours
   const labels = [...Array(24).keys()];
@@ -19,8 +32,8 @@ function HourlyCompare({ devices, day }) {
     const newDatasets = [];
 
     if (day) {
-      const start = format(day, "yyyy-MM-dd 00:00:00");
-      const end = format(day, "yyyy-MM-dd 23:59:00");
+      const start = format(day, "yyyy-MM-dd");
+      const end = format(day, "yyyy-MM-dd 23:59");
 
       async function fetchData(device, idx) {
         // replace with channelID
@@ -37,28 +50,50 @@ function HourlyCompare({ devices, day }) {
         return data;
       }
 
-      // fetch data per each device
-      devices.map((device, idx) => {
-        fetchData(device, idx).then(() => {
-          setDatasets([...newDatasets]);
-        });
-      });
-    }
-  }, [devices, day]);
+      // fetch data if not loaded yet
+      if (
+        !hourlyCompareState ||
+        !hourlyCompareState.results ||
+        !deepEqual(hourlyCompareState.search, simpleSearch)
+      ) {
+        // initialize the array for all chart lines
+        dispatch(
+          receiveHourlyCompare({
+            search: simpleSearch,
+            results: Array(devices.length).fill(null),
+          })
+        );
 
+        // fetch data per each device
+        devices.map((device, idx) => {
+          fetchData(device, idx).then(() => {
+            dispatch(
+              receiveHourlyCompare({
+                search: simpleSearch,
+                results: [...newDatasets],
+              })
+            );
+          });
+        });
+      }
+    }
+  }, [search]);
+
+  const datasets = hourlyCompareState?.results
+    ? JSON.parse(
+        JSON.stringify(hourlyCompareState.results.filter((element) => element))
+      )
+    : [];
   const data = {
     labels,
-    datasets: datasets.filter(function (element) {
-      // filter out dataset not defined yet
-      return element !== undefined;
-    }),
+    datasets,
   };
 
   return (
     <Fragment>
       <h3>Counts on {formatDate(day)}</h3>
       <div className="chart-wrapper">
-        <SimpleChart data={data} name="HourlyCompare"/>
+        <SimpleChart data={data} name="HourlyCompare" />
       </div>
     </Fragment>
   );
