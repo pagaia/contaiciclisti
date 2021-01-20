@@ -6,6 +6,7 @@ import HourlyComparePage from "./singlePages/HourlyComparePage";
 import WeekCompare from "./singlePages/WeekCompare";
 import LastCount from "components/charts/LastCount";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const MainPage = (props) => {
   const { devices } = useSelector((state) => state.devices);
@@ -23,7 +24,11 @@ const MainPage = (props) => {
               {devices.map((device) => {
                 return (
                   <Fragment key={device.properties.channelId}>
-                    <h2>{device.properties.name}</h2>
+                    <h2>
+                      <Link to={`/devices/${device.properties.channelId}`} className="text-warning">
+                        {device.properties.name}
+                      </Link>
+                    </h2>
                     <LastCount device={device} />
                     <hr className="mb-5 bg-warning" />
                   </Fragment>

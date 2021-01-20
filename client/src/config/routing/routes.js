@@ -5,6 +5,7 @@ export const ROUTES = {
   DEVICE_TODAY: "/single/devices/:id/today",
   DEVICE_LAST_MONTH_AVERAGE: "/single/devices/:id/lastMonth/average",
   DEVICE_LAST_MONTH_DAY_TOTAL: "/single/devices/:id/lastMonth/dayTotal",
+  DEVICE_LAST_MONTH_PEAK_TIME: "/single/devices/:id/lastMonth/peakTime",
   DEVICES_COMPARE: "/single/devices/compare",
   DEVICES_AVERAGE: "/single/devices/average",
   DEVICES_HOURLY_COMPARE: "/single/devices/compare/hourly",
@@ -40,6 +41,10 @@ const routes = [
   {
     component: "./pages/singlePages/DeviceTotalDay",
     path: ROUTES.DEVICE_LAST_MONTH_DAY_TOTAL,
+  },
+  {
+    component: "./pages/singlePages/PeakTimeSinglePage",
+    path: ROUTES.DEVICE_LAST_MONTH_PEAK_TIME,
   },
   {
     component: "./pages/singlePages/OnlyMap",

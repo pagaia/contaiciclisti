@@ -9,6 +9,8 @@ Data is collected and provided by [Federico Occhionero](https://nl.mathworks.com
 
 ## How to start
 
+Copy file `_env` to `.env` and replace each key with yours
+
 ```javascript
 cd client
 yarn install

@@ -11,6 +11,7 @@ import routes from "config/routing/routes";
 import { fetchDevices } from "store/devicesSlide";
 import { useDispatch } from "react-redux";
 import Header from "components/Header";
+import SiteMap from "components/SiteMap";
 
 function App() {
   let location = useLocation();
@@ -21,8 +22,19 @@ function App() {
 
   const dispatch = useDispatch();
 
+  const deleteLoader = () => {
+    var element = document.getElementById("first-loading");
+    if (element) {
+      element.style.className = "dissolve";
+      setTimeout(() => {
+        element.style.visibility = "hidden";
+      }, 2000);
+    }
+  };
+
   useEffect(() => {
     const queryTheme = query.get("theme");
+    deleteLoader();
     if (
       queryTheme &&
       queryTheme !== theme &&
@@ -42,6 +54,7 @@ function App() {
         <div className={`App ${singleChart ? "single" : ""} ${theme}`}>
           {/* remove title if single chart */}
           <Header />
+          {/* <SiteMap /> */}
           <main className={singleChart ? "" : "container-fluid"}>
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>

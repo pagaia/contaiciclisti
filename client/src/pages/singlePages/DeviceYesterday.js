@@ -4,14 +4,16 @@ import YesterdayHourly from "components/charts/YesterdayHourly";
 import NotFound from "../NotFound";
 import { SingleContext } from "utility/contexts/MyContext";
 import { useSelector } from "react-redux";
+import { selectDevices } from "store/devicesSlide";
+import Loading from "components/Loading";
 
 const DeviceYesterday = (props) => {
   let { id } = useParams();
   const singleChart = useContext(SingleContext);
 
-  const { devices: devicesStore } = useSelector((state) => state.devices);
-
-  const device = devicesStore.find((el) => el.properties.name === id);
+  const  devices  = useSelector(selectDevices);
+  // search for my device
+  const device = devices.find((el) => el.properties.channelId == id);
 
   useEffect(() => {
     if (device && singleChart) {
@@ -19,6 +21,10 @@ const DeviceYesterday = (props) => {
       document.title = `Portale Sperimentale - ${name} yesterday counts`;
     }
   }, []);
+
+  if (!devices.length) {
+    return <Loading />;
+  }
 
   if (!device) {
     return <NotFound />;

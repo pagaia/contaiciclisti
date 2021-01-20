@@ -8,14 +8,15 @@ import LastCount from "components/charts/LastCount";
 import NotFound from "./NotFound";
 import PeakCount from "components/charts/PeakCount";
 import { useSelector } from "react-redux";
+import Loading from "components/Loading";
+import { selectDevices } from "store/devicesSlide";
 
 const Device = (props) => {
   let { id } = useParams();
-  const { devices: devicesStore } = useSelector((state) => state.devices);
+  const devices = useSelector(selectDevices);
 
-  const device = devicesStore.find(
-    (el) => el.properties.channelId === parseInt(id, 10)
-  );
+  // search for my device
+  const device = devices.find((el) => el.properties.channelId == id);
 
   useEffect(() => {
     if (device) {
@@ -24,6 +25,10 @@ const Device = (props) => {
     }
   }, []);
 
+  if (!devices.length) {
+    return <Loading />;
+  }
+  
   if (!device) {
     return <NotFound />;
   }

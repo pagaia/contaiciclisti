@@ -1,5 +1,7 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import DownLoadChart from "components/DownloadChart";
+import Loading from "components/Loading";
+import { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 import {
@@ -15,6 +17,9 @@ const { start, end } = getLastMonthStartEnd();
 function PeakCount({ device }) {
   // initialize dataset with empty object
   const [datasets, setDatasets] = useState([]);
+
+  const chartRef = useRef(null);
+  const chartName = `chart-peak-time`;
 
   const labels = getDatesBetweenDates(start, end);
 
@@ -36,7 +41,7 @@ function PeakCount({ device }) {
   }, []);
 
   if (!datasets) {
-    return null;
+    return <Loading />;
   }
 
   const data = {
@@ -77,6 +82,7 @@ function PeakCount({ device }) {
               ({start} - {end}){" "}
             </small>
           </span>
+          <DownLoadChart chartId={chartName} chartRef={chartRef} />
           <Line
             data={data}
             width={100}
@@ -86,6 +92,8 @@ function PeakCount({ device }) {
             }}
             datasetKeyProvider={datasetKeyProvider}
             options={options}
+            ref={chartRef}
+            id={chartName}
           />
         </div>
       </div>
