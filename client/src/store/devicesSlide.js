@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import readGoogleFile from "utility/googleSheet";
+import readDevices from "utility/googleSheet";
 
 export const devicesSlide = createSlice({
   name: "devices",
@@ -17,7 +17,7 @@ export const devicesSlide = createSlice({
 export const { receiveDevices } = devicesSlide.actions;
 
 export const fetchDevices = () => async (dispatch) => {
-  const devices = await readGoogleFile();
+  const devices = await readDevices();
   dispatch(receiveDevices(devices));
 };
 

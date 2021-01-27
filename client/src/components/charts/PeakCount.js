@@ -50,6 +50,7 @@ function PeakCount({ device }) {
   };
 
   const options = {
+    maintainAspectRatio: true,
     scales: {
       yAxes: [
         {
@@ -87,9 +88,6 @@ function PeakCount({ device }) {
             data={data}
             width={100}
             height={50}
-            options={{
-              maintainAspectRatio: true,
-            }}
             datasetKeyProvider={datasetKeyProvider}
             options={options}
             ref={chartRef}

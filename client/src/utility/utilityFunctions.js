@@ -219,6 +219,7 @@ export const buildDailyCompare = (feeds, device, labels) => {
     hoverBackgroundColor: hoverBackgroundColor || "rgba(255,99,132,0.4)",
     data: [],
     fill: false,
+    yAxisID: "y-axis-1",
   };
 
   const dateFound = {};
@@ -231,6 +232,48 @@ export const buildDailyCompare = (feeds, device, labels) => {
   // double check data per day
   labels.forEach((day) => {
     dataset.data.push(dateFound[day]);
+  });
+
+  return dataset;
+};
+
+/**
+ * This function gets the list of counts and device information and build labels and datasets for total daily counts
+ *
+ * @param {Array} feeds
+ * @param {Object} device
+ */
+export const buildDailyTevereLevel = (feeds, labels) => {
+  const dataset = {
+    label: "Tevere level",
+    backgroundColor: "rgba(178, 178, 76, 0.2)",
+    borderColor: "rgba(178, 178, 76, 1)",
+    borderWidth: 1,
+    hoverBackgroundColor: "rgba(178, 178, 76, 0.4)",
+    data: [],
+    fill: false,
+    yAxisID: "y-axis-2",
+  };
+
+  const dateFound = {};
+  feeds.forEach((feed = {}) => {
+    // console.log({ feed });
+    if (feed) {
+      const { day, level } = feed;
+      if (day) {
+        const swapDate = `${day.substring(6, 10)}-${day.substring(
+          3,
+          5
+        )}-${day.substring(0, 2)}`;
+        // console.log({ swapDate });
+        dateFound[swapDate] = Number.parseFloat(level).toFixed(2);
+      }
+    }
+  });
+
+  // double check data per day
+  labels.forEach((day) => {
+    dataset.data.push(dateFound[day] || "");
   });
 
   return dataset;

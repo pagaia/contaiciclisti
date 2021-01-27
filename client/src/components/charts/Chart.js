@@ -5,7 +5,7 @@ import { CHART } from "utility/constants";
 import { datasetKeyProvider } from "utility/utilityFunctions";
 import DownLoadChart from "components/DownloadChart";
 
-const SimpleChart = ({ data, name }) => {
+const SimpleChart = ({ data, name, doubleAxes }) => {
   const [chart, setChart] = useState(CHART.LINE);
 
   const chartRef = useRef(null);
@@ -27,15 +27,41 @@ const SimpleChart = ({ data, name }) => {
 
   let myChart;
 
+  let options = {
+    maintainAspectRatio: true,
+  };
+  if (doubleAxes) {
+    options = {
+      ...options,
+      scales: {
+        yAxes: [
+          {
+            type: "linear",
+            display: true,
+            position: "left",
+            id: "y-axis-1",
+          },
+          {
+            type: "linear",
+            display: true,
+            position: "right",
+            id: "y-axis-2",
+            gridLines: {
+              drawOnArea: false,
+            },
+          },
+        ],
+      },
+    };
+  }
+
   if (chart === CHART.BAR) {
     myChart = (
       <Bar
         data={data}
         width={100}
         height={50}
-        options={{
-          maintainAspectRatio: true,
-        }}
+        options={options}
         datasetKeyProvider={datasetKeyProvider}
         id={chartName}
         ref={chartRef}
@@ -47,9 +73,7 @@ const SimpleChart = ({ data, name }) => {
         data={data}
         width={100}
         height={50}
-        options={{
-          maintainAspectRatio: true,
-        }}
+        options={options}
         datasetKeyProvider={datasetKeyProvider}
         id={chartName}
         ref={chartRef}

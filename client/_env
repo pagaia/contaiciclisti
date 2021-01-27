@@ -6,3 +6,4 @@ REACT_APP_NAME=$npm_package_name
 # google key and file used to retrieve the channels information from one single place 
 REACT_APP_GOOGLE_API_KEY="google key to access spreedsheet"
 REACT_APP_GOOGLE_FILE="google id for the spreedsheet"
+REACT_APP_GOOGLE_FILE_RIPETTA="google id for the spreedsheet for the Tevere level"

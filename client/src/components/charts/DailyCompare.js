@@ -5,12 +5,14 @@ import {
   getDatesBetweenDates,
   replaceWeekendDays,
   deepEqual,
+  buildDailyTevereLevel,
 } from "utility/utilityFunctions";
 import PropTypes from "prop-types";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 import SimpleChart from "./Chart";
 import { useDispatch, useSelector } from "react-redux";
 import { receiveDailyCompare, selectDailyCompare } from "store/chartsSlide";
+import { readRipettaLevel } from "utility/googleSheet";
 
 function DailyCompare({ search, name }) {
   const dailyCompare = useSelector(selectDailyCompare);
@@ -18,6 +20,7 @@ function DailyCompare({ search, name }) {
 
   const devices = Object.values(search.devices);
   const { startDate, endDate } = search;
+  const newDatasets = [];
 
   const labels = getDatesBetweenDates(startDate, endDate);
 
@@ -29,8 +32,25 @@ function DailyCompare({ search, name }) {
   };
 
   useEffect(() => {
-    const newDatasets = [];
+    async function fetchTevereLevel() {
+      const response = await readRipettaLevel();
+      const ripettaLevel = buildDailyTevereLevel(response, labels);
+      newDatasets[devices.length + 1] = ripettaLevel;
+    }
+    fetchTevereLevel().then(() => {
+      dispatch(
+        receiveDailyCompare({
+          name: [name],
+          [name]: {
+            search: simpleSearch,
+            results: [...newDatasets],
+          },
+        })
+      );
+    });
+  }, []);
 
+  useEffect(() => {
     async function fetchData(device, idx) {
       // replace with channelID
       const apiEndPoint =
@@ -59,7 +79,7 @@ function DailyCompare({ search, name }) {
           name: [name],
           [name]: {
             search: simpleSearch,
-            results: Array(devices.length).fill(null),
+            results: Array(devices.length + 1).fill(null),
           },
         })
       );
@@ -86,7 +106,7 @@ function DailyCompare({ search, name }) {
         JSON.stringify(dailyCompare[name].results.filter((element) => element))
       )
     : [];
-    
+
   const data = {
     labels: replaceWeekendDays(labels),
     datasets,
@@ -98,7 +118,7 @@ function DailyCompare({ search, name }) {
         Counts between {startDate} and {endDate}
       </h3>
       <div className="chart-wrapper">
-        <SimpleChart data={data} name={name} />
+        <SimpleChart data={data} name={name} doubleAxes />
       </div>
     </Fragment>
   );

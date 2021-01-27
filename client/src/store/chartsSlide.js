@@ -6,7 +6,6 @@ export const chartsSlide = createSlice({
     dailyAverage: [],
     dailyCompare: {},
     hourlyCompare: {},
-    test: {prova: "uno"}
   },
   reducers: {
     receiveDailyAverage: (state, action) => {
