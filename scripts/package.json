@@ -1,0 +1,28 @@
+{
+  "name": "cico-script",
+  "version": "0.1.0",
+  "description": "Some scripts to execute automation tasks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pagaia/contaiciclisti/scripts"
+  },
+  "keywords": [
+    "conta-i-ciclisti",
+    "script"
+  ],
+  "author": {
+    "name": "Remo MORO",
+    "url": "https://twitter.com/pagaia"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "date-fns": "^2.16.1",
+    "dotenv": "^8.2.0",
+    "google-spreadsheet": "^3.1.15"
+  }
+}
