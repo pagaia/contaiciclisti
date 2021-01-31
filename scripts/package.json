@@ -4,7 +4,8 @@
   "description": "Some scripts to execute automation tasks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update": "node src/index.js && git add src/data/* && git commit -m 'added csv data' && git push origin test-file"
   },
   "repository": {
     "type": "git",
