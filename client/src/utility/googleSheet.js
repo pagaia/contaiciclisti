@@ -1,6 +1,6 @@
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
-const readDevices = async () => {
+const readDevices = async (title = "Devices") => {
   // setup the google spread sheet
   const doc = new GoogleSpreadsheet(process.env.REACT_APP_GOOGLE_FILE);
 
@@ -9,7 +9,7 @@ const readDevices = async () => {
 
   await doc.loadInfo(); // loads document properties and worksheets
 
-  const sheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+  const sheet = doc.sheetsByTitle[title]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
 
   const rows = await sheet.getRows();
 

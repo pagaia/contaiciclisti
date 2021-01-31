@@ -8,7 +8,7 @@ import ThemeContext, { THEMES } from "utility/contexts/ThemeContext";
 import "images/imageLibrary";
 import { useQuery } from "utility/utilityFunctions";
 import routes from "config/routing/routes";
-import { fetchDevices } from "store/devicesSlide";
+import { fetchDevices, fetchSecretDevices } from "store/devicesSlide";
 import { useDispatch } from "react-redux";
 import Header from "components/Header";
 import SiteMap from "components/SiteMap";
@@ -43,6 +43,11 @@ function App() {
       setTheme(queryTheme);
     }
     dispatch(fetchDevices());
+
+    const secret = query.get("secret");
+    if (secret) {
+      dispatch(fetchSecretDevices());
+    }
   }, []);
 
   // update the context

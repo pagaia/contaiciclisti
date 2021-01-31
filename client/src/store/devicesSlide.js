@@ -9,7 +9,7 @@ export const devicesSlide = createSlice({
   },
   reducers: {
     receiveDevices: (state, action) => {
-      state.devices = action.payload;
+      state.devices = [...state.devices, ...action.payload];
     },
   },
 });
@@ -18,6 +18,11 @@ export const { receiveDevices } = devicesSlide.actions;
 
 export const fetchDevices = () => async (dispatch) => {
   const devices = await readDevices();
+  dispatch(receiveDevices(devices));
+};
+
+export const fetchSecretDevices = () => async (dispatch) => {
+  const devices = await readDevices("Secret");
   dispatch(receiveDevices(devices));
 };
 
