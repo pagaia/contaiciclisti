@@ -9,4 +9,21 @@ const formatDate = (date) => {
   return format(date, "yyyy-MM-dd");
 };
 
-exports.formatDate = formatDate;
+/**
+ * calculate the start and end date for previous month
+ */
+const getLastMonthStartEnd = () => {
+  let end = new Date(); // get today
+  end.setDate(end.getDate() - 1); // get yesterday
+  let start = new Date(end);
+  start.setDate(start.getDate() - 31); // get 30 days before yesterday
+  end = formatDate(end);
+  start = formatDate(start);
+
+  return { start, end };
+};
+
+module.exports = {
+  formatDate,
+  getLastMonthStartEnd,
+};

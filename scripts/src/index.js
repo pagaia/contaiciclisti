@@ -2,31 +2,11 @@ const { readDevices } = require("./googleSheet");
 const axios = require("axios");
 const Fs = require("fs");
 const Path = require("path");
-const { formatDate } = require("./utility");
+const { getLastMonthStartEnd } = require("./utility");
 const DEVICE_URL = "https://api.thingspeak.com/channels/CHANNELID/feeds.csv";
 
-/**
- * calculate the start and end date for previous month
- */
-const getLastMonthStartEnd = () => {
-  let end = new Date(); // get today
-  end.setDate(end.getDate() - 1); // get yesterday
-  let start = new Date(end);
-  start.setDate(start.getDate() - 31); // get 30 days before yesterday
-  end = formatDate(end);
-  start = formatDate(start);
-
-  return { start, end };
-};
-
-async function fetchDevices() {
-  const devices = await readDevices();
-  console.log(devices);
-  return devices;
-}
-
 async function downloadCsvFiles() {
-  const devices = await fetchDevices();
+  const devices = await readDevices();
 
   const { start, end } = getLastMonthStartEnd();
 
