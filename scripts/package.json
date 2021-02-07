@@ -4,7 +4,7 @@
   "description": "Some scripts to execute automation tasks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "update": "node src/index.js && git add src/data/* && git commit -m 'added csv data' && git push origin test-file"
   },
   "repository": {
@@ -25,5 +25,8 @@
     "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",
     "google-spreadsheet": "^3.1.15"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1"
   }
 }

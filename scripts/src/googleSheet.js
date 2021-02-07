@@ -1,5 +1,5 @@
 const { GoogleSpreadsheet } = require("google-spreadsheet");
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 
 const readDevices = async () => {
@@ -39,7 +39,7 @@ const readDevices = async () => {
   return devices;
 };
 
- const readRipettaLevel = async () => {
+const readRipettaLevel = async () => {
   // setup the google spread sheet
   const doc = new GoogleSpreadsheet(process.env.REACT_APP_GOOGLE_FILE_RIPETTA);
 
@@ -64,4 +64,24 @@ const readDevices = async () => {
   return dayLevel.filter((item) => item);
 };
 
-exports.readDevices = readDevices;
+const readPulseStations = async () => {
+  // setup the google spread sheet
+  const doc = new GoogleSpreadsheet(process.env.REACT_APP_GOOGLE_PULSE_XMAS);
+
+  // set up the API KEY
+  doc.useApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
+
+  await doc.loadInfo(); // loads document properties and worksheets
+
+  const sheet = doc.sheetsByTitle["January-Torque"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+
+  const rows = await sheet.getRows();
+
+  return rows;
+};
+
+// exports.readDevices = readDevices;
+module.exports = {
+  readDevices,
+  readPulseStations,
+};

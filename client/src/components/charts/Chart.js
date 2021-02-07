@@ -5,7 +5,7 @@ import { CHART } from "utility/constants";
 import { datasetKeyProvider } from "utility/utilityFunctions";
 import DownLoadChart from "components/DownloadChart";
 
-const SimpleChart = ({ data, name, doubleAxes }) => {
+const SimpleChart = ({ data, name, doubleAxes, title = "Text testtt" }) => {
   const [chart, setChart] = useState(CHART.LINE);
 
   const chartRef = useRef(null);
@@ -29,6 +29,10 @@ const SimpleChart = ({ data, name, doubleAxes }) => {
 
   let options = {
     maintainAspectRatio: true,
+    title: {
+      display: true,
+      text: title,
+    },
   };
   if (doubleAxes) {
     options = {
@@ -97,7 +101,10 @@ const SimpleChart = ({ data, name, doubleAxes }) => {
           className="custom-control-label"
           htmlFor={`switch-chart-${name}`}
         >
-          Switch Line/Bar
+          Switch to {" "}
+          {chart === CHART.BAR
+            ? CHART.LINE.toLowerCase()
+            : CHART.BAR.toLowerCase()}
         </label>
       </div>
       <DownLoadChart chartId={chartName} chartRef={chartRef} />

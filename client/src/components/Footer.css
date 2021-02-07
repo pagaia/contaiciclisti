@@ -1,0 +1,19 @@
+.footer {
+  /* font-size: small; */
+  background-color: #ee8b00;
+  margin-top: 1em;
+  padding: 3rem 6rem;
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.footer.single {
+  padding: 0.7em;
+  font-size: small;
+}
+
+.footer div > a,
+.footer div > span {
+  margin-left: 2rem;
+}

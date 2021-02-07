@@ -1,0 +1,87 @@
+/** torque_cat visualization */
+
+Map {
+-torque-frame-count:512;
+-torque-animation-duration:30;
+-torque-time-attribute:"created_at";
+-torque-aggregation-function:"sum(field1)";
+-torque-resolution:2;
+-torque-data-aggregation: linear;
+}
+
+#cico_di_natale{
+  comp-op: multiply;
+  marker-fill-opacity: 0.9;
+  marker-line-color: #FFF;
+  marker-line-width: 1;
+  marker-line-opacity: 1;
+  marker-type: ellipse;
+  marker-width: 5.5;
+  marker-fill: #FFA300;
+  
+}
+#cico_di_natale[frame-offset=1] {
+ marker-width:8;
+ marker-fill-opacity:0.45; 
+}
+#cico_di_natale[frame-offset=2] {
+ marker-width:10;
+ marker-fill-opacity:0.225; 
+}
+
+#cico_di_natale[value>5] {
+  marker-width: 3;
+ marker-fill: #F84F40;
+}
+#cico_di_natale[value>15] {
+  marker-width: 6;
+  marker-fill: #ff4000;
+}
+#cico_di_natale[value>30] {
+  marker-width: 9;
+  marker-fill: #ff8000;
+}
+#cico_di_natale[value>50] {
+  marker-width: 13;
+  marker-fill: #FF9900;
+}
+#cico_di_natale[value>80] {
+  marker-width: 15;
+  marker-fill: #00bfff;
+}
+#cico_di_natale[value>100] {
+  marker-width: 18;
+  marker-fill: #0000ff;
+}
+#hamburgers[value>150] {
+  marker-width: 22;
+  marker-fill: #8000ff;
+}
+#hamburgers[value>200] {
+  marker-width: 25;
+  marker-fill: #ff00ff;
+}
+#hamburgers[value>250] {
+  marker-width: 28;
+  marker-fill: #ff0080;
+}
+
+#hamburgers[value>300] {
+  marker-width: 33;
+  marker-fill: #ff0000;
+}
+
+#hamburgers[value>350] {
+  marker-width: 35;
+  marker-fill: #D6301D;
+}
+
+#hamburgers[value>400] {
+  marker-width: 38;
+  marker-fill: #A53ED5;
+}
+
+#hamburgers[value>500] {
+  marker-width: 41;
+  marker-fill: #7B00B4;
+}

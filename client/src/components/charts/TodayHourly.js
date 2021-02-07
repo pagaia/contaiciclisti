@@ -31,11 +31,17 @@ function TodayHourly({ device }) {
     <div className="row">
       <div className="col-sm">
         <div className="chart-wrapper">
-          <h3 className="d-inline"> Hourly counts</h3>
-          <span className="text-muted">
-            <small> - today</small>
-          </span>
-          <SimpleChart  data={data} name="TodayHourly" />
+          <div className="sr-only">
+            <h3 className="d-inline"> Hourly counts</h3>
+            <span className="text-muted">
+              <small> - today</small>
+            </span>
+          </div>
+          <SimpleChart
+            data={data}
+            name="TodayHourly"
+            title="Hourly counts - today"
+          />
         </div>
       </div>
     </div>

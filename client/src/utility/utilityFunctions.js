@@ -246,12 +246,13 @@ export const buildDailyCompare = (feeds, device, labels) => {
 export const buildDailyTevereLevel = (feeds, labels) => {
   const dataset = {
     label: "Tevere level",
-    backgroundColor: "rgba(178, 178, 76, 0.2)",
-    borderColor: "rgba(178, 178, 76, 1)",
+    backgroundColor: "rgba(178, 178, 76, 0.1)",
+    borderColor: "rgba(178, 178, 76, 0.1)",
     borderWidth: 1,
-    hoverBackgroundColor: "rgba(178, 178, 76, 0.4)",
+    hoverBackgroundColor: "rgba(178, 178, 76, 0.1)",
     data: [],
     fill: false,
+    type: 'bar',
     yAxisID: "y-axis-2",
   };
 

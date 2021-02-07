@@ -10,6 +10,7 @@ export const ROUTES = {
   DEVICES_AVERAGE: "/single/devices/average",
   DEVICES_HOURLY_COMPARE: "/single/devices/compare/hourly",
   DEVICES_MAP: "/single/devices/map",
+  CREDITS: "/credits",
   ALL_PAGES: "*",
 };
 
@@ -17,6 +18,10 @@ const routes = [
   {
     component: "./pages/MainPage",
     path: ROUTES.MAIN_PAGE,
+  },
+  {
+    component: "./pages/Credits",
+    path: ROUTES.CREDITS,
   },
   {
     component: "./pages/Device",

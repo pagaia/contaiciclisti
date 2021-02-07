@@ -1,8 +1,6 @@
 import axios from "axios";
-import DownLoadChart from "components/DownloadChart";
 import Loading from "components/Loading";
 import { useEffect, useRef, useState } from "react";
-import { Line } from "react-chartjs-2";
 import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
 import {
   buildPeakTime,
@@ -10,7 +8,7 @@ import {
   getLastMonthStartEnd,
   replaceWeekendDays,
 } from "utility/utilityFunctions";
-import { datasetKeyProvider } from "utility/utilityFunctions";
+import SimpleChart from "./Chart";
 
 const { start, end } = getLastMonthStartEnd();
 
@@ -76,22 +74,19 @@ function PeakCount({ device }) {
     <div className="row">
       <div className="col-sm">
         <div className="chart-wrapper">
-          <h3 className="d-inline">Peak time</h3>
-          <span className="text-muted">
-            <small>
-              {" "}
-              ({start} - {end}){" "}
-            </small>
-          </span>
-          <DownLoadChart chartId={chartName} chartRef={chartRef} />
-          <Line
+          <div className="sr-only">
+            <h3 className="d-inline">Peak time</h3>
+            <span className="text-muted">
+              <small>
+                ({start} - {end})
+              </small>
+            </span>
+          </div>
+          <SimpleChart
             data={data}
-            width={100}
-            height={50}
-            datasetKeyProvider={datasetKeyProvider}
-            options={options}
-            ref={chartRef}
-            id={chartName}
+            name="peak-count"
+            doubleAxes
+            title={`Peak time (${start} - ${end})`}
           />
         </div>
       </div>
