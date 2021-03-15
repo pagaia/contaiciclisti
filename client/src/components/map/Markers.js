@@ -2,7 +2,7 @@ import React from "react";
 import { Marker, Popup } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { OrangeIcon } from "./OrangeIcon";
+import { OrangeIcon, GrayIcon } from "./OrangeIcon";
 
 function Markers() {
   const { devices } = useSelector((state) => state.devices);
@@ -12,7 +12,7 @@ function Markers() {
   }
 
   return devices.map((device) => {
-    const { channelId, name } = device.properties;
+    const { channelId, name, active } = device.properties;
     return (
       <Marker
         key={channelId}
@@ -20,7 +20,7 @@ function Markers() {
           device.geometry.coordinates[1],
           device.geometry.coordinates[0],
         ]}
-        icon={OrangeIcon}
+        icon={active === "1" ? OrangeIcon : GrayIcon}
       >
         <Popup
           position={[

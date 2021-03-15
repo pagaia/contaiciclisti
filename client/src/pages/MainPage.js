@@ -8,9 +8,11 @@ import LastCount from "components/charts/LastCount";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Accordion from "components/Accordion";
+import { selectSecret } from "store/generalSlide";
 
-const MainPage = (props) => {
+const MainPage = () => {
   const { devices } = useSelector((state) => state.devices);
+  const showPulse = !useSelector(selectSecret);
 
   return (
     <Fragment>
@@ -57,15 +59,17 @@ const MainPage = (props) => {
             <div className="col-sm-12">
               <HourlyComparePage />
             </div>
-            <div className="col-sm-12">
-              <h2>Example of counts during Christmas 2020</h2>
-              <iframe
-                width="100%"
-                height="520"
-                frameBorder="0"
-                src="https://pagaia.carto.com/viz/4cfaa083-53db-4b13-ae6f-c1acadcb2f2a/embed_map"
-              ></iframe>
-            </div>
+            {showPulse && (
+              <div className="col-sm-12">
+                <h2>Example of counts during Christmas 2020</h2>
+                <iframe
+                  width="100%"
+                  height="520"
+                  frameBorder="0"
+                  src="https://pagaia.carto.com/viz/4cfaa083-53db-4b13-ae6f-c1acadcb2f2a/embed_map"
+                ></iframe>
+              </div>
+            )}
             {/* <div className="col-sm-12">
               <About />
             </div> */}

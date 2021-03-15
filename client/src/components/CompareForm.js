@@ -20,7 +20,7 @@ const CompareForm = ({ updateSearch }) => {
   const [form, setForm] = useState({
     endDate,
     startDate,
-    devices: convertArrayToObject(devicesStore, "properties.channelId"),
+    devices: convertArrayToObject(devicesStore.slice(0, 5), "properties.channelId"),
   });
 
   useEffect(() => {
@@ -75,8 +75,9 @@ const CompareForm = ({ updateSearch }) => {
     if (period > 32 || period < 1) {
       error.push("-max window: 1 month");
     }
-    if (Object.entries(form.devices).length === 0) {
-      error.push("-select at least 2 devices");
+    const selected = Object.entries(form.devices).length;
+    if (selected < 1 || selected > 5) {
+      error.push("-select between 2 and 5 devices");
     }
     return error;
   };
@@ -86,6 +87,7 @@ const CompareForm = ({ updateSearch }) => {
     if (error.length > 0) {
       const text = "Please check data: \n" + error.join("\n");
       alert(text);
+      
       return;
     }
     toggle();
