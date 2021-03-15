@@ -3,6 +3,8 @@ import { Marker, Popup } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { OrangeIcon, GrayIcon } from "./OrangeIcon";
+import MarkerClusterGroup from "react-leaflet-markercluster";
+require("react-leaflet-markercluster/dist/styles.min.css");
 
 function Markers() {
   const { devices } = useSelector((state) => state.devices);
@@ -11,7 +13,7 @@ function Markers() {
     return null;
   }
 
-  return devices.map((device) => {
+  const markers = devices.map((device) => {
     const { channelId, name, active } = device.properties;
     return (
       <Marker
@@ -39,6 +41,8 @@ function Markers() {
       </Marker>
     );
   });
+
+  return <MarkerClusterGroup>{markers}</MarkerClusterGroup>;
 }
 
 export default Markers;
