@@ -1,13 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const generalSlide = createSlice({
-  name: "general",
-  initialState: {},
-  reducers: {
-    setSecret: (state, action) => {
-      state.secret = action.payload;
+    name: 'general',
+    initialState: {},
+    reducers: {
+        setSecret: (state, action) => {
+            state.secret = action.payload;
+        },
     },
-  },
 });
 
 export const { setSecret } = generalSlide.actions;

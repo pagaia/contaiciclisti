@@ -1,24 +1,24 @@
 /* Style the buttons that are used to open and close the accordion panel */
 .accordion {
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  margin: 0.5em;
-  transition: 0.4s;
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    margin: 0.5em;
+    transition: 0.4s;
 }
 
 /* Style the accordion panel. Note: hidden by default */
 .panel {
-  padding: 0 18px;
-  display: none;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
 }
 .panel.active {
-  display: block;
+    display: block;
 }
 .panel.hidden {
-  display: none;
+    display: none;
 }

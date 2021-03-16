@@ -1,21 +1,21 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-const ExternalLink = ({ url, children, className= "mr-1 ml-1" }) => {
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={className}
-    >
-      {children}
-    </a>
-  );
+const ExternalLink = ({ url, children, className = 'mr-1 ml-1' }) => {
+    return (
+        <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={className}
+        >
+            {children}
+        </a>
+    );
 };
 
 ExternalLink.propTypes = {
-  url: PropTypes.string,
-  children: PropTypes.string,
-  className: PropTypes.string,
+    url: PropTypes.string,
+    children: PropTypes.string,
+    className: PropTypes.string,
 };
 export default ExternalLink;

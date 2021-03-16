@@ -1,13 +1,13 @@
 {
-  "plugins": [
-    [
-      "module-resolver",
-      {
-        "root": ["./src"]
-        // "alias": {
-        //   "components": path.resolve(__dirname, "src/components/")
-        // }
-      }
+    "plugins": [
+        [
+            "module-resolver",
+            {
+                "root": ["./src"]
+                // "alias": {
+                //   "components": path.resolve(__dirname, "src/components/")
+                // }
+            }
+        ]
     ]
-  ]
 }
