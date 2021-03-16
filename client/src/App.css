@@ -1,200 +1,200 @@
 html {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 
 .App {
-  background-color: #282c34;
-  min-height: 100vh;
-  text-align: center;
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    text-align: center;
+    color: white;
 }
 
 .App.light {
-  background-color: #f8f9fa;
-  color: black;
+    background-color: #f8f9fa;
+    color: black;
 }
 
 .App.single {
-  padding: 10px;
+    padding: 10px;
 }
 
 .App header {
-  padding: 1em;
+    padding: 1em;
 }
 
 main {
-  min-height: 80%;
+    min-height: 80%;
 }
 
 .chart-wrapper {
-  margin: 1em 0;
+    margin: 1em 0;
 }
 
 #title a {
-  color: #ee8b00;
+    color: #ee8b00;
 }
 
 p.lead {
-  font-size: medium;
+    font-size: medium;
 }
 
 .card-text {
-  color: #282c34;
+    color: #282c34;
 }
 
 .last .card-text {
-  font-size: xx-large;
+    font-size: xx-large;
 }
 
 .card-text.highlighted {
-  color: #ffbe00;
-  overflow-wrap: normal;
+    color: #ffbe00;
+    overflow-wrap: normal;
 }
 
 .card {
-  background-color: #2e3e57;
+    background-color: #2e3e57;
 }
 
 .light .card.last {
-  color: white;
+    color: white;
 }
 
 .card.last {
-  margin: 5px 2px;
-  width: 30%;
-  min-width: 130px;
-  min-height: 140px;
-  border: 1px solid #ffbe00;
+    margin: 5px 2px;
+    width: 30%;
+    min-width: 130px;
+    min-height: 140px;
+    border: 1px solid #ffbe00;
 }
 
 @media only screen and (max-width: 600px) {
-  .card.last .card-text {
-    font-size: 9vw;
-  }
-  .card.last {
-    width: 48%;
-  }
-  .card.last.big-counter {
-    width: 100%;
-  }
+    .card.last .card-text {
+        font-size: 9vw;
+    }
+    .card.last {
+        width: 48%;
+    }
+    .card.last.big-counter {
+        width: 100%;
+    }
 }
 
 .card.last .card-title {
-  text-transform: uppercase;
-  font-size: small;
+    text-transform: uppercase;
+    font-size: small;
 }
 
 header .card {
-  background-color: #ee8b00;
+    background-color: #ee8b00;
 }
 
 .blockquote-footer {
-  font-size: 60%;
+    font-size: 60%;
 }
 
 .last .card-title,
 .last p {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .last-counter {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .compare {
-  text-align: justify;
-  overflow: hidden;
+    text-align: justify;
+    overflow: hidden;
 }
 
 .custom-control-label {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 h2,
 h3 {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 
 .sr-only {
-  position: absolute;
-  left: -10000px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }
 
 .toggle-theme {
-  display: flex;
-  justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .btn-download {
-  color: #ee8b00;
-  margin: 0 1em;
-  padding: 0 0.5em;
+    color: #ee8b00;
+    margin: 0 1em;
+    padding: 0 0.5em;
 }
 
 .btn-download:hover,
 .btn-download:focus {
-  background: #0056b3;
-  cursor: pointer;
+    background: #0056b3;
+    cursor: pointer;
 }
 
 main {
-  animation: fadeIn ease 1s;
+    animation: fadeIn ease 1s;
 }
 
 @keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 @-moz-keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 @-webkit-keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 @-o-keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 @-ms-keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .devices-list {
-  text-align: initial;
-  list-style-type: none;
-  padding: 1em;
+    text-align: initial;
+    list-style-type: none;
+    padding: 1em;
 }

@@ -1,32 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const chartsSlide = createSlice({
-  name: "charts",
-  initialState: {
-    dailyAverage: [],
-    dailyCompare: {},
-    hourlyCompare: {},
-  },
-  reducers: {
-    receiveDailyAverage: (state, action) => {
-      state.dailyAverage = action.payload;
+    name: 'charts',
+    initialState: {
+        dailyAverage: [],
+        dailyCompare: {},
+        hourlyCompare: {},
     },
-    receiveHourlyCompare: (state, action) => {
-      state.hourlyCompare = action.payload;
+    reducers: {
+        receiveDailyAverage: (state, action) => {
+            state.dailyAverage = action.payload;
+        },
+        receiveHourlyCompare: (state, action) => {
+            state.hourlyCompare = action.payload;
+        },
+        receiveDailyCompare: (state, action) => {
+            const name = action.payload.name;
+            state.dailyCompare[name] = action.payload[name];
+        },
     },
-    receiveDailyCompare: (state, action) => {
-      const name = action.payload.name;
-      state.dailyCompare[name] = action.payload[name];
-    },
-  },
 });
 
 export const {
-  receiveDailyAverage,
-  receiveDailyCompare,
-  receiveHourlyCompare,
+    receiveDailyAverage,
+    receiveDailyCompare,
+    receiveHourlyCompare,
 } = chartsSlide.actions;
-
 
 export const selectDailyAverage = (state) => state.charts.dailyAverage;
 export const selectDailyCompare = (state) => state.charts.dailyCompare;

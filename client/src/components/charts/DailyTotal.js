@@ -1,54 +1,54 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { DEVICE_URL, REGEX_DEVICE } from "utility/constants";
-import { buildDataDaily, getLastMonthStartEnd } from "utility/utilityFunctions";
-import SimpleChart from "./Chart";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { DEVICE_URL, REGEX_DEVICE } from 'utility/constants';
+import { buildDataDaily, getLastMonthStartEnd } from 'utility/utilityFunctions';
+import SimpleChart from './Chart';
 
 const { start, end } = getLastMonthStartEnd();
 
 function DailyTotal({ device }) {
-  const [month, setMonth] = useState({});
+    const [month, setMonth] = useState({});
 
-  async function fetchDeviceData() {
-    // replace with channelID
-    const apiEndPoint =
-      DEVICE_URL.replace(REGEX_DEVICE, device.properties.channelId) +
-      `&start=${start}&end=${end}`;
+    async function fetchDeviceData() {
+        // replace with channelID
+        const apiEndPoint =
+            DEVICE_URL.replace(REGEX_DEVICE, device.properties.channelId) +
+            `&start=${start}&end=${end}`;
 
-    // fetch data from a url endpoint
-    const response = await axios.get(apiEndPoint);
-    const { data } = response;
-    const chart = buildDataDaily(data.feeds, device);
-    setMonth(chart);
-    return data;
-  }
+        // fetch data from a url endpoint
+        const response = await axios.get(apiEndPoint);
+        const { data } = response;
+        const chart = buildDataDaily(data.feeds, device);
+        setMonth(chart);
+        return data;
+    }
 
-  useEffect(() => {
-    fetchDeviceData();
-  }, []);
+    useEffect(() => {
+        fetchDeviceData();
+    }, []);
 
-  return (
-    <div className="row">
-      <div className="col-sm">
-        <div className="chart-wrapper">
-          <div className="sr-only">
-            <h3 className="d-inline">Last month</h3>
-            <span className="text-muted">
-              <small>
-                &nbsp;({start} - {end})
-              </small>
-              <small> - total per day </small>
-            </span>
-          </div>
-          <SimpleChart
-            data={month}
-            name="DailyTotal"
-            title={`Last month - (${start} - ${end}) - total per day`}
-          />
+    return (
+        <div className="row">
+            <div className="col-sm">
+                <div className="chart-wrapper">
+                    <div className="sr-only">
+                        <h3 className="d-inline">Last month</h3>
+                        <span className="text-muted">
+                            <small>
+                                &nbsp;({start} - {end})
+                            </small>
+                            <small> - total per day </small>
+                        </span>
+                    </div>
+                    <SimpleChart
+                        data={month}
+                        name="DailyTotal"
+                        title={`Last month - (${start} - ${end}) - total per day`}
+                    />
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default DailyTotal;

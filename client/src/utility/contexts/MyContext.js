@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 export const myContext = {
-  single: true,
+    single: true,
 };
 
 const SingleContext = React.createContext(myContext.light);
