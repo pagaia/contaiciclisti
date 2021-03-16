@@ -8,21 +8,24 @@ import ThemeContext, { THEMES } from "utility/contexts/ThemeContext";
 import "images/imageLibrary";
 import { useQuery } from "utility/utilityFunctions";
 import routes from "config/routing/routes";
-import { fetchDevices } from "store/devicesSlide";
+import { fetchDevices, fetchSecretDevices } from "store/devicesSlide";
 import { useDispatch } from "react-redux";
 import Header from "components/Header";
 import SiteMap from "components/SiteMap";
+import LogError from "utility/logError";
+import { setSecret } from "store/generalSlide";
 
 function App() {
   let location = useLocation();
   let query = useQuery();
+  const secret = query.get("secret");
 
   const [theme, setTheme] = useState(THEMES.DARK);
   const themeValue = { theme, setTheme };
 
   const dispatch = useDispatch();
 
-  const deleteLoader = () => {
+  const hideLoader = () => {
     var element = document.getElementById("first-loading");
     if (element) {
       element.style.className = "dissolve";
@@ -34,7 +37,7 @@ function App() {
 
   useEffect(() => {
     const queryTheme = query.get("theme");
-    deleteLoader();
+    hideLoader();
     if (
       queryTheme &&
       queryTheme !== theme &&
@@ -42,7 +45,13 @@ function App() {
     ) {
       setTheme(queryTheme);
     }
-    dispatch(fetchDevices());
+
+    if (secret) {
+      dispatch(fetchSecretDevices());
+      dispatch(setSecret(secret));
+    } else {
+      dispatch(fetchDevices());
+    }
   }, []);
 
   // update the context
@@ -54,6 +63,7 @@ function App() {
         <div className={`App ${singleChart ? "single" : ""} ${theme}`}>
           {/* remove title if single chart */}
           <Header />
+          <LogError />
           {/* <SiteMap /> */}
           <main className={singleChart ? "" : "container-fluid"}>
             <Suspense fallback={<div>Loading...</div>}>

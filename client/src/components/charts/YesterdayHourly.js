@@ -34,11 +34,17 @@ function YesterdayHourly({ device }) {
     <div className="row">
       <div className="col-sm">
         <div className="chart-wrapper">
-          <h3 className="d-inline"> Hourly counts</h3>
-          <span className="text-muted">
-            <small> - yesterday</small>
-          </span>
-          <SimpleChart  data={yesterday} name="YesterdayHourly"/>
+          <div className="sr-only">
+            <h3 className="d-inline"> Hourly counts</h3>
+            <span className="text-muted">
+              <small> - yesterday</small>
+            </span>
+          </div>
+          <SimpleChart
+            data={yesterday}
+            name="YesterdayHourly"
+            title="Hourly counts - yesterday"
+          />
         </div>
       </div>
     </div>

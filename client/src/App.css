@@ -98,18 +98,6 @@ header .card {
   padding: 0;
 }
 
-.footer {
-  padding: 2em;
-  font-size: small;
-  background-color: #ee8b00;
-  margin-top: 1em;
-}
-
-.footer.single {
-  padding: 0.7em;
-  font-size: small;
-}
-
 .last-counter {
   display: flex;
   flex-wrap: wrap;
@@ -203,4 +191,10 @@ main {
   100% {
     opacity: 1;
   }
+}
+
+.devices-list {
+  text-align: initial;
+  list-style-type: none;
+  padding: 1em;
 }

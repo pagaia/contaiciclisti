@@ -37,12 +37,20 @@ function HourlyAverage({ device }) {
     <div className="row">
       <div className="col-sm">
         <div className="chart-wrapper">
-          <h3 className="d-inline">Last month</h3>
-          <span className="text-muted">
-            <small> ({start} - {end}) </small>
-            <small> - hourly average</small>
-          </span>
-          <SimpleChart data={datasets} name="HourlyAverage" />
+          <div className="sr-only">
+            <h3 className="d-inline">Last month</h3>
+            <span className="text-muted">
+              <small>
+                ({start} - {end})
+              </small>
+              <small> - hourly average</small>
+            </span>
+          </div>
+          <SimpleChart
+            data={datasets}
+            name="HourlyAverage"
+            title={`Last month  (${start} - ${end}) - hourly average`}
+          />
         </div>
       </div>
     </div>

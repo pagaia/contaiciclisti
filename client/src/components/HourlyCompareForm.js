@@ -12,7 +12,11 @@ const HourlyCompareForm = ({ updateSearch }) => {
   // const day = new Date();.setHours(0, 0, 0);
   const [form, setForm] = useState({
     day: new Date(), //day.toISOString(), // set today starting from 0 0 0
-    devices: convertArrayToObject(devicesStore, "properties.channelId"),
+    // get first 5 elements
+    devices: convertArrayToObject(
+      devicesStore.slice(0, 5),
+      "properties.channelId"
+    ),
   });
 
   useEffect(() => {
@@ -59,9 +63,9 @@ const HourlyCompareForm = ({ updateSearch }) => {
 
   const validateForm = (form) => {
     const error = [];
-
-    if (Object.entries(form.devices).length === 0) {
-      error.push("-select at least 2 devices");
+    const selected = Object.entries(form.devices).length;
+    if (selected < 1 || selected > 5) {
+      error.push("-select between 2 and 5 devices");
     }
     return error;
   };

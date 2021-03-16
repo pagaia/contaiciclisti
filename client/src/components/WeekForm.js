@@ -19,7 +19,10 @@ const WeekForm = ({ updateSearch }) => {
     week: 1,
     startDate: weeks[1]?.monday,
     endDate: weeks[1]?.sunday,
-    devices: convertArrayToObject(devicesStore, "properties.channelId"),
+    devices: convertArrayToObject(
+      devicesStore.slice(0, 5),
+      "properties.channelId"
+    ),
   });
 
   useEffect(() => {
@@ -76,8 +79,9 @@ const WeekForm = ({ updateSearch }) => {
     if (period > 32 || period < 1) {
       error.push("-max window: 1 month");
     }
-    if (Object.entries(form.devices).length === 0) {
-      error.push("-select at least 2 devices");
+    const selected = Object.entries(form.devices).length;
+    if (selected < 1 || selected > 5) {
+      error.push("-select between 2 and 5 devices");
     }
     return error;
   };

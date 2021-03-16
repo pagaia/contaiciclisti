@@ -31,13 +31,20 @@ function DailyTotal({ device }) {
     <div className="row">
       <div className="col-sm">
         <div className="chart-wrapper">
-          <h3 className="d-inline">Last month</h3>
-          <span className="text-muted">
-            <small>&nbsp;({start} - {end})
-            </small>
-            <small> - total per day </small>
-          </span>
-          <SimpleChart data={month} name="DailyTotal" />
+          <div className="sr-only">
+            <h3 className="d-inline">Last month</h3>
+            <span className="text-muted">
+              <small>
+                &nbsp;({start} - {end})
+              </small>
+              <small> - total per day </small>
+            </span>
+          </div>
+          <SimpleChart
+            data={month}
+            name="DailyTotal"
+            title={`Last month - (${start} - ${end}) - total per day`}
+          />
         </div>
       </div>
     </div>

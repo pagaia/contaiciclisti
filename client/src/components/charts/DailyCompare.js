@@ -114,11 +114,18 @@ function DailyCompare({ search, name }) {
 
   return (
     <Fragment>
-      <h3>
-        Counts between {startDate} and {endDate}
-      </h3>
+      <div className="sr-only">
+        <h3>
+          Counts between {startDate} and {endDate}
+        </h3>
+      </div>
       <div className="chart-wrapper">
-        <SimpleChart data={data} name={name} doubleAxes />
+        <SimpleChart
+          data={data}
+          name={name}
+          doubleAxes
+          title={`Counts between ${startDate} and ${endDate.substring(0, 10)}`}
+        />
       </div>
     </Fragment>
   );

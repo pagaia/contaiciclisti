@@ -13,7 +13,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectHourlyCompare, receiveHourlyCompare } from "store/chartsSlide";
 
 function HourlyCompare({ search }) {
- 
   const hourlyCompareState = useSelector(selectHourlyCompare);
   const dispatch = useDispatch();
 
@@ -91,9 +90,15 @@ function HourlyCompare({ search }) {
 
   return (
     <Fragment>
-      <h3>Counts on {formatDate(day)}</h3>
+      <div className="sr-only">
+        <h3>Counts on {formatDate(day)}</h3>
+      </div>
       <div className="chart-wrapper">
-        <SimpleChart data={data} name="HourlyCompare" />
+        <SimpleChart
+          data={data}
+          name="HourlyCompare"
+          title={`Counts on ${formatDate(day)}`}
+        />
       </div>
     </Fragment>
   );

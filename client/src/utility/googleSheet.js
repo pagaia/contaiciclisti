@@ -1,6 +1,6 @@
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
-const readDevices = async () => {
+const readDevices = async (title = "Devices") => {
   // setup the google spread sheet
   const doc = new GoogleSpreadsheet(process.env.REACT_APP_GOOGLE_FILE);
 
@@ -9,12 +9,20 @@ const readDevices = async () => {
 
   await doc.loadInfo(); // loads document properties and worksheets
 
-  const sheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+  const sheet = doc.sheetsByTitle[title]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
 
   const rows = await sheet.getRows();
 
   const devices = rows.map((row, idx) => {
-    const { long, lat, name, channelId, color, description } = row;
+    const {
+      long,
+      lat,
+      name,
+      channelId,
+      description,
+      newColor,
+      active,
+    } = row;
     let device = {
       type: "Feature",
       geometry: {
@@ -24,10 +32,11 @@ const readDevices = async () => {
       properties: {
         name,
         description,
+        active,
         channelId: parseInt(channelId, 10), // convert to number to match route
-        backgroundColor: color.replace("X", "0.2"),
-        borderColor: color.replace("X", "1"),
-        hoverBackgroundColor: color.replace("X", "0.6"),
+        backgroundColor: `${newColor}33`, //color.replace("X", "0.2"),
+        borderColor: `${newColor}FF`, // color.replace("X", "1"),
+        hoverBackgroundColor: `${newColor}99`, // color.replace("X", "0.6"),
       },
     };
 

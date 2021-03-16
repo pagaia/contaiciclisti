@@ -1,0 +1,30 @@
+.footer {
+  /* font-size: small; */
+  background-color: #ee8b00;
+  margin-top: 1em;
+  padding: 3rem 6rem;
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.footer.single {
+  padding: 0.7em;
+  font-size: small;
+}
+
+.footer div > a,
+.footer div > span {
+  margin-left: 2rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .footer {
+    flex-direction: column;
+    padding: 2rem;
+  }
+  .footer div > a,
+  .footer div > span {
+    margin-left: 0;
+  }
+}

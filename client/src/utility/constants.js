@@ -21,6 +21,8 @@ export const CHART_COLORS = {
   },
 };
 
+export const DEVICE_MAIN_URL = "https://thingspeak.com/channels/";
+
 export const DEVICE_URL =
   "https://api.thingspeak.com/channels/DEVICE/feeds.json?timezone=Europe/Rome";
 

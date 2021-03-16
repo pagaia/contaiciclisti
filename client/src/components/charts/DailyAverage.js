@@ -76,14 +76,20 @@ function DailyAverage(props) {
 
   return (
     <div>
-      <h3>Last month</h3>
-      <span className="text-muted">
-        <small>
-          &nbsp;({start} - {end})
-        </small>
-      </span>
+      <div className="sr-only">
+        <h3>Last month</h3>
+        <span className="text-muted">
+          <small>
+            &nbsp;({start} - {end})
+          </small>
+        </span>
+      </div>
       <div className="chart-wrapper">
-        <SimpleChart data={data} name="DailyAverage" />
+        <SimpleChart
+          data={data}
+          name="DailyAverage"
+          title={`Last month - (${start} - ${end})`}
+        />
       </div>
     </div>
   );
