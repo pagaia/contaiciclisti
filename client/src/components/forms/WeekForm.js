@@ -7,7 +7,7 @@ import {
     formatDate,
 } from 'utility/utilityFunctions'
 import './CompareForm.css'
-import Fade from './Fade'
+import Fade from '../Fade'
 
 const WeekForm = ({ updateSearch }) => {
     const [viewForm, toggleForm] = useState(true)
@@ -16,9 +16,9 @@ const WeekForm = ({ updateSearch }) => {
     const weeks = getWeeks(new Date('2020-11-01'))
 
     const [form, setForm] = useState({
-        week: 1,
-        startDate: weeks[1]?.monday,
-        endDate: weeks[1]?.sunday,
+        week: weeks.length - 2,
+        startDate: weeks[weeks.length - 2]?.monday,
+        endDate: weeks[weeks.length - 2]?.sunday,
         devices: convertArrayToObject(devicesStore, 'properties.channelId'),
     })
 

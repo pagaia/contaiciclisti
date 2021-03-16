@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useEffect, useState } from 'react';
 import DailyCompare from 'components/charts/DailyCompare';
 import './DevicesCompare.css';
 import { SingleContext } from 'utility/contexts/MyContext';
-import WeekForm from 'components/WeekForm';
+import WeekForm from 'components/forms/WeekForm';
 import { useSelector } from 'react-redux';
 import { selectDevices } from 'store/devicesSlide';
 
