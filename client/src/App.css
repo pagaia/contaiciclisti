@@ -196,5 +196,5 @@ main {
 .devices-list {
   text-align: initial;
   list-style-type: none;
-  padding: 0;
+  padding: 1em;
 }
