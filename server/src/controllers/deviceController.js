@@ -29,7 +29,8 @@ exports.getDeviceById = async (req, reply) => {
 exports.addDevice = async (req, reply) => {
   try {
     const device = new Device(req.body);
-    return device.save();
+    const result = await device.save();
+    reply.code(201).send(result);
   } catch (err) {
     throw boom.boomify(err);
   }
