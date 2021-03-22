@@ -1,11 +1,23 @@
 # SCRIPTS
 
-This subproject contains some scripts to automate calculations and save data on github
+This subproject contains some scripts to automate calculations and save data to github
 
-## pulse.js
+## Pulse
 
-`pulse.js` is used to spread randomly bike counts in all minutes in each hour.
+`pulse.js` is used to spread randomly bike counts in all minutes in each hour. This is used to create a torque map
 
-## index.js
+How to run:
 
-`index.js` is used to download the data of the last month and upload to the github repository to have a backup copy
+```bash
+node src/pulse.js
+```
+
+## SaveCsv
+
+`saveCsv.js` is used to download the data of the last month and ready to be uploaded to github repository to have a backup copy
+
+How to run:
+
+```bash
+node src/saveCsv.js
+```
