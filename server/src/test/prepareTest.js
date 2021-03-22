@@ -5,13 +5,14 @@
 
 const Fastify = require("fastify");
 const fp = require("fastify-plugin");
-const App = require("./app");
+const App = require("../app");
 const { beforeEach, tearDown, test } = require("tap");
 
 const url = "mongodb://localhost/test";
 const mongoose = require("mongoose");
 
 function clearCollections() {
+  console.log("Delete all collections")
   for (let collection in mongoose.connection.collections) {
     mongoose.connection.collections[collection].deleteMany({});
   }
@@ -25,11 +26,12 @@ beforeEach(async function () {
     await mongoose.connect(url);
     client = mongoose.connection;
   }
-//   clearCollections();
 });
 
 tearDown(async function () {
-  if (client.readyState) {
+  // if connection/client is ready (open) clear all collections and close it
+  if (client && client.readyState) {
+    console.log("Close DB connection")
     clearCollections();
     await client.close();
     client = null;
@@ -53,7 +55,7 @@ function config() {
 function build(t) {
     const app = App({
       logger: {
-        level: "info",
+        level: "warn",
         prettyPrint: true,
       },
     });

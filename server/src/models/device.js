@@ -40,6 +40,7 @@ const device = new mongoose.Schema(
       index: "2dsphere", // Create a special 2dsphere index on `device.location`
     },
     feeds: [feed],
+    description: String,
   },
   { timestamps: true }
 );
