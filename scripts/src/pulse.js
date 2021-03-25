@@ -76,8 +76,9 @@ const spreadCountsPerHour = async () => {
   file.end();
 };
 
-spreadCountsPerHour();
-// module.exports = {
-//   pulseDistribution,
-//   distributePerHour,
-// };
+// spreadCountsPerHour();
+module.exports = {
+  pulseDistribution,
+  distributePerHour,
+  spreadCountsPerHour,
+};

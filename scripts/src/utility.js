@@ -5,25 +5,33 @@ const { format } = require("date-fns");
  * @param {Date} date
  * return {String}
  */
-const formatDate = (date) => {
+exports.formatDate = (date) => {
   return format(date, "yyyy-MM-dd");
 };
 
 /**
+ * date is the day passed to start the month, now if undefined
  * calculate the start and end date for previous month
+ * E.g. 2021-01-01 - 2021-02-01
  */
-const getLastMonthStartEnd = () => {
-  let end = new Date(); // get today
-  end.setDate(end.getDate() - 1); // get yesterday
-  let start = new Date(end);
-  start.setDate(start.getDate() - 31); // get 30 days before yesterday
-  end = formatDate(end);
-  start = formatDate(start);
+exports.getLastMonthStartEnd = (date = new Date()) => {
+  const y = date.getFullYear(),
+    m = date.getMonth();
+
+  var firstDay = new Date(y, m, 1);
+  var lastDay = new Date(y, m + 1, 1);
+
+  const end = this.formatDate(lastDay);
+  const start = this.formatDate(firstDay);
 
   return { start, end };
 };
 
-module.exports = {
-  formatDate,
-  getLastMonthStartEnd,
+/**
+ * get the milliseconds to sleep
+ * @param {number} milliseconds
+ * @returns
+ */
+exports.sleep = async (milliseconds) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
