@@ -24,7 +24,8 @@
     "axios": "^0.21.1",
     "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",
-    "google-spreadsheet": "^3.1.15"
+    "google-spreadsheet": "^3.1.15",
+    "nodemailer": "^6.5.0"
   },
   "devDependencies": {
     "mocha": "^8.2.1"

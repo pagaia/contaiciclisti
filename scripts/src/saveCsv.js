@@ -2,21 +2,22 @@ const { readDevices } = require("./googleSheet");
 const axios = require("axios");
 const Fs = require("fs");
 const Path = require("path");
-const { getLastMonthStartEnd, sleep } = require("./utility");
+const { getLastMonthStartEnd, sleep, log } = require("./utility");
 
 const DEVICE_URL = "https://api.thingspeak.com/channels/CHANNELID/feeds.csv";
 
 async function downloadCsvFiles(devices, date) {
   const { start, end } = getLastMonthStartEnd(date);
+  const files = [];
 
-  devices.forEach((device, index) => {
+  const calls = devices.map((device, index) => {
     async function call() {
       // replace with channelID
       const apiEndPoint =
         DEVICE_URL.replace(/CHANNELID/, device.properties.channelId) +
         `?start=${start}&end=${end}`;
 
-      console.log(`Dowloading file from ${apiEndPoint}`);
+      log(`Dowloading file from ${apiEndPoint}`);
 
       // fetch the device data
       const response = await axios
@@ -25,7 +26,7 @@ async function downloadCsvFiles(devices, date) {
           responseType: "stream",
         })
         .catch((error) => {
-          console.log(error);
+          log(error);
         });
 
       const channelID = device.properties.channelId;
@@ -41,22 +42,31 @@ async function downloadCsvFiles(devices, date) {
         `../data/${channelID}`,
         `${channelID}_${start}_${end}.csv`
       );
-      console.log(`Saving file to ${path}`);
+      log(`Saving file to ${path}`);
 
       const writer = Fs.createWriteStream(path);
 
       response.data.pipe(writer);
 
+      // save the file in a variable
+      files.push(path);
+
       return new Promise((resolve, reject) => {
-        writer.on("finish", resolve);
+        writer.on("finish", () => resolve(path));
         writer.on("error", reject);
       });
     }
 
-    sleep(3000 * index).then(() => {
-      call();
-      console.log("let's wait 3 sec");
+    return sleep(3000).then(() => {
+      return call();
     });
+  });
+
+  const results = Promise.all(calls);
+
+  return results.then((files) => {
+    log({ data: files });
+    return files;
   });
 }
 
