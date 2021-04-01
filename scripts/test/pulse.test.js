@@ -5,7 +5,7 @@ describe("test pulseDistribution function", () => {
   it("should return the input if the number less than 5", () => {
     for (let i = 5; i > 0; i--) {
       let expected = pulseDistribution(i);
-      assert.strictEqual(i, expected);
+      assert.equal(i, expected);
     }
   });
   it("should return an array of numbers which sums to the input", () => {
