@@ -4,6 +4,6 @@ export const myContext = {
     single: true,
 };
 
-const SingleContext = React.createContext(myContext.light);
+const SingleContext = React.createContext(null);
 
 export { SingleContext };

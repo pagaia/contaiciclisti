@@ -1,10 +1,13 @@
 import { useContext } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { SingleContext } from 'utility/contexts/MyContext';
+import Languages from 'utility/Languages';
+import "./Header.css";
 
 const { Link } = require('react-router-dom');
 const { default: ThemeSwitcher } = require('./ThemeSwitcher');
 
-function Header() {
+function Header({ setLang, lang }) {
     const singleChart = useContext(SingleContext);
 
     if (singleChart) {
@@ -13,9 +16,14 @@ function Header() {
     return (
         <header className="container-fluid">
             <h1 id="title">
-                <Link to="/">Portale Sperimentale</Link>
+                <Link to="/">
+                    <FormattedMessage id="home.portal-title" />
+                </Link>
             </h1>
-            <ThemeSwitcher />
+            <div className="header-tool">
+                <Languages setLang={setLang} lang={lang} />
+                <ThemeSwitcher />
+            </div>
         </header>
     );
 }

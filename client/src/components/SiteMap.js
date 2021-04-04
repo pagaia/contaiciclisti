@@ -5,7 +5,6 @@ const SiteMap = () => {
     return (
         <ul>
             {Object.entries(ROUTES).map(([key, value]) => {
-                console.log({ key, value });
                 if (value === '*') {
                     return null;
                 }
