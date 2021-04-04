@@ -7,7 +7,7 @@ import {
     getLastMonthStartEndDatePicker,
 } from 'utility/utilityFunctions';
 import './CompareForm.css';
-import Fade from './Fade';
+import Fade from 'components/Fade';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 

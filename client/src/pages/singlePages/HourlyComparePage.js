@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useEffect, useState } from 'react';
 import './DevicesCompare.css';
 import { SingleContext } from 'utility/contexts/MyContext';
 import HourlyCompare from 'components/charts/HourlyCompare';
-import HourlyCompareForm from 'components/HourlyCompareForm';
+import HourlyCompareForm from 'components/forms/HourlyCompareForm';
 import { useSelector } from 'react-redux';
 import { selectDevices } from 'store/devicesSlide';
 

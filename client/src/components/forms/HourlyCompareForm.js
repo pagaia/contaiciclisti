@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import DatePicker from 'components/DatePicker';
 import { convertArrayToObject } from 'utility/utilityFunctions';
 import './CompareForm.css';
-import Fade from './Fade';
+import Fade from 'components/Fade';
 import { useSelector } from 'react-redux';
 
 const HourlyCompareForm = ({ updateSearch }) => {
