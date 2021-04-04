@@ -23,6 +23,7 @@ const readDevices = async (title = 'Devices') => {
             newColor,
             active,
         } = row;
+
         let device = {
             type: 'Feature',
             geometry: {

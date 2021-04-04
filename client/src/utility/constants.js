@@ -58,3 +58,14 @@ export const DAYS = [
 export const REGEX_SINGLE = /^\/single/;
 
 export const CHART = { BAR: 'BAR', LINE: 'LINE' };
+
+export const LANGUAGES = [
+    {
+        code: 'en',
+        name: 'English',
+    },
+    {
+        code: 'it',
+        name: 'Italian',
+    },
+];

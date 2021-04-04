@@ -2,17 +2,20 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import './App.css';
 import Footer from 'components/Footer';
-import { REGEX_SINGLE } from 'utility/constants';
+import { LANGUAGES, REGEX_SINGLE } from 'utility/constants';
 import { SingleContext } from 'utility/contexts/MyContext';
 import ThemeContext, { THEMES } from 'utility/contexts/ThemeContext';
 import 'images/imageLibrary';
 import { useQuery } from 'utility/utilityFunctions';
 import routes from 'config/routing/routes';
 import { fetchDevices, fetchSecretDevices } from 'store/devicesSlide';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Header from 'components/Header';
 import LogError from 'utility/logError';
 import { setSecret } from 'store/generalSlide';
+import { IntlProvider, FormattedMessage, FormattedNumber } from 'react-intl';
+
+import messages from 'i18n/messages.json';
 
 function App() {
     let location = useLocation();
@@ -21,6 +24,13 @@ function App() {
 
     const [theme, setTheme] = useState(THEMES.DARK);
     const themeValue = { theme, setTheme };
+
+    const { devices } = useSelector((state) => state.devices);
+
+    const nvlang = navigator.language?.substring(0, 2);
+    const [lang, setLang] = useState(
+        LANGUAGES.find((l) => l.code === nvlang) ? nvlang : 'it'
+    );
 
     const dispatch = useDispatch();
 
@@ -45,11 +55,14 @@ function App() {
             setTheme(queryTheme);
         }
 
-        if (secret) {
-            dispatch(fetchSecretDevices());
-            dispatch(setSecret(secret));
-        } else {
-            dispatch(fetchDevices());
+        // load device if not yet loaded
+        if (!devices.length) {
+            if (secret) {
+                dispatch(fetchSecretDevices());
+                dispatch(setSecret(secret));
+            } else {
+                dispatch(fetchDevices());
+            }
         }
     }, []);
 
@@ -59,29 +72,39 @@ function App() {
     return (
         <SingleContext.Provider value={singleChart}>
             <ThemeContext.Provider value={themeValue}>
-                <div className={`App ${singleChart ? 'single' : ''} ${theme}`}>
-                    {/* remove title if single chart */}
-                    <Header />
-                    <LogError />
-                    {/* <SiteMap /> */}
-                    <main className={singleChart ? '' : 'container-fluid'}>
-                        <Suspense fallback={<div>Loading...</div>}>
-                            <Switch>
-                                {routes.map((route, idx) => (
-                                    <Route
-                                        key={route.path}
-                                        path={route.path}
-                                        exact
-                                        component={lazy(() =>
-                                            import(`${route.component}`)
-                                        )}
-                                    />
-                                ))}
-                            </Switch>
-                        </Suspense>
-                    </main>
-                    <Footer />
-                </div>
+                <IntlProvider
+                    messages={messages[lang]}
+                    locale={lang}
+                    defaultLocale="en"
+                >
+                    <div
+                        className={`App ${
+                            singleChart ? 'single' : ''
+                        } ${theme}`}
+                    >
+                        {/* remove title if single chart */}
+                        <Header setLang={setLang} lang={lang} />
+                        <LogError />
+                        {/* <SiteMap /> */}
+                        <main className={singleChart ? '' : 'container-fluid'}>
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <Switch>
+                                    {routes.map((route, idx) => (
+                                        <Route
+                                            key={route.path}
+                                            path={route.path}
+                                            exact
+                                            component={lazy(() =>
+                                                import(`${route.component}`)
+                                            )}
+                                        />
+                                    ))}
+                                </Switch>
+                            </Suspense>
+                        </main>
+                        <Footer />
+                    </div>
+                </IntlProvider>
             </ThemeContext.Provider>
         </SingleContext.Provider>
     );
