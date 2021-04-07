@@ -1,0 +1,29 @@
+{
+    "en": {
+        "home.welcome": "Hello, welcome to Contaiciclisti",
+        "about.description": "Conta i Ciclisti is a bottom-up project organized by Associazione SalvaiCiclisti Roma to count cyclists who cycle through Rome every day for any reason: work, leisure or simply go shopping. If you want to contribute to fund raising, more info on the project can be found on the page: {link}",
+        "about.credits": " The data is collected and provided by {link}",
+        "about.support": "support the project",
+        "form.minimum-selection": "Please select minimun 2 devices and a window of max 1 month",
+        "form.helper-start-day": "This is the start day for the comparison",
+        "form.start-date": "Start date",
+        "home.portal-title": "Experimental counter",
+        "footer.license": "Except where otherwise noted, content on this site is licensed under a {license}",
+        "footer.creative-commons": "Creative Commons Attribution 4.0 International License",
+        "chart.switch-to": "Switch to {chart}",
+        "chart.last-month": "Last month"
+    },
+    "it": {
+        "home.welcome": "Ciao, benvenuto su Contaiciclisti",
+        "about.description": "Conta i Ciclisti è un progetto dal basso ideato dall'Associazione SalvaiCiclisti Roma per contare i ciclisti che ogni giorno attraversano Roma per diversi motivi: lavoro, piacere o semplicemente andare a fare la spesa. Se vuoi contribuire al fundraising, puoi trovare più informazioni sulla pagina seguente: {link}",
+        "about.credits": "I dati sono raccolti e forniti da {link}",
+        "about.support": "supporta il progetto",
+        "form.minimum-selection": "Per favore selezione minimo 2 stazioni ed una finestra temporale di massimo 1 mese",
+        "form.helper-start-day": "Questo è il giorno di inizioper il confronto",
+        "form.start-date": "Data di inizio",
+        "home.portal-title": "Contatore sperimentale",
+        "footer.license": "Eccetto dove altrimenti indicato, i contenuti su questo sito sono licenziati sotto la {license}",
+        "footer.creative-commons": "Licenza Creative Commons Attribuzione 4.0 Internazionale (CC BY 4.0)",
+        "chart.switch-to": "Cambia grafico a {chart}",
+        "chart.last-month": "Ultimo mese" }
+}

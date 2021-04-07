@@ -39,33 +39,54 @@ exports.sleep = async (milliseconds) => {
 
 /**
  *  utility function to build the email object
- * @param {array} recipients - list of recipients
- * @param {array} attachments - list of attachments
+ * @param {array} to - list of recipients
+ * @param {array} cc - list of recipients in CC
+ * @param {array} bcc - list of recipients in BCC
+ * @param {array} files - list of attachments
  * @returns
  */
-const buildMail = (recipients, attachments) => {
+const buildMail = ({ to, cc, bcc, files }) => {
   const mail = {
     from: '"Cico 🚲 👻" <' + process.env.REACT_APP_MAIL_FROM + ">", // sender address
-    to: recipients.join(", "), // list of receivers
+    to: to.join(", "), // list of receivers
+    cc: cc.join(", "), // list of CCs
+    bcc: bcc.join(", "),
     subject: "CiCO - Conta i Ciclisti, dati mensili ✔", // Subject line
     text: `Heilà, 
-    
-    guarda un po quanti siamo? 
+
+    sai quante persone si muovono a Roma in bici?
+    In allegato puoi trovare l'ultimo conteggio riferito al mese scorso dei contatori al momento installati per il progetto CiCO - Conta i Ciclisti. 
+    Per lo storico puoi accedere direttamento al repository online https://github.com/pagaia/contaiciclisti/tree/main/scripts/data
     
     Il tuo amico 
-    Cico`, // plain text body
+    Cico
+    
+    Ricevi questa email perché hai chiesto espressamente di essere fra i destinatari.
+    Se intendi cancellare la tua iscrizione, scrivi a ${process.env.REACT_APP_REPLY_TO}
+    `, // plain text body
 
     html: `<h1>Heilà</h1> 
-    <p>guarda un po quanti siamo? 
+    <p> 
+    sai quante persone si muovono a Roma in bici? <br/>
+    In allegato puoi trovare il conteggio orario riferito al mese scorso dei contatori al momento installati per il progetto CiCO - Conta i Ciclisti.<br/>
+    Per lo storico puoi accedere direttamento al repository online https://github.com/pagaia/contaiciclisti/tree/main/scripts/data
+    </p>
+    <br/><br/>
     
-    Il tuo amico,<br> 
+    Il tuo amico <br/>
     <b>Cico</b>
+
+    <br/><br/>    
+    <small>Ricevi questa email perché hai chiesto espressamente di essere fra i destinatari.
+    Se intendi cancellare la tua iscrizione, scrivi a ${process.env.REACT_APP_REPLY_TO}
+    </small>
+    <br/> 
 
     </p>`, // html body
   };
 
-  if (attachments) {
-    mail.attachments = attachments.map((file) => {
+  if (files) {
+    mail.attachments = files.map((file) => {
       return {
         // filename and content type is derived from path
         path: file,
@@ -76,8 +97,8 @@ const buildMail = (recipients, attachments) => {
   return mail;
 };
 
-exports.sendMail = (recipients, attachments) => {
-  if (!recipients || !recipients.length) {
+exports.sendMail = ({ to, cc, bcc, files }) => {
+  if (!to || !to.length) {
     console.warn("Sorry the recepients is empty. No mail will be sent");
   }
 
@@ -89,10 +110,12 @@ exports.sendMail = (recipients, attachments) => {
     },
   });
 
-  this.log(`Sending email to ${recipients}`);
+  this.log(`Sending email to ${to}`);
+  this.log(`Sending email to ${cc}`);
+  this.log(`Sending email to ${bcc}`);
 
   transporter.sendMail(
-    buildMail(recipients, attachments),
+    buildMail({ to, cc, bcc, files }),
 
     function (error, info) {
       if (error) {

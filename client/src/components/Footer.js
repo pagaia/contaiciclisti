@@ -1,5 +1,6 @@
 import { ROUTES } from 'config/routing/routes';
 import React, { useContext } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { SingleContext } from 'utility/contexts/MyContext';
 import ExternalLink from './ExternalLink';
@@ -7,15 +8,16 @@ import './Footer.css';
 
 const Footer = (props) => {
     const singleChart = useContext(SingleContext);
+    const license = (
+        <ExternalLink url="https://creativecommons.org/licenses/by/4.0/">
+            <FormattedMessage id="footer.creative-commons" />
+        </ExternalLink>
+    );
 
     return (
         <footer className={`footer ${singleChart ? 'single' : ''}`}>
             <p>
-                Except where otherwise noted, content on this site is licensed
-                under a{' '}
-                <ExternalLink url="https://creativecommons.org/licenses/by/4.0/">
-                    Creative Commons Attribution 4.0 International License
-                </ExternalLink>
+                <FormattedMessage id="footer.license" values={{ license }} />
             </p>
             <div className="d-flex justify-content-between">
                 <ExternalLink url="https://twitter.com/pagaia">
