@@ -1,5 +1,7 @@
 // External Dependancies
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const timestampPlugin = require('./plugins/timestamp')
 
 const pointSchema = new mongoose.Schema({
   type: {
@@ -13,36 +15,27 @@ const pointSchema = new mongoose.Schema({
   },
 });
 
-const feed = new mongoose.Schema(
-  {
-    hourly: Number,
-    hourlyDay: Number,
-    daily: Number,
-    battery: Number,
-    gmsErrorNumber: Number,
-    htmlErrorNumber: Number,
-    sendErrorNumber: Number,
-    yesterday: Number,
+const deviceSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
   },
-  { timestamps: true }
-);
-
-const device = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    location: {
-      type: pointSchema,
-      required: true,
-      index: "2dsphere", // Create a special 2dsphere index on `device.location`
-    },
-    feeds: [feed],
-    description: String,
+  location: {
+    type: pointSchema,
+    required: true,
+    index: "2dsphere", // Create a special 2dsphere index on `device.location`
   },
-  { timestamps: true }
-);
+  feeds: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Feed",
+    },
+  ],
+  description: String,
+});
 
-module.exports = mongoose.model("Device", device);
+deviceSchema.plugin(timestampPlugin)
+
+const Device = mongoose.model("Device", deviceSchema);
+module.exports = Device;

@@ -21,3 +21,10 @@ yarn run start
 
 For the Back-end I am still working on it.
 The idea is to store data in MongoDB and use Fastify as server
+
+## TODO
+
+1. Add API specification
+2. Add token
+3. Add Authentication for users
+4. Secure API
