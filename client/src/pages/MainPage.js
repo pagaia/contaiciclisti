@@ -15,9 +15,9 @@ const MainPage = () => {
     const { devices } = useSelector((state) => state.devices);
     const showPulse = !useSelector(selectSecret);
 
-    if (!devices?.length) {
-        return <Loading />;
-    }
+    // if (!devices?.length) {
+    //     return <Loading />;
+    // }
 
     return (
         <Fragment>

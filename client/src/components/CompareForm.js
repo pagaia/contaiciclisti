@@ -10,6 +10,7 @@ import './CompareForm.css';
 import Fade from './Fade';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 
 const { start: startDate, end: endDate } = getLastMonthStartEndDatePicker();
 
@@ -109,7 +110,7 @@ const CompareForm = ({ updateSearch }) => {
         return (
             <div className="compare">
                 <h3>
-                    Please select minimun 2 devices and a window of max 1 month
+                    <FormattedMessage id="form.minimum-selection" />
                 </h3>
                 <div className="row">
                     <div className="col-md-3">
@@ -150,7 +151,9 @@ const CompareForm = ({ updateSearch }) => {
                 <div className="row">
                     <div className="col-sm-6 col-md-3">
                         <div className="form-group">
-                            <label htmlFor="startDate">Start date</label>
+                            <label htmlFor="startDate">
+                                <FormattedMessage id="form.start-date" />
+                            </label>
                             <DatePicker
                                 selected={form.startDate}
                                 onChange={handleStartDate}
@@ -160,7 +163,7 @@ const CompareForm = ({ updateSearch }) => {
                                 id="startHelp"
                                 className="form-text text-muted"
                             >
-                                This is the start day for the comparison
+                                <FormattedMessage id="form.helper-start-day" />
                             </small>
                         </div>
                     </div>

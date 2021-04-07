@@ -1,4 +1,3 @@
-const { readDevices } = require("./googleSheet");
 const axios = require("axios");
 const Fs = require("fs");
 const Path = require("path");
