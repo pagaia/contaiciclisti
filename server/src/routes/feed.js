@@ -27,7 +27,7 @@ const feedProperties = {
   gmsErrorNumber: { type: "number", nullable: true },
   htmlErrorNumber: { type: "number", nullable: true },
   sendErrorNumber: { type: "number", nullable: true },
-  yesterday: { type: "number" },
+  yesterday: { type: "number", nullable: true },
   device: {
     type: "object",
     properties: deviceProperties,
