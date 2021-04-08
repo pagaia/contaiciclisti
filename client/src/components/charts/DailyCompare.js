@@ -13,6 +13,7 @@ import SimpleChart from './Chart';
 import { useDispatch, useSelector } from 'react-redux';
 import { receiveDailyCompare, selectDailyCompare } from 'store/chartsSlide';
 import { readRipettaLevel } from 'utility/googleSheet';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 function DailyCompare({ search, name }) {
     const dailyCompare = useSelector(selectDailyCompare);
@@ -20,6 +21,13 @@ function DailyCompare({ search, name }) {
 
     const devices = Object.values(search.devices);
     const { startDate, endDate } = search;
+
+    const intl = useIntl();
+    const chartTitle = intl.formatMessage(
+        { id: 'chart.title.counts-between' },
+        { startDate, endDate: endDate.substring(0, 10) }
+    );
+
     const newDatasets = [];
 
     const labels = getDatesBetweenDates(startDate, endDate);
@@ -118,7 +126,10 @@ function DailyCompare({ search, name }) {
         <Fragment>
             <div className="sr-only">
                 <h3>
-                    Counts between {startDate} and {endDate}
+                    <FormattedMessage
+                        id="chart.title.counts-between"
+                        values={{ startDate, endDate }}
+                    />
                 </h3>
             </div>
             <div className="chart-wrapper">
@@ -126,10 +137,7 @@ function DailyCompare({ search, name }) {
                     data={data}
                     name={name}
                     doubleAxes
-                    title={`Counts between ${startDate} and ${endDate.substring(
-                        0,
-                        10
-                    )}`}
+                    title={chartTitle}
                 />
             </div>
         </Fragment>

@@ -1,5 +1,7 @@
 import React from 'react';
-import "./Languages.css";
+import './Languages.css';
+import ItFlag from 'images/it-flag.gif';
+import UkFlag from 'images/uk-flag.gif';
 
 const Languages = ({ setLang }) => {
     const handleChange = (lang) => (e) => {
@@ -15,22 +17,14 @@ const Languages = ({ setLang }) => {
                 title="Set English language"
                 onClick={handleChange('en')}
             >
-                <img
-                    width="32"
-                    alt="Flag of the United Kingdom"
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Flag_of_the_United_Kingdom.svg/64px-Flag_of_the_United_Kingdom.svg.png"
-                ></img>
+                <img alt="Flag of the United Kingdom" src={UkFlag}></img>
             </a>
             <a
                 title="Set Italian language"
                 href="#set-en-lang"
                 onClick={handleChange('it')}
             >
-                <img
-                    width="16"
-                    alt="Flag of Italy"
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Italy_%281-1%29.png/32px-Flag_of_Italy_%281-1%29.png"
-                ></img>
+                <img alt="Flag of Italy" src={ItFlag}></img>
             </a>
         </div>
     );

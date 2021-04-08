@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Accordion.css';
+import { FormattedMessage } from 'react-intl';
 
 const Accordion = ({ title, children }) => {
     const [active, toggle] = useState(true);
@@ -13,7 +14,11 @@ const Accordion = ({ title, children }) => {
                     toggle(!active);
                 }}
             >
-                {active ? 'Collapse' : 'Open'}
+                {active ? (
+                    <FormattedMessage id="button.collapse" />
+                ) : (
+                    <FormattedMessage id="button.open" />
+                )}
             </button>
             <div className={`panel ${active ? 'active' : 'hidden'}`}>
                 {children}

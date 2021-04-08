@@ -1,3 +1,8 @@
 .lang > a {
     margin: 0 5px;
 }
+
+.lang img {
+    height: 22px;
+    width: 36px;
+}

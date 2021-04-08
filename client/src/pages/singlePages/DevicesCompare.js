@@ -1,6 +1,7 @@
 import DailyCompare from 'components/charts/DailyCompare';
 import CompareForm from 'components/CompareForm';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { selectDevices } from 'store/devicesSlide';
 import { SingleContext } from 'utility/contexts/MyContext';
@@ -23,7 +24,11 @@ const DevicesCompare = (props) => {
 
     return (
         <Fragment>
-            {!singleChart && <h2>Compare devices</h2>}
+            {!singleChart && (
+                <h2>
+                    <FormattedMessage id="title.compare-devices" />
+                </h2>
+            )}
             <CompareForm updateSearch={setSearch} />
             {search && <DailyCompare search={search} name="device-compare" />}
             {!singleChart && <hr className="mb-5 bg-warning" />}

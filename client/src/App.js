@@ -32,6 +32,11 @@ function App() {
         LANGUAGES.find((l) => l.code === nvlang) ? nvlang : 'it'
     );
 
+    const changeLanguage = (lang) => {
+        document.documentElement.lang = lang;
+        setLang(lang);
+    };
+
     const dispatch = useDispatch();
 
     const hideLoader = () => {
@@ -83,7 +88,7 @@ function App() {
                         } ${theme}`}
                     >
                         {/* remove title if single chart */}
-                        <Header setLang={setLang} lang={lang} />
+                        <Header setLang={changeLanguage} lang={lang} />
                         <LogError />
                         {/* <SiteMap /> */}
                         <main className={singleChart ? '' : 'container-fluid'}>

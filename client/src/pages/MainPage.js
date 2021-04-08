@@ -10,14 +10,11 @@ import { Link } from 'react-router-dom';
 import Accordion from 'components/Accordion';
 import { selectSecret } from 'store/generalSlide';
 import Loading from 'components/Loading';
+import { FormattedMessage } from 'react-intl';
 
 const MainPage = () => {
     const { devices } = useSelector((state) => state.devices);
     const showPulse = !useSelector(selectSecret);
-
-    // if (!devices?.length) {
-    //     return <Loading />;
-    // }
 
     return (
         <Fragment>
@@ -54,7 +51,7 @@ const MainPage = () => {
 
                     <div className="row">
                         <div className="col-sm-12">
-                            <h2>Daily average comparison</h2>
+                            <h2><FormattedMessage id="title.daily-average"/></h2>
                             <DailyAverage />
                         </div>
                         <div className="col-sm-12">
@@ -68,7 +65,7 @@ const MainPage = () => {
                         </div>
                         {showPulse && (
                             <div className="col-sm-12">
-                                <h2>Example of counts during Christmas 2020</h2>
+                                <h2><FormattedMessage id="title.example-counts-christmas"/></h2>
                                 <iframe
                                     width="100%"
                                     height="520"

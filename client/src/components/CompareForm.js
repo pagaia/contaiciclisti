@@ -169,7 +169,7 @@ const CompareForm = ({ updateSearch }) => {
                     </div>
                     <div className="col-sm-6 col-md-3">
                         <div className="form-group">
-                            <label htmlFor="endDate">End date</label>
+                            <label htmlFor="endDate"><FormattedMessage id="form.end-date" /></label>
 
                             <DatePicker
                                 selected={form.endDate}
@@ -179,7 +179,7 @@ const CompareForm = ({ updateSearch }) => {
                                 id="endHelp"
                                 className="form-text text-muted"
                             >
-                                This is the end day for the comparison
+                                <FormattedMessage id="form.helper-end-day" />
                             </small>
                         </div>
                     </div>
@@ -207,7 +207,7 @@ const CompareForm = ({ updateSearch }) => {
                 setShowMessage={toggleForm}
                 button={
                     <button onClick={toggle} className="btn btn-secondary">
-                        Update Search
+                        <FormattedMessage id="button.update-search"/>
                     </button>
                 }
             >

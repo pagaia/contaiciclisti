@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { DEVICE_URL, REGEX_DEVICE } from 'utility/constants';
 import CountCard from 'components/CountCard';
 import { format } from 'date-fns';
+import { FormattedMessage } from 'react-intl';
 
 function LastCount({ device }) {
     const [counts, setCounts] = useState({});
@@ -45,17 +46,17 @@ function LastCount({ device }) {
         <div className="last-counter">
             <CountCard
                 date={counts.created_at}
-                title="Last"
+                title={<FormattedMessage id="counter.last" />}
                 text={counts.last}
             />
             <CountCard
                 date={counts.created_at}
-                title="Today"
+                title={<FormattedMessage id="counter.today" />}
                 text={counts.subTotal}
             />
             <CountCard
                 date={counts.yesterdayDate}
-                title="Yesterday"
+                title={<FormattedMessage id="counter.yesterday" />}
                 text={counts.yesterday}
                 className="big-counter"
             />
