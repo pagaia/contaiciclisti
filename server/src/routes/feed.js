@@ -20,14 +20,14 @@ const deviceProperties = {
 
 const feedProperties = {
   _id: { type: "string" },
-  hourly: { type: "number" },
-  hourlyDay: { type: "number" },
-  daily: { type: "number" },
-  battery: { type: "number" },
-  gmsErrorNumber: { type: "number" },
-  htmlErrorNumber: { type: "number" },
-  sendErrorNumber: { type: "number" },
-  yesterday: { type: "number" },
+  hourly: { type: "number", nullable: true },
+  hourlyDay: { type: "number", nullable: true },
+  daily: { type: "number", nullable: true },
+  battery: { type: "number", nullable: true },
+  gmsErrorNumber: { type: "number", nullable: true },
+  htmlErrorNumber: { type: "number", nullable: true },
+  sendErrorNumber: { type: "number", nullable: true },
+  yesterday: { type: "number", nullable: true },
   device: {
     type: "object",
     properties: deviceProperties,
