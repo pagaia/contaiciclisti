@@ -5,6 +5,7 @@ import { SingleContext } from 'utility/contexts/MyContext';
 import WeekForm from 'components/WeekForm';
 import { useSelector } from 'react-redux';
 import { selectDevices } from 'store/devicesSlide';
+import { FormattedMessage } from 'react-intl';
 
 const WeekCompare = (props) => {
     const [search, setSearch] = useState(null);
@@ -23,7 +24,11 @@ const WeekCompare = (props) => {
 
     return (
         <Fragment>
-            {!singleChart && <h2>Week comparison</h2>}
+            {!singleChart && (
+                <h2>
+                    <FormattedMessage id="title.weekly-comparison" />
+                </h2>
+            )}
             <WeekForm updateSearch={setSearch} />
             {search && <DailyCompare search={search} name="week-compare" />}
             {!singleChart && <hr className="mb-5 bg-warning" />}

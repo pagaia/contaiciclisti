@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 import { CHART } from 'utility/constants';
 import { datasetKeyProvider } from 'utility/utilityFunctions';
 import DownLoadChart from 'components/DownloadChart';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 const SimpleChart = ({ data, name, doubleAxes, title = 'Text testtt' }) => {
     const [chart, setChart] = useState(CHART.LINE);
-    // const intl = useIntl();
-    // const intlTitle = intl.formatMessage({id: title});
+
     const chartRef = useRef(null);
 
     const chartName = `chart${name}`;
@@ -103,15 +102,11 @@ const SimpleChart = ({ data, name, doubleAxes, title = 'Text testtt' }) => {
                     className="custom-control-label"
                     htmlFor={`switch-chart-${name}`}
                 >
-                    <FormattedMessage
-                        id="chart.switch-to"
-                        values={{
-                            chart:
-                                chart === CHART.BAR
-                                    ? CHART.LINE.toLowerCase()
-                                    : CHART.BAR.toLowerCase(),
-                        }}
-                    />
+                    {chart === CHART.BAR ? (
+                        <FormattedMessage id="chart.switch-to-line" />
+                    ) : (
+                        <FormattedMessage id="chart.switch-to-bar" />
+                    )}
                 </label>
             </div>
             <DownLoadChart chartId={chartName} chartRef={chartRef} />

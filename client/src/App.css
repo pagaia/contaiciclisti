@@ -63,7 +63,7 @@ p.lead {
     margin: 5px 2px;
     width: 30%;
     min-width: 130px;
-    min-height: 140px;
+    /* min-height: 140px; */
     border: 1px solid #ffbe00;
 }
 
@@ -90,6 +90,7 @@ header .card {
 
 .blockquote-footer {
     font-size: 60%;
+    color: white;
 }
 
 .last .card-title,

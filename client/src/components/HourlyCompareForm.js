@@ -4,6 +4,7 @@ import { convertArrayToObject } from 'utility/utilityFunctions';
 import './CompareForm.css';
 import Fade from './Fade';
 import { useSelector } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 
 const HourlyCompareForm = ({ updateSearch }) => {
     const [viewForm, toggleForm] = useState(true);
@@ -133,7 +134,7 @@ const HourlyCompareForm = ({ updateSearch }) => {
                 setShowMessage={toggleForm}
                 button={
                     <button onClick={toggle} className="btn btn-secondary">
-                        Update Search
+                       <FormattedMessage id="button.update-search"/>
                     </button>
                 }
             >

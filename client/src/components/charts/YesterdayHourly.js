@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { DEVICE_URL, REGEX_DEVICE } from 'utility/constants';
 import {
     buildDataHourly,
@@ -11,6 +12,11 @@ const { start: yesterdayStart, end: yesterdayEnd } = getYesterdayStartEnd();
 
 function YesterdayHourly({ device }) {
     const [yesterday, setYesterday] = useState({});
+
+    const intl = useIntl();
+    const chartTitle = intl.formatMessage({
+        id: 'title.hourly-counts-yesterday',
+    });
 
     async function fetchDeviceData() {
         // replace with channelID
@@ -35,15 +41,14 @@ function YesterdayHourly({ device }) {
             <div className="col-sm">
                 <div className="chart-wrapper">
                     <div className="sr-only">
-                        <h3 className="d-inline"> Hourly counts</h3>
-                        <span className="text-muted">
-                            <small> - yesterday</small>
-                        </span>
+                        <h3 className="d-inline">
+                            <FormattedMessage id="chartTitle" />
+                        </h3>
                     </div>
                     <SimpleChart
                         data={yesterday}
                         name="YesterdayHourly"
-                        title="Hourly counts - yesterday"
+                        title={chartTitle}
                     />
                 </div>
             </div>

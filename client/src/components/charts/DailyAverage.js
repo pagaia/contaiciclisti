@@ -10,13 +10,19 @@ import SimpleChart from './Chart';
 import { useDispatch, useSelector } from 'react-redux';
 import { receiveDailyAverage, selectDailyAverage } from 'store/chartsSlide';
 import { selectDevices } from 'store/devicesSlide';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const { start, end } = getLastMonthStartEnd();
 
 function DailyAverage(props) {
     const dailyAverage = useSelector(selectDailyAverage);
     const devices = useSelector(selectDevices);
+  
+    const intl = useIntl();
+    const chartTitle = intl.formatMessage(
+        { id: 'chart.title.last-month' },
+        { start, end }
+    );
 
     const dispatch = useDispatch();
 
@@ -91,7 +97,7 @@ function DailyAverage(props) {
                 <SimpleChart
                     data={data}
                     name="DailyAverage"
-                    title={`Last month - (${start} - ${end})`}
+                    title={chartTitle}
                 />
             </div>
         </div>

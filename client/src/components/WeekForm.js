@@ -1,132 +1,135 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { Fragment, useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 import {
     convertArrayToObject,
     getWeeks,
     formatDateAndHours,
     formatDate,
-} from 'utility/utilityFunctions'
-import './CompareForm.css'
-import Fade from './Fade'
+} from 'utility/utilityFunctions';
+import './CompareForm.css';
+import Fade from './Fade';
 
 const WeekForm = ({ updateSearch }) => {
-    const [viewForm, toggleForm] = useState(true)
-    const { devices: devicesStore } = useSelector((state) => state.devices)
+    const [viewForm, toggleForm] = useState(true);
+    const { devices: devicesStore } = useSelector((state) => state.devices);
 
-    const weeks = getWeeks(new Date('2020-11-01'))
+    const weeks = getWeeks(new Date('2020-11-01'));
 
     const [form, setForm] = useState({
         week: 1,
         startDate: weeks[1]?.monday,
         endDate: weeks[1]?.sunday,
         devices: convertArrayToObject(devicesStore, 'properties.channelId'),
-    })
+    });
 
     useEffect(() => {
         // hit search on mounting
         if (devicesStore?.length > 0) {
-            handleSearch()
+            handleSearch();
         }
-    }, [])
+    }, []);
 
     const handleChange = (e) => {
-        const channelId = e.target.value
-        const { checked } = e.target
-        let devices
+        const channelId = e.target.value;
+        const { checked } = e.target;
+        let devices;
 
         if (checked) {
             // add the device to the form
             const found = devicesStore.find(
                 (device) => device.properties.channelId == channelId
-            )
+            );
             devices = {
                 ...form.devices,
                 [channelId]: found,
-            }
+            };
         }
         // else remove the device from the form
         else {
             devices = Object.keys(form.devices).reduce((object, key) => {
                 if (key !== channelId) {
-                    object[key] = form.devices[key]
+                    object[key] = form.devices[key];
                 }
-                return object
-            }, {})
+                return object;
+            }, {});
         }
 
         setForm({
             ...form,
             devices,
-        })
-    }
+        });
+    };
 
     const handleChangeWeek = (event) => {
-        const { value: number } = event.target
-        const startDate = weeks[number]?.monday
-        let endDate = weeks[number]?.sunday
-        const week = number
+        const { value: number } = event.target;
+        const startDate = weeks[number]?.monday;
+        let endDate = weeks[number]?.sunday;
+        const week = number;
 
         setForm({
             ...form,
             startDate,
             endDate,
             week,
-        })
+        });
 
         // update search on changing week
-        endDate.setHours(23, 59)
-        endDate = formatDateAndHours(endDate)
+        endDate.setHours(23, 59);
+        endDate = formatDateAndHours(endDate);
         updateSearch({
             ...form,
             startDate: formatDate(startDate),
             endDate,
             week,
-        })
-    }
+        });
+    };
 
     const validateForm = (form) => {
-        const error = []
-        const period = (form.endDate - form.startDate) / (1000 * 60 * 60 * 24)
+        const error = [];
+        const period = (form.endDate - form.startDate) / (1000 * 60 * 60 * 24);
         if (period > 32 || period < 1) {
-            error.push('-max window: 1 month')
+            error.push('-max window: 1 month');
         }
-        return error
-    }
+        return error;
+    };
 
     const handleSearch = () => {
-        const error = validateForm(form)
+        const error = validateForm(form);
         if (error.length > 0) {
-            const text = 'Please check data: \n' + error.join('\n')
-            alert(text)
-            return
+            const text = 'Please check data: \n' + error.join('\n');
+            alert(text);
+            return;
         }
-        toggle()
+        toggle();
 
-        let endDate = form.endDate
-        endDate.setHours(23, 59)
-        endDate = formatDateAndHours(endDate)
+        let endDate = form.endDate;
+        endDate.setHours(23, 59);
+        endDate = formatDateAndHours(endDate);
         updateSearch({
             ...form,
             endDate,
             startDate: formatDate(form.startDate),
-        })
-    }
+        });
+    };
 
     const toggle = () => {
-        toggleForm(!viewForm)
-    }
+        toggleForm(!viewForm);
+    };
 
     const renderForm = () => {
         return (
             <div className="compare">
-                <h3>Please select minimun 2 devices and a week</h3>
+                <h3>
+                    <FormattedMessage id="title.min-2-devices-and-week" />
+                </h3>
                 <div className="row">
                     <div className="col-md-3">
                         {devicesStore.map((device, idx) => {
                             const id = `${device.properties.name.replace(
                                 ' ',
                                 '-'
-                            )}-WeekForm`
+                            )}-WeekForm`;
                             return (
                                 <Fragment key={idx}>
                                     <div className="form-check">
@@ -151,7 +154,7 @@ const WeekForm = ({ updateSearch }) => {
                                         </label>
                                     </div>
                                 </Fragment>
-                            )
+                            );
                         })}
                     </div>
                 </div>
@@ -165,7 +168,7 @@ const WeekForm = ({ updateSearch }) => {
                                         className="input-group-text"
                                         htmlFor="week"
                                     >
-                                        Week
+                                        <FormattedMessage id="form.week" />
                                     </label>
                                 </div>
                                 <select
@@ -181,7 +184,7 @@ const WeekForm = ({ updateSearch }) => {
                                                 {formatDate(week.monday)} -{' '}
                                                 {formatDate(week.sunday)}
                                             </option>
-                                        )
+                                        );
                                     })}
                                 </select>
                             </div>
@@ -196,13 +199,13 @@ const WeekForm = ({ updateSearch }) => {
                             className="btn btn-primary"
                             onClick={handleSearch}
                         >
-                            Search
+                            <FormattedMessage id="button.search" />
                         </button>
                     </div>
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     return (
         <Fragment>
@@ -211,14 +214,14 @@ const WeekForm = ({ updateSearch }) => {
                 setShowMessage={toggleForm}
                 button={
                     <button onClick={toggle} className="btn btn-secondary">
-                        Update Search
+                        <FormattedMessage id="button.update-search"/>
                     </button>
                 }
             >
                 {renderForm()}
             </Fade>
         </Fragment>
-    )
-}
+    );
+};
 
-export default WeekForm
+export default WeekForm;
