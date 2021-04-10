@@ -16,8 +16,8 @@ exports.options = {
       url: "https://github.com/pagaia/contaiciclisti",
       description: "Find more info here",
     },
-    host: "localhost:8080",
-    schemes: ["http", "https"],
+    host: "www.contaiciclisti.tk",
+    schemes: ["https"],
     consumes: ["application/json"],
     produces: ["application/json"],
     definitions: {
