@@ -1,19 +1,17 @@
 import axios from 'axios';
-import { Fragment, useEffect } from 'react';
-import {
-    buildDailyCompare,
-    getDatesBetweenDates,
-    replaceWeekendDays,
-    deepEqual,
-    buildDailyTevereLevel,
-} from 'utility/utilityFunctions';
 import PropTypes from 'prop-types';
-import { DEVICE_URL, REGEX_DEVICE } from 'utility/constants';
-import SimpleChart from './Chart';
+import { Fragment, useEffect } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { receiveDailyCompare, selectDailyCompare } from 'store/chartsSlide';
+import { DEVICE_URL, REGEX_DEVICE } from 'utility/constants';
 import { readRipettaLevel } from 'utility/googleSheet';
-import { FormattedMessage, useIntl } from 'react-intl';
+import {
+    buildDailyCompare,
+    buildDailyTevereLevel, deepEqual, getDatesBetweenDates,
+    replaceWeekendDays
+} from 'utility/utilityFunctions';
+import SimpleChart from './Chart';
 
 function DailyCompare({ search, name }) {
     const dailyCompare = useSelector(selectDailyCompare);

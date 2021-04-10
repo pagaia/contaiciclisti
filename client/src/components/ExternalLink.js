@@ -15,7 +15,7 @@ const ExternalLink = ({ url, children, className = 'mr-1 ml-1' }) => {
 
 ExternalLink.propTypes = {
     url: PropTypes.string,
-    children: PropTypes.string,
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     className: PropTypes.string,
 };
 export default ExternalLink;

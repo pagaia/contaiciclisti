@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import DatePicker from 'components/DatePicker';
 import { convertArrayToObject } from 'utility/utilityFunctions';
 import './CompareForm.css';
-import Fade from './Fade';
+import Fade from '../Fade';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
@@ -128,19 +128,17 @@ const HourlyCompareForm = ({ updateSearch }) => {
     };
 
     return (
-        <Fragment>
-            <Fade
-                showMessage={viewForm}
-                setShowMessage={toggleForm}
-                button={
-                    <button onClick={toggle} className="btn btn-secondary">
-                       <FormattedMessage id="button.update-search"/>
-                    </button>
-                }
-            >
-                {renderForm()}
-            </Fade>
-        </Fragment>
+        <Fade
+            showMessage={viewForm}
+            setShowMessage={toggleForm}
+            button={
+                <button onClick={toggle} className="btn btn-secondary">
+                    <FormattedMessage id="button.update-search" />
+                </button>
+            }
+        >
+            {renderForm()}
+        </Fade>
     );
 };
 

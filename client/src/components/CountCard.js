@@ -1,8 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { format } from 'timeago.js';
 import CountUpAnimation from 'utility/CountUpAnimation';
-import { FormattedMessage } from 'react-intl';
 
 const CountCard = ({ title, text, date, className }) => {
     return (
@@ -32,7 +32,7 @@ const CountCard = ({ title, text, date, className }) => {
 };
 
 CountCard.propTypes = {
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     text: PropTypes.string,
     date: PropTypes.string,
 };

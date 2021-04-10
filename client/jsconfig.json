@@ -1,10 +1,13 @@
 {
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "paths": {
-      "components/*": ["src/components/*"]
-    }
-  },
-  "include": ["src", "src/components"],
-  "exclude": ["node_modules"]
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "components/*": ["src/components/*"],
+            "@/*": ["./src/*"],
+            "root/*": ["./*"]
+        }
+    },
+    "include": ["src", "src/components"],
+    "exclude": ["node_modules"],
+    "checkjs": true
 }

@@ -6,6 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 function ThemeSwitcher() {
     const { theme, setTheme } = useContext(ThemeContext);
 
+    const updateTheme = () => {
+        const newTheme = theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', newTheme);
+        setTheme(newTheme);
+    };
+
     const renderIcon = () => {
         if (theme === 'dark') {
             return (
@@ -40,9 +46,7 @@ function ThemeSwitcher() {
                     className="custom-control-input"
                     id="themeSwitcher"
                     name="themeSwitcher"
-                    onChange={() =>
-                        setTheme(theme === 'dark' ? 'light' : 'dark')
-                    }
+                    onChange={updateTheme}
                     value="switch-chart"
                 />
                 <label className="custom-control-label" htmlFor="themeSwitcher">

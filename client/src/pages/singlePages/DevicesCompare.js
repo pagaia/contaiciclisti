@@ -1,5 +1,5 @@
 import DailyCompare from 'components/charts/DailyCompare';
-import CompareForm from 'components/CompareForm';
+import CompareForm from 'components/forms/CompareForm';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';

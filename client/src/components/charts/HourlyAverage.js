@@ -1,45 +1,61 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { DEVICE_URL, REGEX_DEVICE } from 'utility/constants';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-    buildHourlyAverage,
+    fetchHourlyAverageCounts,
+    selectDeviceHourlyAverage
+} from 'store/chartsSlide';
+import {
     getLastMonthStartEnd,
+    getNextMonth,
+    getPreviousMonth
 } from 'utility/utilityFunctions';
+import PreviousNext from '../forms/PreviousNext';
 import SimpleChart from './Chart';
 
 const { start, end } = getLastMonthStartEnd();
 
 function HourlyAverage({ device }) {
-    // initialize dataset with empty object
-    const [datasets, setDatasets] = useState({});
+    const [search, setSearch] = useState({ start, end });
+
+    const dispatch = useDispatch();
+    const channelId = device.properties.channelId;
+
+    const hourlyAverage = useSelector(selectDeviceHourlyAverage(channelId));
 
     const intl = useIntl();
     const chartTitle = intl.formatMessage(
         { id: 'chart.title.last-month-hourly-average' },
-        { start, end }
+        { start: search.start, end: search.end }
     );
 
-    async function fetchDeviceData() {
-        // replace with channelID
-        const apiEndPoint =
-            DEVICE_URL.replace(REGEX_DEVICE, device.properties.channelId) +
-            `&start=${start}&end=${end}`;
-
-        // fetch data from a url endpoint
-        const response = await axios.get(apiEndPoint);
-        const { data } = response;
-        const builtDataset = buildHourlyAverage(data.feeds, device);
-        setDatasets(builtDataset);
-    }
-
     useEffect(() => {
-        fetchDeviceData();
-    }, []);
+        if (device && search.start && search.end) {
+            dispatch(
+                fetchHourlyAverageCounts({
+                    device,
+                    start: search.start,
+                    end: search.end,
+                })
+            );
+        }
+    }, [device, search.start, search.end]);
 
-    if (!datasets.datasets) {
+    if (!hourlyAverage) {
         return null;
     }
+
+    const handlePreviousMonth = () => {
+        setSearch(getPreviousMonth(new Date(search.start)));
+    };
+
+    const handleNextMonth = () => {
+        setSearch(getNextMonth(new Date(search.start)));
+    };
+
+    // create a new object to be override by the chartJs
+    const chartData = JSON.parse(JSON.stringify(hourlyAverage));
+
     return (
         <div className="row">
             <div className="col-sm">
@@ -49,8 +65,14 @@ function HourlyAverage({ device }) {
                             <FormattedMessage id="chart.title.last-month-hourly-average" />
                         </h3>
                     </div>
+                    <PreviousNext
+                        previousAction={handlePreviousMonth}
+                        nextAction={handleNextMonth}
+                        start={search.start}
+                        end={search.end}
+                    />
                     <SimpleChart
-                        data={datasets}
+                        data={chartData}
                         name="HourlyAverage"
                         title={chartTitle}
                     />
