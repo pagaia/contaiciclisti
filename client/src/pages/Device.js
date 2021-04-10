@@ -45,17 +45,21 @@ const Device = (props) => {
                 </div>
                 <div className="col-sm-12 col-md-6">
                     <YesterdayHourly device={device} />
+                    <hr className="mb-5 bg-warning" />
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-6">
                     <HourlyAverage device={device} />
+                    <hr className="mb-5 bg-warning" />
                 </div>
                 <div className="col-md-6">
                     <DailyTotal device={device} />
+                    <hr className="mb-5 bg-warning" />
                 </div>
                 <div className="col-md-6">
                     <PeakCount device={device} />
+                    <hr className="mb-5 bg-warning" />
                 </div>
             </div>
             <hr className="mb-5 bg-warning" />

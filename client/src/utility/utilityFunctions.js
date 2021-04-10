@@ -46,13 +46,53 @@ export const getYesterdayStartEnd = () => {
 /**
  * calculate the start and end date for previous month
  */
-export const getLastMonthStartEnd = () => {
-    let end = new Date(); // get today
+export const getLastMonthStartEnd = (day = new Date()) => {
+    let end = day;
     end.setDate(end.getDate() - 1); // get yesterday
     let start = new Date(end);
     start.setDate(start.getDate() - 31); // get 30 days before yesterday
     end = formatDate(end);
     start = formatDate(start);
+
+    return { start, end };
+};
+
+/**
+ * gets next month start and end date 
+ * @param {Date} day 
+ * @returns 
+ */
+export const getNextMonth = (day = new Date()) => {
+    const date = day;
+    const y = date.getFullYear(),
+        m = date.getMonth(),
+        d = date.getDate();
+
+    var firstDay = new Date(y, m + 1, d);
+    var lastDay = new Date(y, m + 2, d);
+
+    const end = formatDate(lastDay);
+    const start = formatDate(firstDay);
+
+    return { start, end };
+};
+
+/**
+ * gets previous month start and end date 
+ * @param {Date} day 
+ * @returns 
+ */
+export const getPreviousMonth = (day = new Date()) => {
+    const date = day;
+    const y = date.getFullYear(),
+        m = date.getMonth(),
+        d = date.getDate();
+
+    var firstDay = new Date(y, m - 1, d);
+    var lastDay = new Date(y, m, d);
+
+    const end = formatDate(lastDay);
+    const start = formatDate(firstDay);
 
     return { start, end };
 };
@@ -74,7 +114,7 @@ export const getWeeks = (date) => {
         { weekStartsOn: 1 }
     );
 
-    return result.map((week) => {
+    const weeks = result.map((week) => {
         const sunday = new Date(week);
         sunday.setDate(sunday.getDate() + 6);
         return {
@@ -82,6 +122,8 @@ export const getWeeks = (date) => {
             sunday,
         };
     });
+
+    return weeks.reverse();
 };
 
 /**

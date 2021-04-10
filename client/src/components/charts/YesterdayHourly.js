@@ -42,7 +42,7 @@ function YesterdayHourly({ device }) {
                 <div className="chart-wrapper">
                     <div className="sr-only">
                         <h3 className="d-inline">
-                            <FormattedMessage id="chartTitle" />
+                            <FormattedMessage id="title.hourly-counts-yesterday" />
                         </h3>
                     </div>
                     <SimpleChart

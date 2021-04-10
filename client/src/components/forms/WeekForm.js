@@ -1,27 +1,25 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import DatePicker from 'components/DatePicker';
+import { FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 import {
     convertArrayToObject,
-    formatDate,
+    getWeeks,
     formatDateAndHours,
-    getLastMonthStartEndDatePicker,
+    formatDate,
 } from 'utility/utilityFunctions';
 import './CompareForm.css';
-import Fade from './Fade';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import Fade from '../Fade';
 
-const { start: startDate, end: endDate } = getLastMonthStartEndDatePicker();
-
-const CompareForm = ({ updateSearch }) => {
+const WeekForm = ({ updateSearch }) => {
     const [viewForm, toggleForm] = useState(true);
-
     const { devices: devicesStore } = useSelector((state) => state.devices);
 
+    const weeks = getWeeks(new Date('2020-11-01'));
+
     const [form, setForm] = useState({
-        endDate,
-        startDate,
+        week: 1,
+        startDate: weeks[1]?.monday,
+        endDate: weeks[1]?.sunday,
         devices: convertArrayToObject(devicesStore, 'properties.channelId'),
     });
 
@@ -63,12 +61,28 @@ const CompareForm = ({ updateSearch }) => {
         });
     };
 
-    const handleStartDate = (startDate) => {
-        setForm({ ...form, startDate });
-    };
+    const handleChangeWeek = (event) => {
+        const { value: number } = event.target;
+        const startDate = weeks[number]?.monday;
+        let endDate = weeks[number]?.sunday;
+        const week = number;
 
-    const handleEndDate = (endDate) => {
-        setForm({ ...form, endDate });
+        setForm({
+            ...form,
+            startDate,
+            endDate,
+            week,
+        });
+
+        // update search on changing week
+        endDate.setHours(23, 59);
+        endDate = formatDateAndHours(endDate);
+        updateSearch({
+            ...form,
+            startDate: formatDate(startDate),
+            endDate,
+            week,
+        });
     };
 
     const validateForm = (form) => {
@@ -85,20 +99,17 @@ const CompareForm = ({ updateSearch }) => {
         if (error.length > 0) {
             const text = 'Please check data: \n' + error.join('\n');
             alert(text);
-
             return;
         }
         toggle();
+
         let endDate = form.endDate;
         endDate.setHours(23, 59);
         endDate = formatDateAndHours(endDate);
-
-        let startDate = formatDate(form.startDate);
-
         updateSearch({
             ...form,
             endDate,
-            startDate,
+            startDate: formatDate(form.startDate),
         });
     };
 
@@ -110,7 +121,7 @@ const CompareForm = ({ updateSearch }) => {
         return (
             <div className="compare">
                 <h3>
-                    <FormattedMessage id="form.minimum-selection" />
+                    <FormattedMessage id="title.min-2-devices-and-week" />
                 </h3>
                 <div className="row">
                     <div className="col-md-3">
@@ -118,7 +129,7 @@ const CompareForm = ({ updateSearch }) => {
                             const id = `${device.properties.name.replace(
                                 ' ',
                                 '-'
-                            )}-CompareForm`;
+                            )}-WeekForm`;
                             return (
                                 <Fragment key={idx}>
                                     <div className="form-check">
@@ -149,38 +160,34 @@ const CompareForm = ({ updateSearch }) => {
                 </div>
 
                 <div className="row">
-                    <div className="col-sm-6 col-md-3">
+                    <div className="col-sm-6">
                         <div className="form-group">
-                            <label htmlFor="startDate">
-                                <FormattedMessage id="form.start-date" />
-                            </label>
-                            <DatePicker
-                                selected={form.startDate}
-                                onChange={handleStartDate}
-                            />
-
-                            <small
-                                id="startHelp"
-                                className="form-text text-muted"
-                            >
-                                <FormattedMessage id="form.helper-start-day" />
-                            </small>
-                        </div>
-                    </div>
-                    <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                            <label htmlFor="endDate"><FormattedMessage id="form.end-date" /></label>
-
-                            <DatePicker
-                                selected={form.endDate}
-                                onChange={handleEndDate}
-                            />
-                            <small
-                                id="endHelp"
-                                className="form-text text-muted"
-                            >
-                                <FormattedMessage id="form.helper-end-day" />
-                            </small>
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <label
+                                        className="input-group-text"
+                                        htmlFor="week"
+                                    >
+                                        <FormattedMessage id="form.week" />
+                                    </label>
+                                </div>
+                                <select
+                                    className="custom-select"
+                                    id="week"
+                                    value={form.week}
+                                    onChange={handleChangeWeek}
+                                >
+                                    <option>Choose...</option>
+                                    {weeks.map((week, idx) => {
+                                        return (
+                                            <option key={idx} value={idx}>
+                                                {formatDate(week.monday)} -{' '}
+                                                {formatDate(week.sunday)}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -192,7 +199,7 @@ const CompareForm = ({ updateSearch }) => {
                             className="btn btn-primary"
                             onClick={handleSearch}
                         >
-                            Search
+                            <FormattedMessage id="button.search" />
                         </button>
                     </div>
                 </div>
@@ -217,7 +224,4 @@ const CompareForm = ({ updateSearch }) => {
     );
 };
 
-CompareForm.propTypes = {
-    updateSearch: PropTypes.func,
-};
-export default CompareForm;
+export default WeekForm;
