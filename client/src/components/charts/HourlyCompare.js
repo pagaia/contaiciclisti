@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import SimpleChart from './Chart';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectHourlyCompare, receiveHourlyCompare } from 'store/chartsSlide';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 function HourlyCompare({ search }) {
     const hourlyCompareState = useSelector(selectHourlyCompare);
@@ -23,6 +24,12 @@ function HourlyCompare({ search }) {
         devices: devices.map((device) => device.properties.channelId),
         day: format(day, 'yyyy-MM-dd'),
     };
+
+    const intl = useIntl();
+    const chartTitle = intl.formatMessage(
+        { id: 'chart.title.counts-on-day' },
+        { day: formatDate(day) }
+    );
 
     // label for day hours
     const labels = [...Array(24).keys()];
@@ -99,13 +106,18 @@ function HourlyCompare({ search }) {
     return (
         <Fragment>
             <div className="sr-only">
-                <h3>Counts on {formatDate(day)}</h3>
+                <h3>
+                    <FormattedMessage
+                        id="chart.title.counts-on-day"
+                        values={{ day: formatDate(day) }}
+                    />
+                </h3>
             </div>
             <div className="chart-wrapper">
                 <SimpleChart
                     data={data}
                     name="HourlyCompare"
-                    title={`Counts on ${formatDate(day)}`}
+                    title={chartTitle}
                 />
             </div>
         </Fragment>

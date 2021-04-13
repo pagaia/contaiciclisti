@@ -14,9 +14,12 @@ function YesterdayHourly({ device }) {
     const [yesterday, setYesterday] = useState({});
 
     const intl = useIntl();
-    const chartTitle = intl.formatMessage({
-        id: 'title.hourly-counts-yesterday',
-    });
+    const chartTitle = intl.formatMessage(
+        {
+            id: 'title.hourly-counts-yesterday',
+        },
+        { yesterday: yesterdayStart }
+    );
 
     async function fetchDeviceData() {
         // replace with channelID

@@ -27,7 +27,9 @@ const Footer = (props) => {
                 {/* {singleChart && (
           <a href="https://www.contaiciclisti.tk">www.contaiciclisti.tk</a>
         )} */}
-                <Link to={ROUTES.CREDITS}>Credits</Link>
+                <Link to={ROUTES.CREDITS}>
+                    <FormattedMessage id="credits" />
+                </Link>
                 <span>{`v${process.env.REACT_APP_VERSION}`}</span>
             </div>
         </footer>
