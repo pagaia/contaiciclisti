@@ -8,7 +8,7 @@ console.log("myArgs: ", myArgs);
 const path = myArgs[0];
 
 const endPoint =
-  "http://localhost:8080/api/devices/606d848da5a31938f61a0290/feeds/multi";
+  "http://localhost:8081/api/devices/606d848da5a31938f61a0290/feeds/multi";
 
 // first read the file
 fs.readFile(path, "utf8", (err, data) => {
@@ -31,27 +31,27 @@ function uploadFeeds(data) {
       const [
         createdAt,
         entry_id,
-        hourly,
-        hourlyDay,
-        daily,
-        battery,
-        gmsErrorNumber,
-        htmlErrorNumber,
-        sendErrorNumber,
-        yesterday,
+        feed1,
+        feed2,
+        feed3,
+        feed4,
+        feed5,
+        feed6,
+        feed7,
+        feed8,
       ] = feed.split(",");
 
       return {
         createdAt,
         entry_id,
-        hourly,
-        hourlyDay,
-        daily,
-        battery,
-        gmsErrorNumber,
-        htmlErrorNumber,
-        sendErrorNumber,
-        yesterday,
+        feed1,
+        feed2,
+        feed3,
+        feed4,
+        feed5,
+        feed6,
+        feed7,
+        feed8,
       };
     })
     // filter the row with null createdAt

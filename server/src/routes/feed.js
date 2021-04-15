@@ -20,14 +20,15 @@ const deviceProperties = {
 
 const feedProperties = {
   _id: { type: "string" },
-  hourly: { type: "number", nullable: true },
-  hourlyDay: { type: "number", nullable: true },
-  daily: { type: "number", nullable: true },
-  battery: { type: "number", nullable: true },
-  gmsErrorNumber: { type: "number", nullable: true },
-  htmlErrorNumber: { type: "number", nullable: true },
-  sendErrorNumber: { type: "number", nullable: true },
-  yesterday: { type: "number", nullable: true },
+  feed1: { type: "number", nullable: true },
+  feed2: { type: "number", nullable: true },
+  feed3: { type: "number", nullable: true },
+  feed4: { type: "number", nullable: true },
+  feed5: { type: "number", nullable: true },
+  feed6: { type: "number", nullable: true },
+  feed7: { type: "number", nullable: true },
+  feed8: { type: "number", nullable: true },
+  entry_id: { type: "number" },
   device: {
     type: "object",
     properties: deviceProperties,
@@ -186,6 +187,85 @@ const routes = (fastify) => [
                 properties: feedProperties,
               },
             },
+          },
+        },
+        404: {
+          description: "Device ID not found",
+          type: "object",
+          content: {},
+        },
+      },
+    },
+    security: [
+      {
+        apiKey: [],
+      },
+    ],
+  },
+  {
+    method: "GET",
+    url: "/api/devices/:id/feedsOnly",
+    handler: feedController.searchFeedsOnly(fastify),
+    schema: {
+      description: "Get list of feeds per device",
+      tags: ["feeds"],
+      summary: "Get list of feeds per device",
+      params: {
+        type: "object",
+        properties: {
+          id: { type: "string", description: "id of the device" },
+        },
+      },
+      querystring: {
+        start: { type: "string" },
+        end: { type: "string" },
+      },
+      response: {
+        200: {
+          description: "Successful response",
+          type: "string",
+          content: {
+            "text/csv": {},
+          },
+        },
+        404: {
+          description: "Device ID not found",
+          type: "object",
+          content: {},
+        },
+      },
+    },
+    security: [
+      {
+        apiKey: [],
+      },
+    ],
+  },
+  {
+    method: "GET",
+    url: "/api/devices/:id/feeds.csv",
+    handler: feedController.searchFeedsCsv(fastify),
+    schema: {
+      description: "Get list of feeds per device in CSV format",
+      tags: ["feeds"],
+      summary: "Get list of feeds per device in CSV format",
+      params: {
+        type: "object",
+        properties: {
+          id: { type: "string", description: "id of the device" },
+        },
+      },
+      querystring: {
+        start: { type: "string" },
+        end: { type: "string" },
+      },
+      response: {
+        200: {
+          description: "Successful response",
+          type: "array",
+          items: {
+            type: "object",
+            properties: feedProperties,
           },
         },
         404: {
