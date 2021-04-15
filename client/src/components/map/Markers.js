@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Marker, Popup } from 'react-leaflet';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -35,7 +36,7 @@ function Markers() {
                         <div>{device.properties.description}</div>
                         <div>
                             <Link to={`/devices/${channelId}`}>
-                                Go to the page
+                               <FormattedMessage id="link.go-to-page"/>
                             </Link>
                         </div>
                     </div>

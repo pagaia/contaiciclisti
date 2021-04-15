@@ -5,6 +5,7 @@ import HourlyCompare from 'components/charts/HourlyCompare';
 import HourlyCompareForm from 'components/forms/HourlyCompareForm';
 import { useSelector } from 'react-redux';
 import { selectDevices } from 'store/devicesSlide';
+import { FormattedMessage } from 'react-intl';
 
 const HourlyComparePage = (props) => {
     const [search, setSearch] = useState(null);
@@ -24,7 +25,11 @@ const HourlyComparePage = (props) => {
 
     return (
         <Fragment>
-            {!singleChart && <h2>Hour comparison</h2>}
+            {!singleChart && (
+                <h2>
+                    <FormattedMessage id="chart.title.hours-comparison" />
+                </h2>
+            )}
             <HourlyCompareForm updateSearch={setSearch} />
             {search && <HourlyCompare search={search} />}
             {!singleChart && <hr className="mb-5 bg-warning" />}

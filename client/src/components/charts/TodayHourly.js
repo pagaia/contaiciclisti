@@ -7,12 +7,15 @@ import SimpleChart from './Chart';
 
 function TodayHourly({ device }) {
     const [data, setData] = useState({});
+    const today = new Date().toISOString().split('T')[0];
 
     const intl = useIntl();
-    const chartTitle = intl.formatMessage({ id: 'title.hourly-counts-today' });
-    async function fetchDeviceData() {
-        const today = new Date().toISOString().split('T')[0];
+    const chartTitle = intl.formatMessage(
+        { id: 'title.hourly-counts-today' },
+        { today }
+    );
 
+    async function fetchDeviceData() {
         // replace with channelID
         const apiEndPoint =
             DEVICE_URL.replace(REGEX_DEVICE, device.properties.channelId) +
