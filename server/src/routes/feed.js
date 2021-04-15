@@ -223,9 +223,10 @@ const routes = (fastify) => [
       response: {
         200: {
           description: "Successful response",
-          type: "string",
-          content: {
-            "text/csv": {},
+          type: "array",
+          items: {
+            type: "object",
+            properties: feedProperties,
           },
         },
         404: {
@@ -262,10 +263,9 @@ const routes = (fastify) => [
       response: {
         200: {
           description: "Successful response",
-          type: "array",
-          items: {
-            type: "object",
-            properties: feedProperties,
+          type: "string",
+          content: {
+            "text/csv": {},
           },
         },
         404: {

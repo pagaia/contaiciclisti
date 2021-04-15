@@ -101,7 +101,7 @@ const routes = (fastify) => [
               type: { type: "string", enum: ["Point"] },
               coordinates: {
                 type: "array",
-                items: { type: "integer" },
+                items: { type: "number" },
               },
             },
           },
@@ -156,7 +156,7 @@ const routes = (fastify) => [
             properties: {
               coordinates: {
                 type: "array",
-                items: { type: "integer" },
+                items: { type: "number" },
               },
             },
           },
