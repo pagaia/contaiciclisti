@@ -8,7 +8,7 @@ console.log("myArgs: ", myArgs);
 const path = myArgs[0];
 
 const endPoint =
-  "http://localhost:8081/api/devices/606d848da5a31938f61a0290/feeds/multi";
+  "http://localhost:8081/api/devices/6078ca9039bbc83a194b513c/feeds/multi";
 
 // first read the file
 fs.readFile(path, "utf8", (err, data) => {
