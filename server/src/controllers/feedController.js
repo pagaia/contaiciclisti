@@ -4,6 +4,8 @@ const boom = require("boom");
 // Get Data Models
 const Device = require("../models/device");
 const Feed = require("../models/feed");
+const { compare } = require("../utility/commonFunctions");
+const { downloadResource } = require("../utility/downloadCsv");
 
 /**
  * add a single feed per device
@@ -139,7 +141,7 @@ exports.searchFeeds = (fastify) => async (req, reply) => {
       return fastify.notFound(req, reply);
     }
 
-    const fullDevice = foundDevice.populate({
+    const fullDevice = await foundDevice.populate({
       path: "feeds",
       match: {
         createdAt: {
@@ -149,7 +151,84 @@ exports.searchFeeds = (fastify) => async (req, reply) => {
       },
     });
 
-    return fullDevice;
+    // console.log({fullDevice: JSON.stringify(fullDevice.feeds.sort(compare))})
+    return { ...fullDevice, feeds: fullDevice.feeds.sort(compare) };
+  } catch (err) {
+    boom.boomify(err);
+    fastify.errorHandler(err, req, reply);
+  }
+};
+
+// Search feeds
+exports.searchFeedsOnly = (fastify) => async (req, reply) => {
+  try {
+    const deviceId = req.params.id;
+    const currentDate = new Date();
+
+    // set by default last month if not passed
+    const mindate =
+      req.query.start ||
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 31);
+    const maxdate = req.query.end || currentDate;
+
+    console.log({ mindate, maxdate });
+
+    const feeds = await Feed.find({
+      createdAt: {
+        $gte: mindate,
+        $lte: maxdate,
+      },
+    }).sort({ createdAt: "asc" });
+
+    if (!feeds) {
+      return fastify.notFound(req, reply);
+    }
+
+    reply.send(feeds);
+  } catch (err) {
+    boom.boomify(err);
+    fastify.errorHandler(err, req, reply);
+  }
+};
+
+// Search feeds
+exports.searchFeedsCsv = (fastify) => async (req, reply) => {
+  try {
+    const currentDate = new Date();
+
+    // set by default last month if not passed
+    const mindate =
+      req.query.start ||
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 31);
+    const maxdate = req.query.end || currentDate;
+
+    console.log({ mindate, maxdate });
+
+    const feeds = await Feed.find({
+      createdAt: {
+        $gte: mindate,
+        $lte: maxdate,
+      },
+    }).sort({ createdAt: "asc" });
+
+    if (!feeds) {
+      return fastify.notFound(req, reply);
+    }
+
+    const fields = [
+      "createdAt",
+      "entry_id",
+      "feed1",
+      "feed2",
+      "feed3",
+      "feed4",
+      "feed5",
+      "feed6",
+      "feed7",
+      "feed8",
+    ];
+
+    downloadResource(reply, "feeds.csv", fields, feeds);
   } catch (err) {
     boom.boomify(err);
     fastify.errorHandler(err, req, reply);
