@@ -173,6 +173,7 @@ const routes = (fastify) => [
       querystring: {
         start: { type: "string" },
         end: { type: "string" },
+        timezone: { type: "string" },
       },
       response: {
         200: {
@@ -219,6 +220,7 @@ const routes = (fastify) => [
       querystring: {
         start: { type: "string" },
         end: { type: "string" },
+        timezone: { type: "string" },
       },
       response: {
         200: {
@@ -259,6 +261,7 @@ const routes = (fastify) => [
       querystring: {
         start: { type: "string" },
         end: { type: "string" },
+        timezone: { type: "string" },
       },
       response: {
         200: {
