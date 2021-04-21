@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const Boom = require("boom");
 const User = require("../models/user");
+const Device = require("../models/device");
 
 const genKey = () => {
   //create a base-36 string that is always 30 chars long a-z0-9
@@ -13,7 +14,7 @@ const genKey = () => {
   return apiKey;
 };
 
-const addUserApiKey = async (user, req) => {
+const createToken = async (user, req) => {
   const accessTokenPlain = genKey();
 
   try {
@@ -27,24 +28,28 @@ const addUserApiKey = async (user, req) => {
   }
 };
 
-const validateKey = async (req, reply) => {
+const validateToken = async (req, reply) => {
   let tokenHost = req.headers.origin;
-  console.log(req.headers);
+  let deviceId = req.params.id;
   let api_key = req.headers["x-api-token"]; //version 3 using a header
-  let username = req.headers["x-api-user"]; //version 3 using a header
+  console.log({ tokenHost, deviceId, api_key });
 
   try {
-    const user = await User.findOne({
-      username: username?.toLowerCase(),
+    const device = await Device.findOne({
+      _id: deviceId,
     }).exec();
 
-    if (!user) {
-      reply.code(401).send({ error: "Unauthorized" });
-      return;
+    if (!device) {
+      return reply
+        .code(404)
+        .type("application/json")
+        .send({ error: "Not Found" });
     }
-    const isMatch = await user.compareToken(api_key);
 
-    if (isMatch && user.tokenHost === tokenHost) {
+    const isMatch = await device.compareToken(api_key);
+
+    // check only the token without matching the host
+    if (isMatch) {
       console.log("API key match");
       console.log("tokenHost match");
     } else {
@@ -52,11 +57,12 @@ const validateKey = async (req, reply) => {
       return;
     }
     console.log({ isMatch });
-    console.log({ userToken: user.tokenHost, tokenHost });
+    console.log({ userToken: device.tokenHost, tokenHost });
+    // no error should be returned is fine then
   } catch (err) {
     Boom.boomify(err);
     throw err;
   }
 };
 
-module.exports = { addUserApiKey, validateKey };
+module.exports = { createToken, validateToken };

@@ -39,11 +39,11 @@ const feedProperties = {
 };
 
 const routes = (fastify) => [
-  // feeds
+  // add feed
   {
     method: "POST",
     url: "/api/devices/:id/feeds",
-    preHandler: fastify.auth([fastify.validateKey]),
+    preHandler: fastify.auth([fastify.validateToken]),
     handler: feedController.addFeed(fastify),
     schema: {
       description: "Add feed to device",

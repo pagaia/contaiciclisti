@@ -7,50 +7,12 @@ const userProperties = {
   lastName: { type: "string" },
   email: { type: "string", format: "email" },
   username: { type: "string" },
-  accessToken: { type: "string" },
-  tokenCreationDate: { type: "string" },
-  tokenHost: { type: "string" },
   createdAt: { type: "string" },
   updatedAt: { type: "string" },
   devices: { type: "array", items: { type: "string" } },
 };
 
 const routes = (fastify) => [
-  {
-    method: "POST",
-    url: "/api/users/:id/generateToken",
-    handler: userController.generateKey(fastify),
-    schema: {
-      description: "Generate an access Token for the selected user",
-      tags: ["users"],
-      summary: "Returns the new access Token for the selected user",
-      params: {
-        type: "object",
-        properties: {
-          id: { type: "string" },
-        },
-      },
-      response: {
-        200: {
-          description: "Successful response",
-          type: "object",
-          properties: {
-            accessToken: { type: "string" },
-          },
-        },
-        404: {
-          description: "User not found",
-          type: "object",
-          content: {},
-        },
-      },
-    },
-    security: [
-      {
-        apiKey: [],
-      },
-    ],
-  },
   {
     method: "GET",
     url: "/api/users/:id",

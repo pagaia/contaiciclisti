@@ -6,7 +6,7 @@ const Device = require("../models/device");
 const Feed = require("../models/feed");
 const { compare, formatTimeZone } = require("../utility/commonFunctions");
 const { downloadResource } = require("../utility/downloadCsv");
-const { utcToZonedTime, format } = require("date-fns-tz");
+
 
 /**
  * add a single feed per device

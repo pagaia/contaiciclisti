@@ -8,26 +8,6 @@ const User = require("../models/user");
 const CONST = require("../utility/constants");
 const Device = require("../models/device");
 
-// generate Key for user
-exports.generateKey = (fastify) => async (req, reply) => {
-  try {
-    const userId = req.params.id;
-    const user = await User.findById(userId);
-    if (!user) {
-      return fastify.notFound(req, reply);
-    }
-    const { accessTokenPlain, hash } = await security.addUserApiKey(user, req);
-
-    user.tokenHost = req.headers.origin;
-    user.tokenCreationDate = new Date();
-    user.accessToken = hash;
-    // save the enhanced user
-    const res = await user.save();
-    return accessTokenPlain;
-  } catch (err) {
-    throw boom.boomify(err);
-  }
-};
 
 // Get all users
 exports.getUsers = (fastify) => async (req, reply) => {

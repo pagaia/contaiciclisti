@@ -14,12 +14,50 @@ const deviceProperties = {
       },
     },
   },
+  accessToken: { type: "string" },
+  tokenCreationDate: { type: "string" },
+  tokenHost: { type: "string" },
   description: { type: "string" },
   createdAt: { type: "string" },
   updatedAt: { type: "string" },
 };
 
 const routes = (fastify) => [
+  {
+    method: "POST",
+    url: "/api/devices/:id/generateToken",
+    handler: deviceController.generateToken(fastify),
+    schema: {
+      description: "Generate an access Token for the selected device",
+      tags: ["devices"],
+      summary: "Returns the new access Token for the selected device",
+      params: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+        },
+      },
+      response: {
+        200: {
+          description: "Successful response",
+          type: "object",
+          properties: {
+            accessToken: { type: "string" },
+          },
+        },
+        404: {
+          description: "Device not found",
+          type: "object",
+          content: {},
+        },
+      },
+    },
+    security: [
+      {
+        apiKey: [],
+      },
+    ],
+  },
   {
     method: "GET",
     url: "/api/devices",

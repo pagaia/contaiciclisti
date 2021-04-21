@@ -4,7 +4,7 @@ const feedRoutes = require("./routes/feed");
 
 // Import Swagger Options
 const swagger = require("./config/swagger");
-const { validateKey } = require("./utility/security");
+const { validateToken } = require("./utility/security");
 
 function build(opts = {}) {
   // Require the framework and instantiate it
@@ -18,7 +18,7 @@ function build(opts = {}) {
   });
   fastify.setNotFoundHandler(fastify.notFound);
 
-  fastify.decorate("validateKey", validateKey);
+  fastify.decorate("validateToken", validateToken);
 
   fastify.register(require("fastify-auth")).after(routes);
 
