@@ -5,10 +5,14 @@ const Path = require("path");
 var myArgs = process.argv.slice(2);
 console.log("myArgs: ", myArgs);
 
-const path = myArgs[0];
+const [deviceId, path] = myArgs;
 
-const endPoint =
-  "http://localhost:8081/api/devices/6078ca9039bbc83a194b513c/feeds/multi";
+if (!deviceId || !path) {
+  console.error("Please pass the device ID and the file to load");
+  process.exit(1);
+}
+
+const endPoint = `http://localhost:8081/api/devices/${deviceId}/feeds/multi`;
 
 // first read the file
 fs.readFile(path, "utf8", (err, data) => {
@@ -21,7 +25,7 @@ fs.readFile(path, "utf8", (err, data) => {
 });
 
 function uploadFeeds(data) {
-  console.log(data);
+  // console.log(data);
   const feeds = data
     .map((feed, idx) => {
       // if (!idx || idx < 100 || idx > 105) {
@@ -29,35 +33,35 @@ function uploadFeeds(data) {
         return {};
       }
       const [
-        createdAt,
+        created_at,
         entry_id,
-        feed1,
-        feed2,
-        feed3,
-        feed4,
-        feed5,
-        feed6,
-        feed7,
-        feed8,
+        field1,
+        field2,
+        field3,
+        field4,
+        field5,
+        field6,
+        field7,
+        field8,
       ] = feed.split(",");
 
       return {
-        createdAt,
+        created_at,
         entry_id,
-        feed1,
-        feed2,
-        feed3,
-        feed4,
-        feed5,
-        feed6,
-        feed7,
-        feed8,
+        field1,
+        field2,
+        field3,
+        field4,
+        field5,
+        field6,
+        field7,
+        field8,
       };
     })
-    // filter the row with null createdAt
-    .filter((el) => el.createdAt);
+    // filter the row with null created_at
+    .filter((el) => el.created_at);
 
-  console.log(feeds);
+  // console.log(feeds);
 
   axios
     .post(endPoint, feeds, {

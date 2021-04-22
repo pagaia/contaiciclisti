@@ -6,15 +6,18 @@ const endPoint = "http://localhost:8081/api/devices";
 async function importDevices() {
   const devices = await readDevices();
 
-  devices.map((device) => {
+  devices.forEach((device) => {
     const payload = {
       name: device.properties.name,
+      channelId: device.properties.channelId,
       location: {
         type: "Point",
         coordinates: [...device.geometry.coordinates],
       },
       description: device.properties.description,
-      createdAt: new Date(),
+      active: true,
+      newColor: device.properties.newColor,
+      created_at: new Date(),
     };
 
     axios

@@ -35,6 +35,7 @@ const readDevices = async (title = "Devices") => {
         name,
         description,
         active,
+        newColor,
         channelId: parseInt(channelId, 10), // convert to number to match route
         backgroundColor: `${newColor}33`, //color.replace("X", "0.2"),
         borderColor: `${newColor}FF`, // color.replace("X", "1"),
