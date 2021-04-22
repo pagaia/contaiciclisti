@@ -9,7 +9,7 @@ export const devicesSlide = createSlice({
     },
     reducers: {
         receiveDevices: (state, action) => {
-            state.devices = [...state.devices, ...action.payload];
+            state.devices = action.payload;
         },
     },
 });

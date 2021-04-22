@@ -1,6 +1,42 @@
+import axios from 'axios';
+
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
-const readDevices = async (title = 'Devices') => {
+const readDevices = async () => {
+    // fetch data from a url endpoint
+    const response = await axios.get('/api/devices');
+    const { data } = response;
+
+    const devices = data.map((row, idx) => {
+        const {
+            location,
+            name,
+            description,
+            newColor,
+            active,
+            _id: channelId,
+        } = row;
+
+        let device = {
+            type: 'Feature',
+            geometry: location,
+            properties: {
+                name,
+                description,
+                active,
+                channelId, // convert to number to match route
+                backgroundColor: `${newColor}33`, //color.replace("X", "0.2"),
+                borderColor: `${newColor}FF`, // color.replace("X", "1"),
+                hoverBackgroundColor: `${newColor}99`, // color.replace("X", "0.6"),
+            },
+        };
+
+        return device;
+    });
+    return devices;
+};
+
+const readDevicesFromGoogle = async (title = 'Devices') => {
     // setup the google spread sheet
     const doc = new GoogleSpreadsheet(process.env.REACT_APP_GOOGLE_FILE);
 

@@ -42,7 +42,6 @@ exports.options = {
       },
       Device: {
         type: "object",
-        // required: ["id", "email", "name"],
         properties: {
           name: { type: "string" },
           location: { type: "string", enum: ["Point"] },
