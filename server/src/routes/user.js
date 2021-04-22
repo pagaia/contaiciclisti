@@ -7,8 +7,8 @@ const userProperties = {
   lastName: { type: "string" },
   email: { type: "string", format: "email" },
   username: { type: "string" },
-  createdAt: { type: "string" },
-  updatedAt: { type: "string" },
+  created_at: { type: "string" },
+  updated_at: { type: "string" },
   devices: { type: "array", items: { type: "string" } },
 };
 

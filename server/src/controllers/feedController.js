@@ -7,7 +7,6 @@ const Feed = require("../models/feed");
 const { compare, formatTimeZone } = require("../utility/commonFunctions");
 const { downloadResource } = require("../utility/downloadCsv");
 
-
 /**
  * add a single feed per device
  * @param {obj} fastify
@@ -73,7 +72,12 @@ exports.addMultiFeeds = (fastify) => async (req, reply) => {
           device: deviceId, // link device with feed
         };
 
-        const createdFeed = await Feed.create(newFeed);
+        const filter = { entry_id: feed.entry_id };
+        const upInsert = feed;
+        const createdFeed = await Feed.findOneAndUpdate(filter, upInsert, {
+          new: true,
+          upsert: true, // Make this update into an upsert
+        });
         const updatedDevice = await Device.findByIdAndUpdate(
           deviceId,
           {
@@ -92,7 +96,7 @@ exports.addMultiFeeds = (fastify) => async (req, reply) => {
       })
     );
 
-    feeds.then((response) => {
+    return feeds.then((response) => {
       reply.code(201).send(response);
     });
   } catch (err) {
@@ -100,36 +104,6 @@ exports.addMultiFeeds = (fastify) => async (req, reply) => {
     fastify.errorHandler(err, req, reply);
   }
 };
-
-// TODO to be removed or limit the length
-// Get all feeds by Device id
-// exports.getFeedsByDeviceId = (fastify) => async (req, reply) => {
-//   try {
-//     const id = req.params.id;
-//     const tzString = req.query.timezone;
-//     const devices = await Device.findById(id);
-//     if (!devices) {
-//       return fastify.notFound(req, reply);
-//     }
-
-//     // return createdAt with requested timezone
-//     if (tzString) {
-//       return devices.feeds.map((feed) => ({
-//         ...feed,
-//         createdAt: feed.createdAt.toLocaleString("en-US", {
-//           timeZone: tzString,
-//         }),
-//         updatedAt: feed.updatedAt.toLocaleString("en-US", {
-//           timeZone: tzString,
-//         }),
-//       }));
-//     }
-
-//     return devices.feeds;
-//   } catch (err) {
-//     throw boom.boomify(err);
-//   }
-// };
 
 // Search feeds
 exports.searchFeeds = (fastify) => async (req, reply) => {
@@ -153,7 +127,7 @@ exports.searchFeeds = (fastify) => async (req, reply) => {
     const fullDevice = await foundDevice.populate({
       path: "feeds",
       match: {
-        createdAt: {
+        created_at: {
           $gte: mindate,
           $lte: maxdate,
         },
@@ -161,13 +135,13 @@ exports.searchFeeds = (fastify) => async (req, reply) => {
     });
 
     let feeds = fullDevice.feeds.sort(compare);
-    // return createdAt with requested timezone
+    // return created_at with requested timezone
     if (tzString) {
       feeds = feeds.map((feed) => {
         const newFeed = {
           ...feed,
-          createdAt: formatTimeZone(feed.createdAt, tzString),
-          updatedAt: formatTimeZone(feed.updatedAt, tzString),
+          created_at: formatTimeZone(feed.created_at, tzString),
+          updated_at: formatTimeZone(feed.updated_at, tzString),
         };
         return newFeed;
       });
@@ -194,13 +168,13 @@ exports.searchFeedsOnly = (fastify) => async (req, reply) => {
     const maxdate = req.query.end || currentDate;
 
     let feeds = await Feed.find({
-      createdAt: {
+      created_at: {
         $gte: mindate,
         $lte: maxdate,
       },
     })
       .lean()
-      .sort({ createdAt: "asc" });
+      .sort({ created_at: "asc" });
 
     if (!feeds) {
       return fastify.notFound(req, reply);
@@ -210,8 +184,8 @@ exports.searchFeedsOnly = (fastify) => async (req, reply) => {
       feeds = feeds.map((feed) => {
         const newFeed = {
           ...feed,
-          createdAt: formatTimeZone(feed.createdAt, tzString),
-          updatedAt: formatTimeZone(feed.updatedAt, tzString),
+          created_at: formatTimeZone(feed.created_at, tzString),
+          updated_at: formatTimeZone(feed.updated_at, tzString),
         };
         return newFeed;
       });
@@ -237,37 +211,37 @@ exports.searchFeedsCsv = (fastify) => async (req, reply) => {
     const maxdate = req.query.end || currentDate;
 
     let feeds = await Feed.find({
-      createdAt: {
+      created_at: {
         $gte: mindate,
         $lte: maxdate,
       },
     })
       .lean()
-      .sort({ createdAt: "asc" });
+      .sort({ created_at: "asc" });
 
     if (!feeds) {
       return fastify.notFound(req, reply);
     }
 
     const fields = [
-      "createdAt",
+      "created_at",
       "entry_id",
-      "feed1",
-      "feed2",
-      "feed3",
-      "feed4",
-      "feed5",
-      "feed6",
-      "feed7",
-      "feed8",
+      "field1",
+      "field2",
+      "field3",
+      "field4",
+      "field5",
+      "field6",
+      "field7",
+      "field8",
     ];
 
     if (tzString) {
       feeds = feeds.map((feed) => {
         const newFeed = {
           ...feed,
-          createdAt: formatTimeZone(feed.createdAt, tzString),
-          updatedAt: formatTimeZone(feed.updatedAt, tzString),
+          created_at: formatTimeZone(feed.created_at, tzString),
+          updated_at: formatTimeZone(feed.updated_at, tzString),
         };
         return newFeed;
       });

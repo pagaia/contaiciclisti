@@ -30,12 +30,15 @@ const deviceSchema = new mongoose.Schema({
   accessToken: String,
   tokenCreationDate: Date,
   tokenHost: String,
+  channelId: Number, // to keep the synchronisation with thingspeak
   feeds: [
     {
       type: Schema.Types.ObjectId,
       ref: "Feed",
     },
   ],
+  newColor: String,
+  active: Boolean,
   description: String,
 });
 

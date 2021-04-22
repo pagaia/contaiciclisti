@@ -4,6 +4,7 @@ const deviceController = require("../controllers/deviceController");
 const deviceProperties = {
   _id: { type: "string" },
   name: { type: "string" },
+  channelId: { type: "number" },
   location: {
     type: "object",
     properties: {
@@ -18,8 +19,10 @@ const deviceProperties = {
   tokenCreationDate: { type: "string" },
   tokenHost: { type: "string" },
   description: { type: "string" },
-  createdAt: { type: "string" },
-  updatedAt: { type: "string" },
+  newColor: { type: "string" },
+  active: { type: "boolean" },
+  created_at: { type: "string" },
+  updated_at: { type: "string" },
 };
 
 const routes = (fastify) => [
@@ -144,7 +147,7 @@ const routes = (fastify) => [
             },
           },
           description: { type: "string" },
-          createdAt: { type: "string" },
+          created_at: { type: "string" },
         },
       },
       response: {

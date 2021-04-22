@@ -4,6 +4,7 @@ const feedController = require("../controllers/feedController");
 const deviceProperties = {
   _id: { type: "string" },
   name: { type: "string" },
+  channelId: { type: "number" },
   location: {
     type: "object",
     properties: {
@@ -13,29 +14,31 @@ const deviceProperties = {
       },
     },
   },
+  newColor: { type: "string" },
+  active: { type: "boolean" },
   description: { type: "string" },
-  createdAt: { type: "string" },
-  updatedAt: { type: "string" },
+  created_at: { type: "string" },
+  updated_at: { type: "string" },
 };
 
 const feedProperties = {
   _id: { type: "string" },
-  feed1: { type: "number", nullable: true },
-  feed2: { type: "number", nullable: true },
-  feed3: { type: "number", nullable: true },
-  feed4: { type: "number", nullable: true },
-  feed5: { type: "number", nullable: true },
-  feed6: { type: "number", nullable: true },
-  feed7: { type: "number", nullable: true },
-  feed8: { type: "number", nullable: true },
+  field1: { type: "number", nullable: true },
+  field2: { type: "number", nullable: true },
+  field3: { type: "number", nullable: true },
+  field4: { type: "number", nullable: true },
+  field5: { type: "number", nullable: true },
+  field6: { type: "number", nullable: true },
+  field7: { type: "number", nullable: true },
+  field18: { type: "number", nullable: true },
   entry_id: { type: "number" },
   device: {
     type: "object",
     properties: deviceProperties,
   },
 
-  createdAt: { type: "string" },
-  updatedAt: { type: "string" },
+  created_at: { type: "string" },
+  updated_at: { type: "string" },
 };
 
 const routes = (fastify) => [

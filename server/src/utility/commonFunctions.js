@@ -1,16 +1,16 @@
 const { format, utcToZonedTime } = require("date-fns-tz");
 
 /**
- * Compare 2 object based on createdAt property
+ * Compare 2 object based on created_at property
  * @param {feed} a
  * @param {feed} b
  * @returns
  */
 exports.compare = (a, b) => {
-  if (a.createdAt < b.createdAt) {
+  if (a.created_at < b.created_at) {
     return -1;
   }
-  if (a.createdAt > b.createdAt) {
+  if (a.created_at > b.created_at) {
     return 1;
   }
   return 0;
@@ -22,7 +22,12 @@ exports.compare = (a, b) => {
  * @param {String} tzString The Tilme zone "Europe/rome"
  * @returns {String}
  */
-exports.formatTimeZone = (date, tzString) =>
-  format(utcToZonedTime(date, tzString), "yyyy-MM-dd HH:mm:ss zzz", {
+exports.formatTimeZone = (date, tzString) => {
+  console.log({ date, tzString });
+  if (!date) {
+    return null;
+  }
+  return format(utcToZonedTime(date, tzString), "yyyy-MM-dd HH:mm:ssXXX", {
     timeZone: tzString,
   });
+};

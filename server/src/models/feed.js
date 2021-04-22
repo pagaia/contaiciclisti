@@ -4,14 +4,14 @@ const Schema = mongoose.Schema;
 const timestampPlugin = require('./plugins/timestamp')
 
 const feedSchema = new mongoose.Schema({
-  feed1: Number,
-  feed2: Number,
-  feed3: Number,
-  feed4: Number,
-  feed5: Number,
-  feed6: Number,
-  feed7: Number,
-  feed8: Number,
+  field1: Number,
+  field2: Number,
+  field3: Number,
+  field4: Number,
+  field5: Number,
+  field6: Number,
+  field7: Number,
+  field8: Number,
   entry_id: Number,
   device: {
     type: Schema.Types.ObjectId,

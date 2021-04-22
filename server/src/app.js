@@ -10,6 +10,12 @@ function build(opts = {}) {
   // Require the framework and instantiate it
   const fastify = require("fastify")(opts);
 
+  // add CORS feature
+  fastify.register(require("fastify-cors"), {
+    // put your options here
+    origin: "http://localhost:3000",
+  });
+
   // Register Swagger
   fastify.register(require("fastify-swagger"), swagger.options);
 
