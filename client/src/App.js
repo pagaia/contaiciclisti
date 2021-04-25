@@ -1,6 +1,7 @@
 import Footer from 'components/Footer';
 import Header from 'components/Header';
 import routes from 'config/routing/routes';
+import { ProvideAuth } from 'hooks/useAuth';
 import { useLanguage } from 'hooks/useLanguage';
 import messages from 'i18n/messages.json';
 import 'images/imageLibrary';
@@ -69,43 +70,47 @@ function App() {
     const singleChart = REGEX_SINGLE.test(location.pathname);
 
     return (
-        <SingleContext.Provider value={singleChart}>
-            <ThemeContext.Provider value={themeValue}>
-                <IntlProvider
-                    messages={messages[lang]}
-                    locale={lang}
-                    defaultLocale="en"
-                >
-                    <div
-                        className={`App ${
-                            singleChart ? 'single' : ''
-                        } ${theme}`}
+        <ProvideAuth>
+            <SingleContext.Provider value={singleChart}>
+                <ThemeContext.Provider value={themeValue}>
+                    <IntlProvider
+                        messages={messages[lang]}
+                        locale={lang}
+                        defaultLocale="en"
                     >
-                        {/* remove title if single chart */}
-                        <Header setLang={setLang} lang={lang} />
-                        <LogError />
-                        {/* <SiteMap /> */}
-                        <main className={singleChart ? '' : 'container-fluid'}>
-                            <Suspense fallback={<div>Loading...</div>}>
-                                <Switch>
-                                    {routes.map((route, idx) => (
-                                        <Route
-                                            key={route.path}
-                                            path={route.path}
-                                            exact
-                                            component={lazy(() =>
-                                                import(`${route.component}`)
-                                            )}
-                                        />
-                                    ))}
-                                </Switch>
-                            </Suspense>
-                        </main>
-                        <Footer />
-                    </div>
-                </IntlProvider>
-            </ThemeContext.Provider>
-        </SingleContext.Provider>
+                        <div
+                            className={`App ${
+                                singleChart ? 'single' : ''
+                            } ${theme}`}
+                        >
+                            {/* remove title if single chart */}
+                            <Header setLang={setLang} lang={lang} />
+                            <LogError />
+                            {/* <SiteMap /> */}
+                            <main
+                                className={singleChart ? '' : 'container-fluid'}
+                            >
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <Switch>
+                                        {routes.map((route, idx) => (
+                                            <Route
+                                                key={route.path}
+                                                path={route.path}
+                                                exact
+                                                component={lazy(() =>
+                                                    import(`${route.component}`)
+                                                )}
+                                            />
+                                        ))}
+                                    </Switch>
+                                </Suspense>
+                            </main>
+                            <Footer />
+                        </div>
+                    </IntlProvider>
+                </ThemeContext.Provider>
+            </SingleContext.Provider>
+        </ProvideAuth>
     );
 }
 

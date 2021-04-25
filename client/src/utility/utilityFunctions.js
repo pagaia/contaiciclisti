@@ -633,6 +633,12 @@ export function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
 
+// A custom hook that builds on useLocation to parse
+// the hash string for you.
+export function useHash() {
+    return new URLSearchParams(useLocation().hash);
+}
+
 /**
  * return true if the 2 objects have the same properties and values·
  * @param {object} object1

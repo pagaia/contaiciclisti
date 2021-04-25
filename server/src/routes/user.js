@@ -16,6 +16,7 @@ const routes = (fastify) => [
   {
     method: "GET",
     url: "/api/users/:id",
+    preValidation: [fastify.authenticate],
     handler: userController.getUserById(fastify),
     schema: {
       description: "Get user details",
@@ -49,6 +50,7 @@ const routes = (fastify) => [
   {
     method: "POST",
     url: "/api/users",
+    preValidation: [fastify.authenticate],
     handler: userController.addUser(fastify),
     schema: {
       description: "Create a new user",
@@ -86,6 +88,7 @@ const routes = (fastify) => [
   {
     method: "GET",
     url: "/api/users",
+    preValidation: [fastify.authenticate],
     handler: userController.getUsers(fastify),
     schema: {
       description: "Returns the list of users",
@@ -104,14 +107,17 @@ const routes = (fastify) => [
     },
     security: [
       {
+        authorization: [],
+      },
+      {
         apiKey: [],
       },
     ],
   },
-
   {
     method: "PUT",
     url: "/api/users/:id",
+    preValidation: [fastify.authenticate],
     handler: userController.updateUser(fastify),
     schema: {
       description: "Update selected user",
@@ -145,6 +151,7 @@ const routes = (fastify) => [
   {
     method: "DELETE",
     url: "/api/users/:id",
+    preValidation: [fastify.authenticate],
     handler: userController.deleteUser(fastify),
     schema: {
       description: "Delete user by ID",
@@ -178,6 +185,7 @@ const routes = (fastify) => [
   {
     method: "POST",
     url: "/api/users/:userId/device/:deviceId",
+    preValidation: [fastify.authenticate],
     handler: userController.linkDevice(fastify),
     schema: {
       description: "Add write right to user for a device",
@@ -217,6 +225,7 @@ const routes = (fastify) => [
   {
     method: "DELETE",
     url: "/api/users/:userId/device/:deviceId",
+    preValidation: [fastify.authenticate],
     handler: userController.unlinkDevice(fastify),
     schema: {
       description: "Remove write right to user for a device",

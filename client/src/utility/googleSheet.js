@@ -36,52 +36,52 @@ const readDevices = async () => {
     return devices;
 };
 
-const readDevicesFromGoogle = async (title = 'Devices') => {
-    // setup the google spread sheet
-    const doc = new GoogleSpreadsheet(process.env.REACT_APP_GOOGLE_FILE);
+// const readDevicesFromGoogle = async (title = 'Devices') => {
+//     // setup the google spread sheet
+//     const doc = new GoogleSpreadsheet(process.env.REACT_APP_GOOGLE_FILE);
 
-    // set up the API KEY
-    doc.useApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
+//     // set up the API KEY
+//     doc.useApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
-    await doc.loadInfo(); // loads document properties and worksheets
+//     await doc.loadInfo(); // loads document properties and worksheets
 
-    const sheet = doc.sheetsByTitle[title]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+//     const sheet = doc.sheetsByTitle[title]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
 
-    const rows = await sheet.getRows();
+//     const rows = await sheet.getRows();
 
-    const devices = rows.map((row, idx) => {
-        const {
-            long,
-            lat,
-            name,
-            channelId,
-            description,
-            newColor,
-            active,
-        } = row;
+//     const devices = rows.map((row, idx) => {
+//         const {
+//             long,
+//             lat,
+//             name,
+//             channelId,
+//             description,
+//             newColor,
+//             active,
+//         } = row;
 
-        let device = {
-            type: 'Feature',
-            geometry: {
-                type: 'Point',
-                coordinates: [long, lat],
-            },
-            properties: {
-                name,
-                description,
-                active,
-                channelId: parseInt(channelId, 10), // convert to number to match route
-                backgroundColor: `${newColor}33`, //color.replace("X", "0.2"),
-                borderColor: `${newColor}FF`, // color.replace("X", "1"),
-                hoverBackgroundColor: `${newColor}99`, // color.replace("X", "0.6"),
-            },
-        };
+//         let device = {
+//             type: 'Feature',
+//             geometry: {
+//                 type: 'Point',
+//                 coordinates: [long, lat],
+//             },
+//             properties: {
+//                 name,
+//                 description,
+//                 active,
+//                 channelId: parseInt(channelId, 10), // convert to number to match route
+//                 backgroundColor: `${newColor}33`, //color.replace("X", "0.2"),
+//                 borderColor: `${newColor}FF`, // color.replace("X", "1"),
+//                 hoverBackgroundColor: `${newColor}99`, // color.replace("X", "0.6"),
+//             },
+//         };
 
-        return device;
-    });
+//         return device;
+//     });
 
-    return devices;
-};
+//     return devices;
+// };
 
 export const readRipettaLevel = async () => {
     // setup the google spread sheet

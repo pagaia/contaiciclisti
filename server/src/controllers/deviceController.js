@@ -14,7 +14,7 @@ exports.generateToken = (fastify) => async (req, reply) => {
     if (!device) {
       return fastify.notFound(req, reply);
     }
-    const { accessTokenPlain, hash } = await security.generateToken(
+    const { accessTokenPlain, hash } = await security.createToken(
       device,
       req
     );

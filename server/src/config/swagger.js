@@ -17,7 +17,7 @@ exports.options = {
       description: "Find more info here",
     },
     host: "localhost:8081",
-    schemes: ["http","https"],
+    schemes: ["http", "https"],
     consumes: ["application/json"],
     produces: ["application/json"],
     definitions: {
@@ -84,6 +84,11 @@ exports.options = {
       apiKey: {
         type: "apiKey",
         name: "apiKey",
+        in: "header",
+      },
+      Authorization: {
+        type: "apiKey",
+        name: "authorization",
         in: "header",
       },
     },

@@ -15,9 +15,6 @@ const deviceProperties = {
       },
     },
   },
-  accessToken: { type: "string" },
-  tokenCreationDate: { type: "string" },
-  tokenHost: { type: "string" },
   description: { type: "string" },
   newColor: { type: "string" },
   active: { type: "boolean" },
@@ -29,6 +26,7 @@ const routes = (fastify) => [
   {
     method: "POST",
     url: "/api/devices/:id/generateToken",
+    preValidation: [fastify.authenticate],
     handler: deviceController.generateToken(fastify),
     schema: {
       description: "Generate an access Token for the selected device",
@@ -64,6 +62,7 @@ const routes = (fastify) => [
   {
     method: "GET",
     url: "/api/devices",
+    // preValidation: [fastify.authenticate],
     handler: deviceController.getDevices(fastify),
     schema: {
       description: "Get list of devices",
@@ -83,6 +82,13 @@ const routes = (fastify) => [
           type: "object",
           content: {},
         },
+        401: {
+          description: "Authorization error",
+          type: "object",
+          content: {
+            message: "No Authorization was found in request.headers"
+          },
+        },
       },
     },
     security: [
@@ -94,6 +100,7 @@ const routes = (fastify) => [
   {
     method: "GET",
     url: "/api/devices/:id",
+    preValidation: [fastify.authenticate],
     handler: deviceController.getDeviceById(fastify),
     schema: {
       description: "Get device details",
@@ -109,7 +116,12 @@ const routes = (fastify) => [
         200: {
           description: "Successful response",
           type: "object",
-          properties: deviceProperties,
+          properties: {
+            ...deviceProperties,
+            accessToken: { type: "string" },
+            tokenCreationDate: { type: "string" },
+            tokenHost: { type: "string" },
+          },
         },
         404: {
           description: "A device with the specified ID was not found.",
@@ -127,6 +139,7 @@ const routes = (fastify) => [
   {
     method: "POST",
     url: "/api/devices",
+    preValidation: [fastify.authenticate],
     handler: deviceController.addDevice(fastify),
     schema: {
       description: "Create a new device",
@@ -177,6 +190,7 @@ const routes = (fastify) => [
   {
     method: "PUT",
     url: "/api/devices/:id",
+    preValidation: [fastify.authenticate],
     handler: deviceController.updateDevice(fastify),
     schema: {
       description: "Update existing device",
@@ -233,6 +247,7 @@ const routes = (fastify) => [
   {
     method: "DELETE",
     url: "/api/devices/:id",
+    preValidation: [fastify.authenticate],
     handler: deviceController.deleteDevice(fastify),
     schema: {
       description: "Delete existing device",

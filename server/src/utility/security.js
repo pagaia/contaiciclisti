@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const Boom = require("boom");
-const User = require("../models/user");
 const Device = require("../models/device");
 
 const genKey = () => {
@@ -28,7 +27,7 @@ const createToken = async (user, req) => {
   }
 };
 
-const validateToken = async (req, reply) => {
+const validateToken = async (req, reply, done) => {
   let tokenHost = req.headers.origin;
   let deviceId = req.params.id;
   let api_key = req.headers["x-api-token"]; //version 3 using a header
@@ -53,12 +52,14 @@ const validateToken = async (req, reply) => {
       console.log("API key match");
       console.log("tokenHost match");
     } else {
-      reply.code(401).send({ error: "Unauthorized" });
+      //reply.code(401).send({ error: "Unauthorized" });
+      done({ error: "Unauthorized" });
       return;
     }
     console.log({ isMatch });
     console.log({ userToken: device.tokenHost, tokenHost });
     // no error should be returned is fine then
+    done();
   } catch (err) {
     Boom.boomify(err);
     throw err;

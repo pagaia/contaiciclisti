@@ -4,6 +4,7 @@ import chartsReducers from 'store/chartsSlide';
 
 import { combineReducers } from 'redux';
 import generalReducer from 'store/generalSlide';
+import logger from 'redux-logger';
 
 const reducer = combineReducers({
     devices: devicesReducer,
@@ -13,6 +14,7 @@ const reducer = combineReducers({
 
 const store = configureStore({
     reducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
 
 export default store;

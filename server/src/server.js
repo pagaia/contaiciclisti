@@ -1,11 +1,13 @@
-const MONGODB_CONF = require("./config/config");
+require("dotenv").config();
+
+const config = require("./config/config");
 
 // Require external modules
 const mongoose = require("mongoose");
 
 // Connect to DB
 mongoose
-  .connect(MONGODB_CONF.url)
+  .connect(config.db.url)
   .then(() => console.log("MongoDB connected…"))
   .catch((err) => console.log(err));
 

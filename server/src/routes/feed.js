@@ -112,6 +112,7 @@ const routes = (fastify) => [
   {
     method: "POST",
     url: "/api/devices/:id/feeds/multi",
+    preHandler: fastify.auth([fastify.validateToken]),
     handler: feedController.addMultiFeeds(fastify),
     schema: {
       description: "Add multi feed to device",

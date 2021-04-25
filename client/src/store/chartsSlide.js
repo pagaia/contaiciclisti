@@ -65,6 +65,8 @@ export const {
 export const selectDailyAverage = (state) => state.charts.dailyAverage;
 export const selectDailyCompare = (state) => state.charts.dailyCompare;
 export const selectHourlyCompare = (state) => state.charts.hourlyCompare;
+
 export const selectDeviceHourlyAverage = (channelId) => (state) =>
     state.charts.devices[channelId]?.hourlyAverage;
+
 export default chartsSlide.reducer;

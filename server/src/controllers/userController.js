@@ -8,7 +8,6 @@ const User = require("../models/user");
 const CONST = require("../utility/constants");
 const Device = require("../models/device");
 
-
 // Get all users
 exports.getUsers = (fastify) => async (req, reply) => {
   try {
