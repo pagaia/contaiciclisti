@@ -23,7 +23,7 @@ function Markers() {
                     device.geometry.coordinates[1],
                     device.geometry.coordinates[0],
                 ]}
-                icon={active === '1' ? OrangeIcon : GrayIcon}
+                icon={active ? OrangeIcon : GrayIcon}
             >
                 <Popup
                     position={[
@@ -36,7 +36,7 @@ function Markers() {
                         <div>{device.properties.description}</div>
                         <div>
                             <Link to={`/devices/${channelId}`}>
-                               <FormattedMessage id="link.go-to-page"/>
+                                <FormattedMessage id="link.go-to-page" />
                             </Link>
                         </div>
                     </div>

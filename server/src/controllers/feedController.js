@@ -4,7 +4,7 @@ const boom = require("boom");
 // Get Data Models
 const Device = require("../models/device");
 const Feed = require("../models/feed");
-const { compare } = require("../utility/commonFunctions");
+const { compare, formatTimeZone } = require("../utility/commonFunctions");
 const { downloadResource } = require("../utility/downloadCsv");
 
 /**
@@ -19,7 +19,6 @@ exports.addFeed = (fastify) => (req, reply) => {
       ...req.body,
       device: deviceId, // link device with feed
     };
-    console.log({ newFeed });
 
     Feed.create(newFeed, (err, createdFeed) => {
       if (err) {
@@ -40,7 +39,6 @@ exports.addFeed = (fastify) => (req, reply) => {
           },
 
           (err, feed) => {
-            console.log({ createdFeed });
             if (err) {
               boom.boomify(err);
               reply.send(err.message);
@@ -73,9 +71,13 @@ exports.addMultiFeeds = (fastify) => async (req, reply) => {
           ...feed,
           device: deviceId, // link device with feed
         };
-        console.log({ newFeed });
 
-        const createdFeed = await Feed.create(newFeed);
+        const filter = { entry_id: feed.entry_id };
+        const upInsert = feed;
+        const createdFeed = await Feed.findOneAndUpdate(filter, upInsert, {
+          new: true,
+          upsert: true, // Make this update into an upsert
+        });
         const updatedDevice = await Device.findByIdAndUpdate(
           deviceId,
           {
@@ -90,14 +92,11 @@ exports.addMultiFeeds = (fastify) => async (req, reply) => {
           }
         );
 
-        console.log({ createdFeed });
-
         return createdFeed;
       })
     );
 
-    console.log({ feeds });
-    feeds.then((response) => {
+    return feeds.then((response) => {
       reply.code(201).send(response);
     });
   } catch (err) {
@@ -106,26 +105,12 @@ exports.addMultiFeeds = (fastify) => async (req, reply) => {
   }
 };
 
-// TODO to be removed or limit the length
-// Get all feeds by Device id
-exports.getFeedsByDeviceId = (fastify) => async (req, reply) => {
-  try {
-    const id = req.params.id;
-    const devices = await Device.findById(id);
-    if (!devices) {
-      return fastify.notFound(req, reply);
-    }
-    return devices.feeds;
-  } catch (err) {
-    throw boom.boomify(err);
-  }
-};
-
 // Search feeds
 exports.searchFeeds = (fastify) => async (req, reply) => {
   try {
     const deviceId = req.params.id;
     const currentDate = new Date();
+    const tzString = req.query.timezone;
 
     // set by default last month if not passed
     const mindate =
@@ -133,9 +118,7 @@ exports.searchFeeds = (fastify) => async (req, reply) => {
       new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 31);
     const maxdate = req.query.end || currentDate;
 
-    console.log({ mindate, maxdate });
-
-    const foundDevice = Device.findById(deviceId);
+    const foundDevice = Device.findById(deviceId).lean();
 
     if (!foundDevice) {
       return fastify.notFound(req, reply);
@@ -144,15 +127,27 @@ exports.searchFeeds = (fastify) => async (req, reply) => {
     const fullDevice = await foundDevice.populate({
       path: "feeds",
       match: {
-        createdAt: {
+        created_at: {
           $gte: mindate,
           $lte: maxdate,
         },
       },
     });
 
-    // console.log({fullDevice: JSON.stringify(fullDevice.feeds.sort(compare))})
-    return { ...fullDevice, feeds: fullDevice.feeds.sort(compare) };
+    let feeds = fullDevice.feeds.sort(compare);
+    // return created_at with requested timezone
+    if (tzString) {
+      feeds = feeds.map((feed) => {
+        const newFeed = {
+          ...feed,
+          created_at: formatTimeZone(feed.created_at, tzString),
+          updated_at: formatTimeZone(feed.updated_at, tzString),
+        };
+        return newFeed;
+      });
+    }
+
+    return { ...fullDevice, feeds };
   } catch (err) {
     boom.boomify(err);
     fastify.errorHandler(err, req, reply);
@@ -164,6 +159,7 @@ exports.searchFeedsOnly = (fastify) => async (req, reply) => {
   try {
     const deviceId = req.params.id;
     const currentDate = new Date();
+    const tzString = req.query.timezone;
 
     // set by default last month if not passed
     const mindate =
@@ -171,17 +167,28 @@ exports.searchFeedsOnly = (fastify) => async (req, reply) => {
       new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 31);
     const maxdate = req.query.end || currentDate;
 
-    console.log({ mindate, maxdate });
-
-    const feeds = await Feed.find({
-      createdAt: {
+    let feeds = await Feed.find({
+      created_at: {
         $gte: mindate,
         $lte: maxdate,
       },
-    }).sort({ createdAt: "asc" });
+    })
+      .lean()
+      .sort({ created_at: "asc" });
 
     if (!feeds) {
       return fastify.notFound(req, reply);
+    }
+
+    if (tzString) {
+      feeds = feeds.map((feed) => {
+        const newFeed = {
+          ...feed,
+          created_at: formatTimeZone(feed.created_at, tzString),
+          updated_at: formatTimeZone(feed.updated_at, tzString),
+        };
+        return newFeed;
+      });
     }
 
     reply.send(feeds);
@@ -195,6 +202,7 @@ exports.searchFeedsOnly = (fastify) => async (req, reply) => {
 exports.searchFeedsCsv = (fastify) => async (req, reply) => {
   try {
     const currentDate = new Date();
+    const tzString = req.query.timezone;
 
     // set by default last month if not passed
     const mindate =
@@ -202,31 +210,42 @@ exports.searchFeedsCsv = (fastify) => async (req, reply) => {
       new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 31);
     const maxdate = req.query.end || currentDate;
 
-    console.log({ mindate, maxdate });
-
-    const feeds = await Feed.find({
-      createdAt: {
+    let feeds = await Feed.find({
+      created_at: {
         $gte: mindate,
         $lte: maxdate,
       },
-    }).sort({ createdAt: "asc" });
+    })
+      .lean()
+      .sort({ created_at: "asc" });
 
     if (!feeds) {
       return fastify.notFound(req, reply);
     }
 
     const fields = [
-      "createdAt",
+      "created_at",
       "entry_id",
-      "feed1",
-      "feed2",
-      "feed3",
-      "feed4",
-      "feed5",
-      "feed6",
-      "feed7",
-      "feed8",
+      "field1",
+      "field2",
+      "field3",
+      "field4",
+      "field5",
+      "field6",
+      "field7",
+      "field8",
     ];
+
+    if (tzString) {
+      feeds = feeds.map((feed) => {
+        const newFeed = {
+          ...feed,
+          created_at: formatTimeZone(feed.created_at, tzString),
+          updated_at: formatTimeZone(feed.updated_at, tzString),
+        };
+        return newFeed;
+      });
+    }
 
     downloadResource(reply, "feeds.csv", fields, feeds);
   } catch (err) {

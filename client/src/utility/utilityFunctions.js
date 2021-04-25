@@ -58,9 +58,9 @@ export const getLastMonthStartEnd = (day = new Date()) => {
 };
 
 /**
- * gets next month start and end date 
- * @param {Date} day 
- * @returns 
+ * gets next month start and end date
+ * @param {Date} day
+ * @returns
  */
 export const getNextMonth = (day = new Date()) => {
     const date = day;
@@ -78,9 +78,9 @@ export const getNextMonth = (day = new Date()) => {
 };
 
 /**
- * gets previous month start and end date 
- * @param {Date} day 
- * @returns 
+ * gets previous month start and end date
+ * @param {Date} day
+ * @returns
  */
 export const getPreviousMonth = (day = new Date()) => {
     const date = day;
@@ -167,7 +167,7 @@ export const buildDataHourly = (feeds, device) => {
     ];
 
     feeds.forEach((feed) => {
-        if (feed.field1) {
+        if (feed.field1 >= 0) {
             const hour =
                 feed.created_at.substring(11, 12) === '0'
                     ? feed.created_at.substring(12, 13)
@@ -547,7 +547,7 @@ export const buildHourlyAverage = (feeds) => {
     const sunday = [];
 
     feeds.forEach((feed) => {
-        if (feed.field1) {
+        if (feed.field1 >= 0) {
             const day = new Date(feed.created_at).getDay();
             const hour = new Date(feed.created_at).getHours();
 
@@ -631,6 +631,12 @@ export const convertArrayToObject = (array) => {
 // the query string for you.
 export function useQuery() {
     return new URLSearchParams(useLocation().search);
+}
+
+// A custom hook that builds on useLocation to parse
+// the hash string for you.
+export function useHash() {
+    return new URLSearchParams(useLocation().hash);
 }
 
 /**

@@ -63,7 +63,7 @@ const MainPage = () => {
                         <div className="col-sm-12">
                             <HourlyComparePage />
                         </div>
-                        {showPulse && (
+                        {/* {showPulse && (
                             <div className="col-sm-12">
                                 <h2><FormattedMessage id="title.example-counts-christmas"/></h2>
                                 <iframe
@@ -73,7 +73,7 @@ const MainPage = () => {
                                     src="https://pagaia.carto.com/viz/4cfaa083-53db-4b13-ae6f-c1acadcb2f2a/embed_map"
                                 ></iframe>
                             </div>
-                        )}
+                        )} */}
                         {/* <div className="col-sm-12">
               <About />
             </div> */}

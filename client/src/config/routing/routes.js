@@ -1,5 +1,6 @@
 export const ROUTES = {
     MAIN_PAGE: '/',
+    ADMIN: '/admin',
     DEVICE_VIEW: '/devices/:id',
     DEVICE_YESTERDAY: '/single/devices/:id/yesterday',
     DEVICE_TODAY: '/single/devices/:id/today',
@@ -15,6 +16,10 @@ export const ROUTES = {
 };
 
 const routes = [
+    {
+        component: './admin/AdminPage',
+        path: ROUTES.ADMIN,
+    },
     {
         component: './pages/MainPage',
         path: ROUTES.MAIN_PAGE,

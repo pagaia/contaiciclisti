@@ -199,3 +199,14 @@ main {
     list-style-type: none;
     padding: 1em;
 }
+
+.centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.centered > div {
+    width: 80%;
+    height: 80%;
+}

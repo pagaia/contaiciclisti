@@ -23,14 +23,11 @@ export const CHART_COLORS = {
 
 export const DEVICE_MAIN_URL = 'https://thingspeak.com/channels/';
 
-export const DEVICE_URL =
-    'https://api.thingspeak.com/channels/DEVICE/feeds.json?timezone=Europe/Rome';
+export const DEVICE_URL = '/api/devices/DEVICE/feeds?timezone=Europe/Rome';
 
-export const DEVICE_FIELDS =
-    'https://api.thingspeak.com/channels/DEVICE/fields/FIELD.json';
+export const DEVICE_FIELDS = '/api/devices/DEVICE/feeds?timezone=Europe/Rome';
 
-export const DEVICE_URL_LAST =
-    'https://api.thingspeak.com/channels/DEVICE/feeds/last.json?timezone=Europe/Rome';
+export const DEVICE_URL_LAST = '/api/devices/DEVICE/feeds?timezone=Europe/Rome';
 
 export const REGEX_DEVICE = /DEVICE/;
 

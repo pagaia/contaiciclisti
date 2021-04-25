@@ -17,7 +17,7 @@ exports.options = {
       description: "Find more info here",
     },
     host: "localhost:8081",
-    schemes: ["http","https"],
+    schemes: ["http", "https"],
     consumes: ["application/json"],
     produces: ["application/json"],
     definitions: {
@@ -42,7 +42,6 @@ exports.options = {
       },
       Device: {
         type: "object",
-        // required: ["id", "email", "name"],
         properties: {
           name: { type: "string" },
           location: { type: "string", enum: ["Point"] },
@@ -59,17 +58,17 @@ exports.options = {
       Feed: {
         type: "object",
         properties: {
-          hourly: { type: "number" },
-          hourlyDay: { type: "number" },
-          daily: { type: "number" },
-          battery: { type: "number" },
-          gmsErrorNumber: { type: "number" },
-          htmlErrorNumber: { type: "number" },
-          sendErrorNumber: { type: "number" },
-          yesterday: { type: "number" },
+          field1: { type: "number" },
+          field2: { type: "number" },
+          field3: { type: "number" },
+          field4: { type: "number" },
+          field5: { type: "number" },
+          field6: { type: "number" },
+          field7: { type: "number" },
+          field8: { type: "number" },
           device: { type: "string" },
-          createdAt: { type: "string" },
-          updatedAt: { type: "string" },
+          created_at: { type: "string" },
+          updated_at: { type: "string" },
         },
       },
       ApiResponse: {
@@ -85,6 +84,11 @@ exports.options = {
       apiKey: {
         type: "apiKey",
         name: "apiKey",
+        in: "header",
+      },
+      Authorization: {
+        type: "apiKey",
+        name: "authorization",
         in: "header",
       },
     },

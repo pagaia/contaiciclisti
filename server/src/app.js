@@ -1,14 +1,21 @@
 const deviceRoutes = require("./routes/device");
 const userRoutes = require("./routes/user");
 const feedRoutes = require("./routes/feed");
+const config = require("./config/config");
 
 // Import Swagger Options
 const swagger = require("./config/swagger");
-const { validateKey } = require("./utility/security");
+const { validateToken } = require("./utility/security");
 
 function build(opts = {}) {
   // Require the framework and instantiate it
   const fastify = require("fastify")(opts);
+
+  // add CORS feature
+  fastify.register(require("fastify-cors"), {
+    // put your options here
+    origin: "http://localhost:3000",
+  });
 
   // Register Swagger
   fastify.register(require("fastify-swagger"), swagger.options);
@@ -16,9 +23,16 @@ function build(opts = {}) {
   fastify.decorate("notFound", (request, reply) => {
     reply.code(404).type("application/json").send({ error: "Not Found" });
   });
+
   fastify.setNotFoundHandler(fastify.notFound);
 
-  fastify.decorate("validateKey", validateKey);
+  fastify.decorate("validateToken", validateToken);
+
+  // plugin to verify user and create JWT
+  fastify.register(require("./plugins/googleAuth"), {});
+
+  // plugin to verify JWT
+  fastify.register(require("./plugins/authenticate"), {});
 
   fastify.register(require("fastify-auth")).after(routes);
 
@@ -33,7 +47,9 @@ function build(opts = {}) {
   function routes() {
     // Declare a route
     fastify.get("/", async (request, reply) => {
-      return { hello: "This is the CiCO server" };
+      return {
+        message: "Hello, welcome to CiCO server, IL Conta I Ciclisti Ostinati",
+      };
     });
 
     // Configure routes for Devices

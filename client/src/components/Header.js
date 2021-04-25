@@ -1,8 +1,9 @@
+import { ROUTES } from 'config/routing/routes';
 import { useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { SingleContext } from 'utility/contexts/MyContext';
 import Languages from 'utility/Languages';
-import "./Header.css";
+import './Header.css';
 
 const { Link } = require('react-router-dom');
 const { default: ThemeSwitcher } = require('./ThemeSwitcher');
@@ -21,6 +22,7 @@ function Header({ setLang, lang }) {
                 </Link>
             </h1>
             <div className="header-tool">
+                <Link to={ROUTES.ADMIN}>Admin</Link>
                 <Languages setLang={setLang} lang={lang} />
                 <ThemeSwitcher />
             </div>
