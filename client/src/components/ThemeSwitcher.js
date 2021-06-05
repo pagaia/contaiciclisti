@@ -40,8 +40,21 @@ function ThemeSwitcher() {
 
     return (
         <div className="toggle-theme">
-            <div className="custom-control custom-switch">
+            {/* <div className="custom-control custom-switch"> */}
+            <div className="form-check form-switch">
                 <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="themeSwitcher"
+                    name="themeSwitcher"
+                    onChange={updateTheme}
+                />
+                <label className="form-check-label" htmlFor="themeSwitcher">
+                    {renderIcon()}
+                </label>
+            </div>
+
+            {/* <input
                     type="checkbox"
                     className="custom-control-input"
                     id="themeSwitcher"
@@ -51,8 +64,8 @@ function ThemeSwitcher() {
                 />
                 <label className="custom-control-label" htmlFor="themeSwitcher">
                     {renderIcon()}
-                </label>
-            </div>
+                </label> */}
+            {/* </div> */}
         </div>
     );
 }

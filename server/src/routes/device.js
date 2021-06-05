@@ -62,7 +62,7 @@ const routes = (fastify) => [
   {
     method: "GET",
     url: "/api/devices",
-    // preValidation: [fastify.authenticate],
+    preValidation: [fastify.authenticate],
     handler: deviceController.getDevices(fastify),
     schema: {
       description: "Get list of devices",

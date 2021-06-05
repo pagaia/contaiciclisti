@@ -1,0 +1,1894 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "CiCO - ContaiCiclisti Ostinati",
+    "description": "Building a Cyclists counter REST API with Node.js, MongoDB, Fastify and Swagger",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "0.1.0"
+  },
+  "host": "localhost:8081",
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "definitions": {
+    "User": {
+      "type": "object",
+      "required": ["name", "lastName", "email", "username"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "username": {
+          "type": "string"
+        },
+        "accessToken": {
+          "type": "string"
+        },
+        "tokenCreationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "tokenHost": {
+          "type": "string"
+        },
+        "devices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Device": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string",
+          "enum": ["Point"]
+        },
+        "coordinates": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "feeds": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "description": {
+        "type": "string"
+      }
+    },
+    "Feed": {
+      "type": "object",
+      "properties": {
+        "field1": {
+          "type": "number"
+        },
+        "field2": {
+          "type": "number"
+        },
+        "field3": {
+          "type": "number"
+        },
+        "field4": {
+          "type": "number"
+        },
+        "field5": {
+          "type": "number"
+        },
+        "field6": {
+          "type": "number"
+        },
+        "field7": {
+          "type": "number"
+        },
+        "field8": {
+          "type": "number"
+        },
+        "device": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "name": "apiKey",
+      "in": "header"
+    },
+    "Authorization": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header"
+    }
+  },
+  "externalDocs": {
+    "url": "https://github.com/pagaia/contaiciclisti",
+    "description": "Find more info here"
+  },
+  "paths": {
+    "/api/users/verify": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/api/devices/{id}/generateToken": {
+      "post": {
+        "summary": "Returns the new access Token for the selected device",
+        "description": "Generate an access Token for the selected device",
+        "tags": ["devices"],
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "properties": {
+                "accessToken": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "schema": {
+              "description": "Device not found",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Device not found"
+          }
+        }
+      }
+    },
+    "/api/devices": {
+      "get": {
+        "summary": "Returns list of devices",
+        "description": "Get list of devices",
+        "tags": ["devices"],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "channelId": {
+                    "type": "number"
+                  },
+                  "location": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": ["Point"]
+                      },
+                      "coordinates": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "newColor": {
+                    "type": "string"
+                  },
+                  "active": {
+                    "type": "boolean"
+                  },
+                  "created_at": {
+                    "type": "string"
+                  },
+                  "updated_at": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "400": {
+            "schema": {
+              "description": "Invalid tag value",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Invalid tag value"
+          },
+          "401": {
+            "schema": {
+              "description": "Authorization error",
+              "type": "object",
+              "content": {
+                "message": "No Authorization was found in request.headers"
+              }
+            },
+            "description": "Authorization error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new device to the list",
+        "description": "Create a new device",
+        "tags": ["devices"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["Point"]
+                    },
+                    "coordinates": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "description": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "channelId": {
+                  "type": "number"
+                },
+                "location": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["Point"]
+                    },
+                    "coordinates": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "description": {
+                  "type": "string"
+                },
+                "newColor": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "409": {
+            "schema": {
+              "description": "A device with the same name already exists.",
+              "type": "object",
+              "content": {}
+            },
+            "description": "A device with the same name already exists."
+          },
+          "default": {
+            "schema": {
+              "description": "Unexpected error",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Unexpected error"
+          }
+        }
+      }
+    },
+    "/api/devices/{id}": {
+      "get": {
+        "summary": "Returns device details",
+        "description": "Get device details",
+        "tags": ["devices"],
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "channelId": {
+                  "type": "number"
+                },
+                "location": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["Point"]
+                    },
+                    "coordinates": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "description": {
+                  "type": "string"
+                },
+                "newColor": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                },
+                "accessToken": {
+                  "type": "string"
+                },
+                "tokenCreationDate": {
+                  "type": "string"
+                },
+                "tokenHost": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "schema": {
+              "description": "A device with the specified ID was not found.",
+              "type": "object",
+              "content": {}
+            },
+            "description": "A device with the specified ID was not found."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing device to the list",
+        "description": "Update existing device",
+        "tags": ["devices"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "object",
+                  "properties": {
+                    "coordinates": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "channelId": {
+                  "type": "number"
+                },
+                "location": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["Point"]
+                    },
+                    "coordinates": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "description": {
+                  "type": "string"
+                },
+                "newColor": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "schema": {
+              "description": "A device with the specified ID was not found.",
+              "type": "object",
+              "content": {}
+            },
+            "description": "A device with the specified ID was not found."
+          },
+          "409": {
+            "schema": {
+              "description": "Duplicate Object.",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Duplicate Object."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an existing device from the list",
+        "description": "Delete existing device",
+        "tags": ["devices"],
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "schema": {
+              "description": "A device with the specified ID was not found.",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "A device with the specified ID was not found."
+          }
+        }
+      }
+    },
+    "/api/devices/{id}/feeds": {
+      "post": {
+        "summary": "Add new feed to device",
+        "description": "Add feed to device",
+        "tags": ["feeds"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "field1": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field2": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field3": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field4": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field5": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field6": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field7": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field18": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "entry_id": {
+                  "type": "number"
+                },
+                "device": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "channelId": {
+                      "type": "number"
+                    },
+                    "location": {
+                      "type": "object",
+                      "properties": {
+                        "coordinates": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "newColor": {
+                      "type": "string"
+                    },
+                    "active": {
+                      "type": "boolean"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "type": "string",
+            "description": "id of the device",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          },
+          {
+            "in": "header",
+            "name": "x-api-token",
+            "required": true,
+            "description": "mandatory api token",
+            "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "x-api-user",
+            "required": true,
+            "description": "mandatory api user",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "field1": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field2": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field3": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field4": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field5": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field6": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field7": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "field18": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "entry_id": {
+                  "type": "number"
+                },
+                "device": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "channelId": {
+                      "type": "number"
+                    },
+                    "location": {
+                      "type": "object",
+                      "properties": {
+                        "coordinates": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "newColor": {
+                      "type": "string"
+                    },
+                    "active": {
+                      "type": "boolean"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "400": {
+            "schema": {
+              "description": "Malformed object",
+              "type": "object",
+              "content": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Malformed object"
+          },
+          "401": {
+            "schema": {
+              "description": "Not authorised",
+              "type": "object",
+              "content": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Not authorised"
+          },
+          "404": {
+            "schema": {
+              "description": "Device ID not found",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Device ID not found"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get list of feeds per device",
+        "description": "Get list of feeds per device",
+        "tags": ["feeds"],
+        "parameters": [
+          {
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "name": "start"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "name": "end"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "name": "timezone"
+          },
+          {
+            "type": "string",
+            "description": "id of the device",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "channelId": {
+                  "type": "number"
+                },
+                "location": {
+                  "type": "object",
+                  "properties": {
+                    "coordinates": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "newColor": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                },
+                "feeds": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "field1": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "field2": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "field3": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "field4": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "field5": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "field6": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "field7": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "field18": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "entry_id": {
+                        "type": "number"
+                      },
+                      "device": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "channelId": {
+                            "type": "number"
+                          },
+                          "location": {
+                            "type": "object",
+                            "properties": {
+                              "coordinates": {
+                                "type": "array",
+                                "items": {
+                                  "type": "number"
+                                }
+                              }
+                            }
+                          },
+                          "newColor": {
+                            "type": "string"
+                          },
+                          "active": {
+                            "type": "boolean"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "schema": {
+              "description": "Device ID not found",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Device ID not found"
+          }
+        }
+      }
+    },
+    "/api/devices/{id}/feeds/multi": {
+      "post": {
+        "summary": "Add multiple feed to a device",
+        "description": "Add multi feed to device",
+        "tags": ["feeds"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "field1": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field2": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field3": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field4": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field5": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field6": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field7": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field18": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "entry_id": {
+                    "type": "number"
+                  },
+                  "device": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "channelId": {
+                        "type": "number"
+                      },
+                      "location": {
+                        "type": "object",
+                        "properties": {
+                          "coordinates": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      },
+                      "newColor": {
+                        "type": "string"
+                      },
+                      "active": {
+                        "type": "boolean"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "created_at": {
+                    "type": "string"
+                  },
+                  "updated_at": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "string",
+            "description": "id of the device",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "description": "Successful response",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "field1": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field2": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field3": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field4": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field5": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field6": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field7": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field18": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "entry_id": {
+                    "type": "number"
+                  },
+                  "device": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "channelId": {
+                        "type": "number"
+                      },
+                      "location": {
+                        "type": "object",
+                        "properties": {
+                          "coordinates": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      },
+                      "newColor": {
+                        "type": "string"
+                      },
+                      "active": {
+                        "type": "boolean"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "created_at": {
+                    "type": "string"
+                  },
+                  "updated_at": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "400": {
+            "schema": {
+              "description": "Malformed object",
+              "type": "object",
+              "content": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Malformed object"
+          },
+          "404": {
+            "schema": {
+              "description": "Device ID not found",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Device ID not found"
+          }
+        }
+      }
+    },
+    "/api/devices/{id}/feedsOnly": {
+      "get": {
+        "summary": "Get list of feeds per device",
+        "description": "Get list of feeds per device",
+        "tags": ["feeds"],
+        "parameters": [
+          {
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "name": "start"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "name": "end"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "name": "timezone"
+          },
+          {
+            "type": "string",
+            "description": "id of the device",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "field1": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field2": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field3": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field4": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field5": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field6": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field7": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "field18": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "entry_id": {
+                    "type": "number"
+                  },
+                  "device": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "channelId": {
+                        "type": "number"
+                      },
+                      "location": {
+                        "type": "object",
+                        "properties": {
+                          "coordinates": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      },
+                      "newColor": {
+                        "type": "string"
+                      },
+                      "active": {
+                        "type": "boolean"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "created_at": {
+                    "type": "string"
+                  },
+                  "updated_at": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "schema": {
+              "description": "Device ID not found",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Device ID not found"
+          }
+        }
+      }
+    },
+    "/api/devices/{id}/feeds.csv": {
+      "get": {
+        "summary": "Get list of feeds per device in CSV format",
+        "description": "Get list of feeds per device in CSV format",
+        "tags": ["feeds"],
+        "parameters": [
+          {
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "name": "start"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "name": "end"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "name": "timezone"
+          },
+          {
+            "type": "string",
+            "description": "id of the device",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "string",
+              "content": {
+                "text/csv": {}
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "schema": {
+              "description": "Device ID not found",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Device ID not found"
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "summary": "Returns user details",
+        "description": "Get user details",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                },
+                "devices": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "schema": {
+              "description": "User not found.",
+              "type": "object",
+              "content": {}
+            },
+            "description": "User not found."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update selected user",
+        "description": "Update selected user",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                },
+                "devices": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "schema": {
+              "description": "User not found.",
+              "type": "object",
+              "content": {}
+            },
+            "description": "User not found."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by ID",
+        "description": "Delete user by ID",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "schema": {
+              "description": "User not found.",
+              "type": "object",
+              "content": {}
+            },
+            "description": "User not found."
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "post": {
+        "summary": "Create a new user",
+        "description": "Create a new user",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                }
+              },
+              "required": ["name", "lastName", "email", "username"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                },
+                "devices": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "400": {
+            "schema": {
+              "description": "Bad request.",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Bad request."
+          }
+        }
+      },
+      "get": {
+        "summary": "Returns the list of users",
+        "description": "Returns the list of users",
+        "tags": ["users"],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "created_at": {
+                    "type": "string"
+                  },
+                  "updated_at": {
+                    "type": "string"
+                  },
+                  "devices": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/users/{userId}/device/{deviceId}": {
+      "post": {
+        "summary": "Link a device to a user",
+        "description": "Add write right to user for a device",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "userId"
+          },
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "deviceId"
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                },
+                "devices": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "400": {
+            "schema": {
+              "description": "Bad request.",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Bad request."
+          },
+          "404": {
+            "schema": {
+              "description": "User or device not found",
+              "type": "object",
+              "content": {}
+            },
+            "description": "User or device not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "UnLink a device from a user",
+        "description": "Remove write right to user for a device",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "userId"
+          },
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "deviceId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "description": "Successful response",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                },
+                "devices": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "400": {
+            "schema": {
+              "description": "Bad request.",
+              "type": "object",
+              "content": {}
+            },
+            "description": "Bad request."
+          },
+          "404": {
+            "schema": {
+              "description": "User or device not found",
+              "type": "object",
+              "content": {}
+            },
+            "description": "User or device not found"
+          }
+        }
+      }
+    }
+  }
+}

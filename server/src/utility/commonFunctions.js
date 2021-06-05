@@ -6,7 +6,7 @@ const { format, utcToZonedTime } = require("date-fns-tz");
  * @param {feed} b
  * @returns
  */
-exports.compare = (a, b) => {
+exports.compareCreatedAt = (a, b) => {
   if (a.created_at < b.created_at) {
     return -1;
   }

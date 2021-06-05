@@ -81,14 +81,14 @@ exports.options = {
       },
     },
     securityDefinitions: {
+      Bearer: {
+        type: "apiKey",
+        name: "Authorization",
+        in: "header",
+      },
       apiKey: {
         type: "apiKey",
         name: "apiKey",
-        in: "header",
-      },
-      Authorization: {
-        type: "apiKey",
-        name: "authorization",
         in: "header",
       },
     },

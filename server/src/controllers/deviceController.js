@@ -14,17 +14,19 @@ exports.generateToken = (fastify) => async (req, reply) => {
     if (!device) {
       return fastify.notFound(req, reply);
     }
-    const { accessTokenPlain, hash } = await security.createToken(
-      device,
-      req
-    );
+    const apiKey = security.createToken();
+    // const { accessTokenPlain, hash } = await security.createToken(
+    //   device,
+    //   req
+    // );
 
     device.tokenHost = req.headers.origin;
     device.tokenCreationDate = new Date();
-    device.accessToken = hash;
+    device.accessToken = apiKey;
+
     // save the enhanced user
     const res = await device.save();
-    return accessTokenPlain;
+    return apiKey;
   } catch (err) {
     throw boom.boomify(err);
   }
@@ -36,20 +38,17 @@ exports.addDevice = (fastify) => async (req, reply) => {
     const device = new Device(req.body);
 
     // create the token along with the device
-    const { accessTokenPlain, hash } = await security.createToken(
-      device,
-      req
-    );
+    const accessToken = await security.createToken(device, req);
 
     device.tokenHost = req.headers.origin;
     device.tokenCreationDate = new Date();
     // save the hash in the DB
-    device.accessToken = hash;
+    device.accessToken = accessToken;
     const result = await device.save();
 
     // return the plain token along with the device information
     // this is the only time the user can save the token
-    result.accessToken = accessTokenPlain;
+    // result.accessToken = accessTokenPlain;
 
     reply.code(201).send(result);
   } catch (err) {
@@ -80,7 +79,7 @@ exports.getDeviceById = (fastify) => async (req, reply) => {
     const id = req.params.id;
     const device = await Device.findById(id);
 
-    device.populate("feeds").execPopulate();
+    // device.populate("feeds").execPopulate();
 
     return device;
   } catch (err) {

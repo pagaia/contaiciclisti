@@ -2,13 +2,22 @@ const axios = require("axios");
 const fs = require("fs");
 const Path = require("path");
 
-var myArgs = process.argv.slice(2);
+var myArgs = process.argv; //.slice(2);
 console.log("myArgs: ", myArgs);
 
-const [deviceId, path] = myArgs;
+const [node, script, deviceId, path] = myArgs;
+
+// curl -X GET "http://localhost:8081/api/devices/608741ca57523b3bf1f25231" \
+// -H  "accept: application/json" \
+// -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXNzYWdlIjoiV2VsY29tZSIsImlhdCI6MTYxOTQ3NzgzOSwiZXhwIjoxNjE5NDc4NzM5fQ.z5Qodr5T1bHz08WWpxNdUkVruFkXzk5gvHEQ75WAZHY"
+
+// curl -X POST "http://localhost:8081/api/devices/608741ca57523b3bf1f25231/generateToken" -H  "accept: application/json"  \
+// -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXNzYWdlIjoiV2VsY29tZSIsImlhdCI6MTYxOTQ3NzgzOSwiZXhwIjoxNjE5NDc4NzM5fQ.z5Qodr5T1bHz08WWpxNdUkVruFkXzk5gvHEQ75WAZHY"
 
 if (!deviceId || !path) {
   console.error("Please pass the device ID and the file to load");
+  console.error(`- node ${script} deviceId fileToLoad`);
+  
   process.exit(1);
 }
 
@@ -26,47 +35,52 @@ fs.readFile(path, "utf8", (err, data) => {
 
 function uploadFeeds(data) {
   // console.log(data);
-  const feeds = data
-    .map((feed, idx) => {
-      // if (!idx || idx < 100 || idx > 105) {
-      if (!idx) {
-        return {};
-      }
-      const [
-        created_at,
-        entry_id,
-        field1,
-        field2,
-        field3,
-        field4,
-        field5,
-        field6,
-        field7,
-        field8,
-      ] = feed.split(",");
+  const feeds = data.map((feed, idx) => {
+    // if (!idx || idx < 100 || idx > 105) {
+    if (!idx) {
+      return {};
+    }
+    //       created_at,entry_id,field1,field2,field3,field4,field5,field6,field7,field8
+    // 2021-04-01 00:57:01 UTC,3311,0,0,,0,0,0,0,2188
 
-      return {
-        created_at,
-        entry_id,
-        field1,
-        field2,
-        field3,
-        field4,
-        field5,
-        field6,
-        field7,
-        field8,
-      };
-    })
-    // filter the row with null created_at
-    .filter((el) => el.created_at);
+    const [
+      created_at,
+      entry_id,
+      field1,
+      field2,
+      field3,
+      field4,
+      field5,
+      field6,
+      field7,
+      field8,
+    ] = feed.split(",");
+
+    return {
+      created_at,
+      entry_id,
+      field1,
+      field2,
+      field3,
+      field4,
+      field5,
+      field6,
+      field7,
+      field8,
+    };
+  });
+  // filter the row with null created_at
+  // .filter((el) => el.created_at);
 
   // console.log(feeds);
-
+// return
   axios
     .post(endPoint, feeds, {
-      accept: "application/json",
-      "Content-Type": "application/json",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        "x-api-token": "6RGRKY25N2AUMD21NLM85M0YLWK728F99HG8XH1C9J92R",
+      },
     })
     .then((res) => {
       console.log(`statusCode: ${res.statusCode}`);

@@ -1,6 +1,7 @@
 const deviceRoutes = require("./routes/device");
 const userRoutes = require("./routes/user");
 const feedRoutes = require("./routes/feed");
+const defaultRoutes = require("./routes/default");
 const config = require("./config/config");
 
 // Import Swagger Options
@@ -12,10 +13,10 @@ function build(opts = {}) {
   const fastify = require("fastify")(opts);
 
   // add CORS feature
-  fastify.register(require("fastify-cors"), {
-    // put your options here
-    origin: "http://localhost:3000",
-  });
+  // fastify.register(require("fastify-cors"), {
+  //   // put your options here
+  //   origin: "http://localhost:3000",
+  // });
 
   // Register Swagger
   fastify.register(require("fastify-swagger"), swagger.options);
@@ -26,13 +27,13 @@ function build(opts = {}) {
 
   fastify.setNotFoundHandler(fastify.notFound);
 
-  fastify.decorate("validateToken", validateToken);
-
   // plugin to verify user and create JWT
   fastify.register(require("./plugins/googleAuth"), {});
 
   // plugin to verify JWT
   fastify.register(require("./plugins/authenticate"), {});
+
+  fastify.decorate("validateToken", validateToken);
 
   fastify.register(require("fastify-auth")).after(routes);
 
@@ -52,6 +53,11 @@ function build(opts = {}) {
       };
     });
 
+    // Configure  default Routes
+    defaultRoutes(fastify).forEach((route, index) => {
+      fastify.route(route);
+    });
+
     // Configure routes for Devices
     deviceRoutes(fastify).forEach((route, index) => {
       fastify.route(route);
@@ -59,6 +65,7 @@ function build(opts = {}) {
 
     // Configure routes for Feeds
     feedRoutes(fastify).forEach((route, index) => {
+      // console.log({fastify})
       fastify.route(route);
     });
 

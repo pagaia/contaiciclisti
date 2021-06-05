@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const timestampPlugin = require("./plugins/timestamp");
 const bcrypt = require("bcrypt");
+const Boom = require("boom");
 
 const pointSchema = new mongoose.Schema({
   type: {
@@ -46,15 +47,17 @@ deviceSchema.plugin(timestampPlugin);
 
 deviceSchema.methods.compareToken = function compareToken(providedToken) {
   return new Promise((resolve, reject) => {
-    bcrypt.compare(providedToken, this.accessToken, (err, isMatch) => {
-      if (err) {
-        Boom.boomify(err);
-        reject(err);
-      }
-      console.log({ providedToken, accessTokennn: this.accessToken });
-      console.log({ isMatch });
-      resolve(isMatch);
-    });
+    console.log({providedToken, accessToken: this.accessToken})
+    resolve(providedToken === this.accessToken);
+    // bcrypt.compare(providedToken, this.accessToken, (err, isMatch) => {
+    //   if (err) {
+    //     Boom.boomify(err);
+    //     reject(err);
+    //   }
+    //   console.log({ providedToken, accessToken: this.accessToken });
+    //   console.log({ isMatch });
+    //   resolve(isMatch);
+    // });
   });
 };
 

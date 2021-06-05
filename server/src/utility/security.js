@@ -2,10 +2,10 @@ const bcrypt = require("bcrypt");
 const Boom = require("boom");
 const Device = require("../models/device");
 
-const genKey = () => {
-  //create a base-36 string that is always 30 chars long a-z0-9
+const createToken = () => {
+  //create a base-36 string that is always 45 chars long a-z0-9 in upper case
   // 'an0qrr5i9u0q4km27hv2hue3ywx3uu'
-  const apiKey = [...Array(30)]
+  const apiKey = [...Array(45)]
     .map((e) => ((Math.random() * 36) | 0).toString(36))
     .join("")
     .toUpperCase();
@@ -13,7 +13,7 @@ const genKey = () => {
   return apiKey;
 };
 
-const createToken = async (user, req) => {
+const createTokenBk = async (user, req) => {
   const accessTokenPlain = genKey();
 
   try {
@@ -31,6 +31,7 @@ const validateToken = async (req, reply, done) => {
   let tokenHost = req.headers.origin;
   let deviceId = req.params.id;
   let api_key = req.headers["x-api-token"]; //version 3 using a header
+  console.log({headers: req.headers})
   console.log({ tokenHost, deviceId, api_key });
 
   try {
