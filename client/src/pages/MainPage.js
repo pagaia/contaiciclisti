@@ -11,6 +11,7 @@ import Accordion from 'components/Accordion';
 import { selectSecret } from 'store/generalSlide';
 import Loading from 'components/Loading';
 import { FormattedMessage } from 'react-intl';
+import DailyAveragePage from './singlePages/DailyAveragePage';
 
 const MainPage = () => {
     const { devices } = useSelector((state) => state.devices);
@@ -51,8 +52,10 @@ const MainPage = () => {
 
                     <div className="row">
                         <div className="col-sm-12">
-                            <h2><FormattedMessage id="title.daily-average"/></h2>
-                            <DailyAverage />
+                            <h2>
+                                <FormattedMessage id="title.daily-average" />
+                            </h2>
+                            <DailyAveragePage />
                         </div>
                         <div className="col-sm-12">
                             <DevicesCompare />
@@ -63,17 +66,7 @@ const MainPage = () => {
                         <div className="col-sm-12">
                             <HourlyComparePage />
                         </div>
-                        {showPulse && (
-                            <div className="col-sm-12">
-                                <h2><FormattedMessage id="title.example-counts-christmas"/></h2>
-                                <iframe
-                                    width="100%"
-                                    height="520"
-                                    frameBorder="0"
-                                    src="https://pagaia.carto.com/viz/4cfaa083-53db-4b13-ae6f-c1acadcb2f2a/embed_map"
-                                ></iframe>
-                            </div>
-                        )}
+                       
                         {/* <div className="col-sm-12">
               <About />
             </div> */}

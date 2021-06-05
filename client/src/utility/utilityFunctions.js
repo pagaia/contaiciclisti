@@ -58,9 +58,9 @@ export const getLastMonthStartEnd = (day = new Date()) => {
 };
 
 /**
- * gets next month start and end date 
- * @param {Date} day 
- * @returns 
+ * gets next month start and end date
+ * @param {Date} day
+ * @returns
  */
 export const getNextMonth = (day = new Date()) => {
     const date = day;
@@ -78,9 +78,9 @@ export const getNextMonth = (day = new Date()) => {
 };
 
 /**
- * gets previous month start and end date 
- * @param {Date} day 
- * @returns 
+ * gets previous month start and end date
+ * @param {Date} day
+ * @returns
  */
 export const getPreviousMonth = (day = new Date()) => {
     const date = day;
@@ -639,6 +639,9 @@ export function useQuery() {
  * @param {object} object2
  */
 export function deepEqual(object1, object2) {
+    if (!object1 || !object2) {
+        return false;
+    }
     const keys1 = Object.keys(object1);
     const keys2 = Object.keys(object2);
 

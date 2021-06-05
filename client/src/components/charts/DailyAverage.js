@@ -1,27 +1,26 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
-import {
-    buildDataDailyAverage,
-    getLastMonthStartEnd,
-} from 'utility/utilityFunctions';
+import { buildDataDailyAverage, deepEqual } from 'utility/utilityFunctions';
 import PropTypes from 'prop-types';
 import { DEVICE_FIELDS, REGEX_FIELD, REGEX_DEVICE } from 'utility/constants';
 import SimpleChart from './Chart';
 import { useDispatch, useSelector } from 'react-redux';
 import { receiveDailyAverage, selectDailyAverage } from 'store/chartsSlide';
-import { selectDevices } from 'store/devicesSlide';
 import { FormattedMessage, useIntl } from 'react-intl';
+import usePrevious from 'hooks/usePrevious';
 
-const { start, end } = getLastMonthStartEnd();
-
-function DailyAverage(props) {
+function DailyAverage({ search }) {
     const dailyAverage = useSelector(selectDailyAverage);
-    const devices = useSelector(selectDevices);
-  
+
+    const prevSearch = usePrevious(search);
+
+    const devices = Object.values(search.devices);
+    const { startDate, endDate } = search;
+
     const intl = useIntl();
     const chartTitle = intl.formatMessage(
         { id: 'chart.title.last-month' },
-        { start, end }
+        { start: startDate, end: endDate }
     );
 
     const dispatch = useDispatch();
@@ -45,7 +44,8 @@ function DailyAverage(props) {
                 DEVICE_FIELDS.replace(
                     REGEX_DEVICE,
                     device.properties.channelId
-                ).replace(REGEX_FIELD, '3') + `?start=${start}&end=${end}`;
+                ).replace(REGEX_FIELD, '3') +
+                `?start=${startDate}&end=${endDate}`;
 
             // fetch data from a url endpoint
             const response = await axios.get(apiEndPoint);
@@ -57,7 +57,7 @@ function DailyAverage(props) {
             return builtDataset;
         }
 
-        if (!dailyAverage?.length && devices?.length) {
+        if (search && !deepEqual(search, prevSearch)) {
             // initialize the array for all chart lines
             dispatch(receiveDailyAverage(Array(devices.length).fill(null)));
 
@@ -68,7 +68,7 @@ function DailyAverage(props) {
                 });
             });
         }
-    }, [devices]);
+    }, [search, prevSearch]);
 
     const data = {
         labels,
@@ -89,7 +89,7 @@ function DailyAverage(props) {
                 </h3>
                 <span className="text-muted">
                     <small>
-                        &nbsp;({start} - {end})
+                        &nbsp;({startDate} - {endDate})
                     </small>
                 </span>
             </div>

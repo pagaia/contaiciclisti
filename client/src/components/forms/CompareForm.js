@@ -14,7 +14,7 @@ import { FormattedMessage } from 'react-intl';
 
 const { start: startDate, end: endDate } = getLastMonthStartEndDatePicker();
 
-const CompareForm = ({ updateSearch }) => {
+const CompareForm = ({ updateSearch, nameForm = 'CompareForm' }) => {
     const [viewForm, toggleForm] = useState(true);
 
     const { devices: devicesStore } = useSelector((state) => state.devices);
@@ -118,7 +118,7 @@ const CompareForm = ({ updateSearch }) => {
                             const id = `${device.properties.name.replace(
                                 ' ',
                                 '-'
-                            )}-CompareForm`;
+                            )}-${nameForm}`;
                             return (
                                 <Fragment key={idx}>
                                     <div className="form-check">
