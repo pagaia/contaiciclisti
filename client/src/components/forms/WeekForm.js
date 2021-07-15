@@ -85,22 +85,22 @@ const WeekForm = ({ updateSearch }) => {
         });
     };
 
-    const validateForm = (form) => {
-        const error = [];
-        const period = (form.endDate - form.startDate) / (1000 * 60 * 60 * 24);
-        if (period > 32 || period < 1) {
-            error.push('-max window: 1 month');
-        }
-        return error;
-    };
+    // const validateForm = (form) => {
+    //     const error = [];
+    //     const period = (form.endDate - form.startDate) / (1000 * 60 * 60 * 24);
+    //     if (period > 32 || period < 1) {
+    //         error.push('-max window: 1 month');
+    //     }
+    //     return error;
+    // };
 
     const handleSearch = () => {
-        const error = validateForm(form);
-        if (error.length > 0) {
-            const text = 'Please check data: \n' + error.join('\n');
-            alert(text);
-            return;
-        }
+        // const error = validateForm(form);
+        // if (error.length > 0) {
+        //     const text = 'Please check data: \n' + error.join('\n');
+        //     alert(text);
+        //     return;
+        // }
         toggle();
 
         let endDate = form.endDate;

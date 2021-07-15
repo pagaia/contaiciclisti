@@ -24,6 +24,7 @@ export const chartsSlide = createSlice({
         dailyAverage: [],
         dailyCompare: {},
         hourlyCompare: {},
+        monthsCompare: {},
     },
     reducers: {
         receiveDailyAverage: (state, action) => {
@@ -36,6 +37,10 @@ export const chartsSlide = createSlice({
             const name = action.payload.name;
             state.dailyCompare[name] = action.payload[name];
         },
+        receiveMonthsCompare: (state, action) => {
+            const name = action.payload.name;
+            state.monthsCompare[name] = action.payload[name];
+        },
     },
     extraReducers: {
         // Add reducers for additional action types here, and handle loading state as needed
@@ -43,10 +48,7 @@ export const chartsSlide = createSlice({
             const device = action?.meta?.arg?.device;
             const channelId = device?.properties?.channelId;
             console.log({ action });
-            const builtDataset = buildHourlyAverage(
-                action.payload?.feeds,
-                device
-            );
+            const builtDataset = buildHourlyAverage(action.payload?.feeds, device);
             // initialise device object if undefined
             if (!state.devices[channelId]) {
                 state.devices[channelId] = {};
@@ -60,11 +62,14 @@ export const {
     receiveDailyAverage,
     receiveDailyCompare,
     receiveHourlyCompare,
+    receiveMonthsCompare,
 } = chartsSlide.actions;
 
 export const selectDailyAverage = (state) => state.charts.dailyAverage;
 export const selectDailyCompare = (state) => state.charts.dailyCompare;
+export const selectMonthsCompare = (state) => state.charts.monthsCompare;
 export const selectHourlyCompare = (state) => state.charts.hourlyCompare;
 export const selectDeviceHourlyAverage = (channelId) => (state) =>
     state.charts.devices[channelId]?.hourlyAverage;
+
 export default chartsSlide.reducer;

@@ -10,6 +10,7 @@ import PeakCount from 'components/charts/PeakCount';
 import { useSelector } from 'react-redux';
 import Loading from 'components/Loading';
 import { selectDevices } from 'store/devicesSlide';
+import CompareMonths from 'pages/singlePages/CompareMonths';
 
 const Device = (props) => {
     let { id } = useParams();
@@ -41,7 +42,12 @@ const Device = (props) => {
             <div className="row">
                 <div className="col-sm-12 col-md-6">
                     <LastCount device={device} />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-sm-12 col-md-6">
                     <TodayHourly device={device} />
+                    <hr className="mb-5 bg-warning" />
                 </div>
                 <div className="col-sm-12 col-md-6">
                     <YesterdayHourly device={device} />
@@ -59,6 +65,10 @@ const Device = (props) => {
                 </div>
                 <div className="col-md-6">
                     <PeakCount device={device} />
+                    <hr className="mb-5 bg-warning" />
+                </div>
+                <div className="col-md-6 mt-5">
+                    <CompareMonths device={device} />
                     <hr className="mb-5 bg-warning" />
                 </div>
             </div>

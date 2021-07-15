@@ -19,10 +19,17 @@ async function downloadAllMonths(previous) {
   log(`all files: ${files}`);
   const params = {
     to: JSON.parse(process.env.REACT_APP_MAIL_RECIPIENTS),
-    cc: JSON.parse(process.env.REACT_APP_MAIL_RECIPIENTS_CC),
-    bcc: JSON.parse(process.env.REACT_APP_MAIL_RECIPIENTS_BCC),
-    files,
+    cc: JSON.parse(process.env.REACT_APP_DAILY_MAIL_RECIPIENTS_CC),
+    bcc: JSON.parse(process.env.REACT_APP_DAILY_MAIL_RECIPIENTS_BCC),
+    files
   };
+
+  // if previous month, override recipients
+  if (previous) {
+    params.cc = JSON.parse(process.env.REACT_APP_MAIL_RECIPIENTS_CC);
+    params.bcc = JSON.parse(process.env.REACT_APP_MAIL_RECIPIENTS_BCC);
+  }
+
   sendMail(params);
   log("-----------------");
   log("------- END ------");
