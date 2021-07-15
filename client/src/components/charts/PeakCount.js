@@ -8,7 +8,7 @@ import {
     getDatesBetweenDates,
     getLastMonthStartEnd,
     getNextMonth,
-    getPreviousMonth,
+    getPreviousMonths,
     replaceWeekendDays,
 } from 'utility/utilityFunctions';
 import PreviousNext from 'components/forms/PreviousNext';
@@ -32,7 +32,7 @@ function PeakCount({ device }) {
     const labels = getDatesBetweenDates(search.start, search.end);
 
     const handlePreviousMonth = () => {
-        setSearch(getPreviousMonth(new Date(search.start)));
+        setSearch(getPreviousMonths(new Date(search.start)));
     };
 
     const handleNextMonth = () => {

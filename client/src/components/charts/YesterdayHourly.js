@@ -2,10 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { DEVICE_URL, REGEX_DEVICE } from 'utility/constants';
-import {
-    buildDataHourly,
-    getYesterdayStartEnd,
-} from 'utility/utilityFunctions';
+import { buildDataHourly, getYesterdayStartEnd } from 'utility/utilityFunctions';
 import SimpleChart from './Chart';
 
 const { start: yesterdayStart, end: yesterdayEnd } = getYesterdayStartEnd();
@@ -48,11 +45,7 @@ function YesterdayHourly({ device }) {
                             <FormattedMessage id="title.hourly-counts-yesterday" />
                         </h3>
                     </div>
-                    <SimpleChart
-                        data={yesterday}
-                        name="YesterdayHourly"
-                        title={chartTitle}
-                    />
+                    <SimpleChart data={yesterday} name="YesterdayHourly" title={chartTitle} />
                 </div>
             </div>
         </div>
