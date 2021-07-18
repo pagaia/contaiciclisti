@@ -30,9 +30,9 @@ const CompareMonths = ({ device }) => {
     return (
         <Fragment>
             {!singleChart && (
-                <h2>
+                <h3>
                     <FormattedMessage id="title.compare-months-device" />
-                </h2>
+                </h3>
             )}
             {/* <CompareForm updateSearch={setSearch} /> */}
             {search && <MonthsCompareChart search={search} name="device-compare-months" />}

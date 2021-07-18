@@ -49,6 +49,7 @@ p.lead {
 .card-text.highlighted {
     color: #ffbe00;
     overflow-wrap: normal;
+    font-family: 'Quantico', 'sans-serif';
 }
 
 .card {
@@ -114,11 +115,14 @@ header .card {
     cursor: pointer;
 }
 
-h2,
+/* h2,
 h3 {
     font-size: 1rem;
-}
+} */
 
+h2.pop-up {
+    font-size: 1rem;
+}
 .sr-only {
     position: absolute;
     left: -10000px;

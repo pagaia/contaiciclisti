@@ -28,7 +28,7 @@ function Markers() {
             <Marker key={channelId} position={[lat, long]} icon={isActive ? OrangeIcon : GrayIcon}>
                 <Popup position={[lat, long]}>
                     <div>
-                        <h2>
+                        <h2 className="pop-up">
                             {name} {Inactive}
                         </h2>
                         <div>{device.properties.description}</div>
