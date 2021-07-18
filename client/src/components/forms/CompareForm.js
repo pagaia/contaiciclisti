@@ -7,10 +7,10 @@ import {
     getLastMonthStartEndDatePicker,
 } from 'utility/utilityFunctions';
 import './CompareForm.css';
-import Fade from '../Fade';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import Fade from 'components/Fade';
 
 const { start: startDate, end: endDate } = getLastMonthStartEndDatePicker();
 
@@ -71,23 +71,23 @@ const CompareForm = ({ updateSearch, nameForm = 'CompareForm' }) => {
         setForm({ ...form, endDate });
     };
 
-    const validateForm = (form) => {
-        const error = [];
-        const period = (form.endDate - form.startDate) / (1000 * 60 * 60 * 24);
-        if (period > 32 || period < 1) {
-            error.push('-max window: 1 month');
-        }
-        return error;
-    };
+    // const validateForm = (form) => {
+    //     const error = [];
+    //     const period = (form.endDate - form.startDate) / (1000 * 60 * 60 * 24);
+    //     if (period > 32 || period < 1) {
+    //         error.push('-max window: 1 month');
+    //     }
+    //     return error;
+    // };
 
     const handleSearch = () => {
-        const error = validateForm(form);
-        if (error.length > 0) {
-            const text = 'Please check data: \n' + error.join('\n');
-            alert(text);
+        // const error = validateForm(form);
+        // if (error.length > 0) {
+        //     const text = 'Please check data: \n' + error.join('\n');
+        //     alert(text);
 
-            return;
-        }
+        //     return;
+        // }
         toggle();
         let endDate = form.endDate;
         endDate.setHours(23, 59);

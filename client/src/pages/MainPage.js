@@ -1,17 +1,15 @@
-import React, { Fragment } from 'react';
+import Accordion from 'components/Accordion';
+import LastCount from 'components/charts/LastCount';
 import ViewMap from 'components/map/ViewMap';
-import DailyAverage from 'components/charts/DailyAverage';
+import React, { Fragment } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { selectSecret } from 'store/generalSlide';
+import DailyAveragePage from './singlePages/DailyAveragePage';
 import DevicesCompare from './singlePages/DevicesCompare';
 import HourlyComparePage from './singlePages/HourlyComparePage';
 import WeekCompare from './singlePages/WeekCompare';
-import LastCount from 'components/charts/LastCount';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Accordion from 'components/Accordion';
-import { selectSecret } from 'store/generalSlide';
-import Loading from 'components/Loading';
-import { FormattedMessage } from 'react-intl';
-import DailyAveragePage from './singlePages/DailyAveragePage';
 
 const MainPage = () => {
     const { devices } = useSelector((state) => state.devices);
@@ -30,14 +28,11 @@ const MainPage = () => {
                             <div className="col-sm-12">
                                 {devices.map((device) => {
                                     return (
-                                        <Fragment
-                                            key={device.properties.channelId}
-                                        >
+                                        <Fragment key={device.properties.channelId}>
                                             <h2>
                                                 <Link
                                                     to={`/devices/${device.properties.channelId}`}
-                                                    className="text-warning"
-                                                >
+                                                    className="text-warning">
                                                     {device.properties.name}
                                                 </Link>
                                             </h2>
@@ -66,10 +61,10 @@ const MainPage = () => {
                         <div className="col-sm-12">
                             <HourlyComparePage />
                         </div>
-                       
+
                         {/* <div className="col-sm-12">
-              <About />
-            </div> */}
+                            <About />
+                        </div> */}
                     </div>
                 </div>
             </div>

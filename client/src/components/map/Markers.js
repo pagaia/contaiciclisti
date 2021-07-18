@@ -16,27 +16,25 @@ function Markers() {
 
     const markers = devices.map((device) => {
         const { channelId, name, active } = device.properties;
+        const lat = device.geometry.coordinates[1];
+        const long = device.geometry.coordinates[0];
+        const isActive = active === '1';
+        const Inactive = isActive ? null : (
+            <span style={{ color: 'red' }}>
+                <FormattedMessage id="device.not-active" />
+            </span>
+        );
         return (
-            <Marker
-                key={channelId}
-                position={[
-                    device.geometry.coordinates[1],
-                    device.geometry.coordinates[0],
-                ]}
-                icon={active === '1' ? OrangeIcon : GrayIcon}
-            >
-                <Popup
-                    position={[
-                        device.geometry.coordinates[1],
-                        device.geometry.coordinates[0],
-                    ]}
-                >
+            <Marker key={channelId} position={[lat, long]} icon={isActive ? OrangeIcon : GrayIcon}>
+                <Popup position={[lat, long]}>
                     <div>
-                        <h2>{name}</h2>
+                        <h2 className="pop-up">
+                            {name} {Inactive}
+                        </h2>
                         <div>{device.properties.description}</div>
                         <div>
                             <Link to={`/devices/${channelId}`}>
-                               <FormattedMessage id="link.go-to-page"/>
+                                <FormattedMessage id="link.go-to-page" />
                             </Link>
                         </div>
                     </div>
