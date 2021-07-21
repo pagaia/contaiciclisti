@@ -8,7 +8,7 @@ import {
 import {
     getLastMonthStartEnd,
     getNextMonth,
-    getPreviousMonth
+    getPreviousMonths
 } from 'utility/utilityFunctions';
 import PreviousNext from '../forms/PreviousNext';
 import SimpleChart from './Chart';
@@ -46,7 +46,7 @@ function HourlyAverage({ device }) {
     }
 
     const handlePreviousMonth = () => {
-        setSearch(getPreviousMonth(new Date(search.start)));
+        setSearch(getPreviousMonths(new Date(search.start)));
     };
 
     const handleNextMonth = () => {
@@ -56,6 +56,7 @@ function HourlyAverage({ device }) {
     // create a new object to be override by the chartJs
     const chartData = JSON.parse(JSON.stringify(hourlyAverage));
 
+    console.log({hourlyAverage})
     return (
         <div className="row">
             <div className="col-sm">

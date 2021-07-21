@@ -12,6 +12,19 @@ export const formatDate = (date) => {
 };
 
 /**
+ * This functions gets a month and return the translated Month name
+ * @param {string} month - the month in number
+ * @param {string} lang - the language
+ * @returns
+ */
+export function getMonthName(month, lang) {
+    const d = new Date();
+    d.setMonth(month - 1);
+    const monthName = d.toLocaleString(lang, { month: 'long' });
+    return monthName;
+}
+
+/**
  * This function get the date and return a string in format "yyyy-MM-dd HH:mm"
  * @param {Date} date
  * return {String}
@@ -82,13 +95,13 @@ export const getNextMonth = (day = new Date()) => {
  * @param {Date} day
  * @returns
  */
-export const getPreviousMonth = (day = new Date()) => {
+export const getPreviousMonths = (day = new Date(), numberOfMonths = 1) => {
     const date = day;
     const y = date.getFullYear(),
         m = date.getMonth(),
         d = date.getDate();
 
-    var firstDay = new Date(y, m - 1, d);
+    var firstDay = new Date(y, m - numberOfMonths, d);
     var lastDay = new Date(y, m, d);
 
     const end = formatDate(lastDay);
@@ -144,12 +157,7 @@ export const getLastMonthStartEndDatePicker = () => {
  * @param {Object} device
  */
 export const buildDataHourly = (feeds, device) => {
-    const {
-        name: label,
-        backgroundColor,
-        borderColor,
-        hoverBackgroundColor,
-    } = device.properties;
+    const { name: label, backgroundColor, borderColor, hoverBackgroundColor } = device.properties;
 
     const labels = [...Array(24).keys()];
 
@@ -159,8 +167,7 @@ export const buildDataHourly = (feeds, device) => {
             backgroundColor: backgroundColor || 'rgba(54, 162, 235, 0.2)',
             borderColor: borderColor || 'rgba(54, 162, 235, 1)',
             borderWidth: 1,
-            hoverBackgroundColor:
-                hoverBackgroundColor || 'rgba(255,99,132,0.4)',
+            hoverBackgroundColor: hoverBackgroundColor || 'rgba(255,99,132,0.4)',
             // hoverBorderColor: "rgba(255,99,132,1)",
             data: [],
         },
@@ -185,12 +192,7 @@ export const buildDataHourly = (feeds, device) => {
  * @param {Object} device
  */
 export const buildDataDaily = (feeds, device) => {
-    const {
-        name: label,
-        backgroundColor,
-        borderColor,
-        hoverBackgroundColor,
-    } = device.properties;
+    const { name: label, backgroundColor, borderColor, hoverBackgroundColor } = device.properties;
 
     const labels = [];
     const datasets = [
@@ -199,8 +201,7 @@ export const buildDataDaily = (feeds, device) => {
             backgroundColor: backgroundColor || 'rgba(54, 162, 235, 0.2)',
             borderColor: borderColor || 'rgba(54, 162, 235, 1)',
             borderWidth: 1,
-            hoverBackgroundColor:
-                hoverBackgroundColor || 'rgba(255,99,132,0.4)',
+            hoverBackgroundColor: hoverBackgroundColor || 'rgba(255,99,132,0.4)',
             // hoverBorderColor: "rgba(255,99,132,1)",
             data: [],
             fill: false,
@@ -248,12 +249,7 @@ export const getDatesBetweenDates = (startDate, endDate) => {
  * @param {Object} device
  */
 export const buildDailyCompare = (feeds, device, labels) => {
-    const {
-        name: label,
-        backgroundColor,
-        borderColor,
-        hoverBackgroundColor,
-    } = device.properties;
+    const { name: label, backgroundColor, borderColor, hoverBackgroundColor } = device.properties;
 
     const dataset = {
         label,
@@ -269,10 +265,7 @@ export const buildDailyCompare = (feeds, device, labels) => {
     const dateFound = {};
     feeds.forEach((feed) => {
         if (feed.field3) {
-            dateFound[feed.created_at.substring(0, 10)] = parseInt(
-                feed.field3,
-                10
-            );
+            dateFound[feed.created_at.substring(0, 10)] = parseInt(feed.field3, 10);
         }
     });
 
@@ -282,6 +275,67 @@ export const buildDailyCompare = (feeds, device, labels) => {
     });
 
     return dataset;
+};
+
+/**
+ * `this function gets array of feeds and labels and splits the the counts per day for each month
+ * @param {array} feeds - array of feeds
+ * @param {array} labels - array of labels/days
+ * @returns {array} array of dataset
+ */
+export const buildDailyMonthsCompare = (feeds, labels, lang) => {
+    const dataset = {
+        borderWidth: 1,
+        data: null,
+        fill: false,
+    };
+
+    const dateFound = {};
+    const datasets = [];
+    // initialise month
+    let month = feeds[0].created_at.substring(5, 7);
+    feeds.forEach((feed) => {
+        if (feed.field3) {
+            if (feed.created_at.substring(5, 7) != month) {
+                month = feed.created_at.substring(5, 7);
+            }
+            // initilise map for new month
+            if (!dateFound[month]) {
+                dateFound[month] = {};
+            }
+
+            // save into the day number
+            const dateNumber =
+                feed.created_at.substring(8, 9) === '0'
+                    ? feed.created_at.substring(9, 10)
+                    : feed.created_at.substring(8, 10);
+
+            dateFound[month][dateNumber] = parseInt(feed.field3, 10);
+        }
+    });
+
+    Object.keys(dateFound).forEach((month, idx) => {
+        datasets[idx] = {
+            ...dataset,
+            label: getMonthName(month, lang),
+            ...Object.values(CHART_COLORS)[idx],
+        };
+    });
+
+    // double check data per day
+    labels.forEach((day) => {
+        // for each months
+        Object.keys(dateFound).forEach((month, idx) => {
+            if (!datasets[idx].data) {
+                // initialise array
+                datasets[idx].data = [];
+            }
+            datasets[idx].data.push(dateFound[month][day]);
+        });
+    });
+
+    console.log({ datasets });
+    return datasets;
 };
 
 /**
@@ -309,10 +363,10 @@ export const buildDailyTevereLevel = (feeds, labels) => {
         if (feed) {
             const { day, level } = feed;
             if (day) {
-                const swapDate = `${day.substring(6, 10)}-${day.substring(
-                    3,
-                    5
-                )}-${day.substring(0, 2)}`;
+                const swapDate = `${day.substring(6, 10)}-${day.substring(3, 5)}-${day.substring(
+                    0,
+                    2
+                )}`;
                 // console.log({ swapDate });
                 dateFound[swapDate] = Number.parseFloat(level).toFixed(2);
             }
@@ -334,12 +388,7 @@ export const buildDailyTevereLevel = (feeds, labels) => {
  * @param {Object} device
  */
 export const buildHourlyCompare = (feeds, device, labels) => {
-    const {
-        name: label,
-        backgroundColor,
-        borderColor,
-        hoverBackgroundColor,
-    } = device.properties;
+    const { name: label, backgroundColor, borderColor, hoverBackgroundColor } = device.properties;
 
     const dataset = {
         label,
@@ -384,12 +433,7 @@ const sumReducer = (accumulator, currentValue) => accumulator + currentValue;
  * @param {Object} device
  */
 export const buildDataDailyAverage = (feeds, device) => {
-    const {
-        name: label,
-        backgroundColor,
-        borderColor,
-        hoverBackgroundColor,
-    } = device.properties;
+    const { name: label, backgroundColor, borderColor, hoverBackgroundColor } = device.properties;
 
     const dataset = {
         label,
@@ -417,16 +461,10 @@ export const buildDataDailyAverage = (feeds, device) => {
 
     for (let i = 1; i < 7; i++) {
         weekDays[i] &&
-            dataset.data.push(
-                parseInt(
-                    weekDays[i].reduce(sumReducer) / weekDays[i].length,
-                    10
-                )
-            );
+            dataset.data.push(parseInt(weekDays[i].reduce(sumReducer) / weekDays[i].length, 10));
     }
     dataset.data.push(
-        weekDays[0] &&
-            parseInt(weekDays[0].reduce(sumReducer) / weekDays[0].length, 10)
+        weekDays[0] && parseInt(weekDays[0].reduce(sumReducer) / weekDays[0].length, 10)
     );
 
     return dataset;
@@ -581,23 +619,17 @@ export const buildHourlyAverage = (feeds) => {
 
     // adding hourly Average  for week days
     weekDays.forEach((hour) => {
-        datasets[0].data.push(
-            parseInt(hour.reduce(sumReducer) / hour.length, 10)
-        );
+        datasets[0].data.push(parseInt(hour.reduce(sumReducer) / hour.length, 10));
     });
 
     // adding hourly Average  for saturday
     saturday.forEach((hour) => {
-        datasets[1].data.push(
-            parseInt(hour.reduce(sumReducer) / hour.length, 10)
-        );
+        datasets[1].data.push(parseInt(hour.reduce(sumReducer) / hour.length, 10));
     });
 
     // adding hourly Average  for sunday
     sunday.forEach((hour) => {
-        datasets[2].data.push(
-            parseInt(hour.reduce(sumReducer) / hour.length, 10)
-        );
+        datasets[2].data.push(parseInt(hour.reduce(sumReducer) / hour.length, 10));
     });
 
     return { labels, datasets };
@@ -645,6 +677,9 @@ export function useHash() {
  * @param {object} object2
  */
 export function deepEqual(object1, object2) {
+    if (!object1 || !object2) {
+        return false;
+    }
     const keys1 = Object.keys(object1);
     const keys2 = Object.keys(object2);
 
@@ -656,10 +691,7 @@ export function deepEqual(object1, object2) {
         const val1 = object1[key];
         const val2 = object2[key];
         const areObjects = isObject(val1) && isObject(val2);
-        if (
-            (areObjects && !deepEqual(val1, val2)) ||
-            (!areObjects && val1 !== val2)
-        ) {
+        if ((areObjects && !deepEqual(val1, val2)) || (!areObjects && val1 !== val2)) {
             return false;
         }
     }

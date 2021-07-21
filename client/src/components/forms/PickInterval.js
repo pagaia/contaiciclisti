@@ -16,7 +16,6 @@ const PickInterval = ({ updateSearch, start, end }) => {
     };
 
     const onChange = (dates) => {
-        console.log({ dates });
         // return
         const [start, end] = dates;
         setStartDate(start);

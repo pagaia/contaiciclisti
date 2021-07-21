@@ -6,7 +6,7 @@ import {
     buildDataDaily,
     getLastMonthStartEnd,
     getNextMonth,
-    getPreviousMonth,
+    getPreviousMonths,
 } from 'utility/utilityFunctions';
 import PreviousNext from 'components/forms/PreviousNext';
 import SimpleChart from './Chart';
@@ -24,7 +24,7 @@ function DailyTotal({ device }) {
     );
 
     const handlePreviousMonth = () => {
-        setSearch(getPreviousMonth(new Date(search.start)));
+        setSearch(getPreviousMonths(new Date(search.start)));
     };
 
     const handleNextMonth = () => {

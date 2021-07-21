@@ -23,9 +23,7 @@ function App() {
     let query = useQuery();
     const secret = query.get('secret');
 
-    const [theme, setTheme] = useState(
-        localStorage.getItem('theme') || THEMES.DARK
-    );
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || THEMES.DARK);
     const themeValue = { theme, setTheme };
 
     const { devices } = useSelector((state) => state.devices);
@@ -47,11 +45,7 @@ function App() {
     useEffect(() => {
         const queryTheme = query.get('theme');
         hideLoader();
-        if (
-            queryTheme &&
-            queryTheme !== theme &&
-            Object.values(THEMES).includes(queryTheme)
-        ) {
+        if (queryTheme && queryTheme !== theme && Object.values(THEMES).includes(queryTheme)) {
             setTheme(queryTheme);
         }
 
@@ -70,26 +64,57 @@ function App() {
     const singleChart = REGEX_SINGLE.test(location.pathname);
 
     return (
+        // <ProvideAuth>
+        //     <SingleContext.Provider value={singleChart}>
+        //         <ThemeContext.Provider value={themeValue}>
+        //             <IntlProvider
+        //                 messages={messages[lang]}
+        //                 locale={lang}
+        //                 defaultLocale="en"
+        //             >
+        //                 <div
+        //                     className={`App ${
+        //                         singleChart ? 'single' : ''
+        //                     } ${theme}`}
+        //                 >
+        //                     {/* remove title if single chart */}
+        //                     <Header setLang={setLang} lang={lang} />
+        //                     <LogError />
+        //                     {/* <SiteMap /> */}
+        //                     <main
+        //                         className={singleChart ? '' : 'container-fluid'}
+        //                     >
+        //                         <Suspense fallback={<div>Loading...</div>}>
+        //                             <Switch>
+        //                                 {routes.map((route, idx) => (
+        //                                     <Route
+        //                                         key={route.path}
+        //                                         path={route.path}
+        //                                         exact
+        //                                         component={lazy(() =>
+        //                                             import(`${route.component}`)
+        //                                         )}
+        //                                     />
+        //                                 ))}
+        //                             </Switch>
+        //                         </Suspense>
+        //                     </main>
+        //                     <Footer />
+        //                 </div>
+        //             </IntlProvider>
+        //         </ThemeContext.Provider>
+        //     </SingleContext.Provider>
+        // </ProvideAuth>
         <ProvideAuth>
             <SingleContext.Provider value={singleChart}>
                 <ThemeContext.Provider value={themeValue}>
-                    <IntlProvider
-                        messages={messages[lang]}
-                        locale={lang}
-                        defaultLocale="en"
-                    >
-                        <div
-                            className={`App ${
-                                singleChart ? 'single' : ''
-                            } ${theme}`}
-                        >
+                    <IntlProvider messages={messages[lang]} locale={lang} defaultLocale="en">
+                        <div className={`App ${singleChart ? 'single' : ''} ${theme}`}>
                             {/* remove title if single chart */}
                             <Header setLang={setLang} lang={lang} />
                             <LogError />
                             {/* <SiteMap /> */}
-                            <main
-                                className={singleChart ? '' : 'container-fluid'}
-                            >
+                            <main className={singleChart ? '' : 'container-fluid'}>
                                 <Suspense fallback={<div>Loading...</div>}>
                                     <Switch>
                                         {routes.map((route, idx) => (
@@ -97,9 +122,7 @@ function App() {
                                                 key={route.path}
                                                 path={route.path}
                                                 exact
-                                                component={lazy(() =>
-                                                    import(`${route.component}`)
-                                                )}
+                                                component={lazy(() => import(`${route.component}`))}
                                             />
                                         ))}
                                     </Switch>
