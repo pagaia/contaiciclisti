@@ -5,7 +5,7 @@ const Path = require("path");
 var myArgs = process.argv; //.slice(2);
 console.log("myArgs: ", myArgs);
 
-const [node, script, deviceId, path] = myArgs;
+const [node, script, deviceId, path, token] = myArgs;
 
 // curl -X GET "http://localhost:8081/api/devices/608741ca57523b3bf1f25231" \
 // -H  "accept: application/json" \
@@ -16,8 +16,8 @@ const [node, script, deviceId, path] = myArgs;
 
 if (!deviceId || !path) {
   console.error("Please pass the device ID and the file to load");
-  console.error(`- node ${script} deviceId fileToLoad`);
-  
+  console.error(`- node ${script} deviceId fileToLoad Token`);
+
   process.exit(1);
 }
 
@@ -38,7 +38,7 @@ function uploadFeeds(data) {
   const feeds = data.map((feed, idx) => {
     // if (!idx || idx < 100 || idx > 105) {
     if (!idx) {
-      return {};
+      return null;
     }
     //       created_at,entry_id,field1,field2,field3,field4,field5,field6,field7,field8
     // 2021-04-01 00:57:01 UTC,3311,0,0,,0,0,0,0,2188
@@ -53,7 +53,7 @@ function uploadFeeds(data) {
       field5,
       field6,
       field7,
-      field8,
+      field8
     ] = feed.split(",");
 
     return {
@@ -66,22 +66,26 @@ function uploadFeeds(data) {
       field5,
       field6,
       field7,
-      field8,
+      field8
     };
   });
   // filter the row with null created_at
   // .filter((el) => el.created_at);
 
   // console.log(feeds);
-// return
+  // return
   axios
-    .post(endPoint, feeds, {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        "x-api-token": "6RGRKY25N2AUMD21NLM85M0YLWK728F99HG8XH1C9J92R",
-      },
-    })
+    .post(
+      endPoint,
+      feeds.filter((row) => row),
+      {
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
+          "x-api-token": token
+        }
+      }
+    )
     .then((res) => {
       console.log(`statusCode: ${res.statusCode}`);
       console.log(res);

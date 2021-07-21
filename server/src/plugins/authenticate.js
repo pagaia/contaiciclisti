@@ -5,7 +5,7 @@ const LOCALHOST_REGEX = new RegExp("localhost");
 
 module.exports = fp(async function (fastify, opts) {
   fastify.register(require("fastify-jwt"), {
-    secret: config.jwt.secret,
+    secret: config.jwt.secret
   });
 
   fastify.decorate("authenticate", async function (request, reply) {
@@ -14,7 +14,6 @@ module.exports = fp(async function (fastify, opts) {
       // check the token only if the host is different from localhost
       if (!LOCALHOST_REGEX.test(request?.headers?.host)) {
         console.log("OPS!!!");
-        
         await request.jwtVerify();
       }
     } catch (err) {

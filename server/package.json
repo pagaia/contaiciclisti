@@ -31,7 +31,7 @@
     "boom": "^7.3.0",
     "date-fns-tz": "^1.1.4",
     "dotenv": "^8.2.0",
-    "fastify": "^3.9.1",
+    "fastify": "^3.19.1",
     "fastify-auth": "^1.0.1",
     "fastify-cors": "^5.2.0",
     "fastify-jwt": "^2.4.0",

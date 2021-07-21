@@ -7,15 +7,15 @@ const mongoose = require("mongoose");
 
 // Connect to DB
 mongoose
-  .connect(config.db.url)
+  .connect(config.db.url, config.db.options)
   .then(() => console.log("MongoDB connected…"))
   .catch((err) => console.log(err));
 
 const server = require("./app")({
   logger: {
     level: "info",
-    prettyPrint: true,
-  },
+    prettyPrint: true
+  }
 });
 
 // Run the server!

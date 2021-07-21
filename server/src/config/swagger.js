@@ -8,13 +8,13 @@ exports.options = {
         "Building a Cyclists counter REST API with Node.js, MongoDB, Fastify and Swagger",
       license: {
         name: "Apache 2.0",
-        url: "http://www.apache.org/licenses/LICENSE-2.0.html",
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
       },
-      version: "0.1.0",
+      version: "0.1.0"
     },
     externalDocs: {
       url: "https://github.com/pagaia/contaiciclisti",
-      description: "Find more info here",
+      description: "Find more info here"
     },
     host: "localhost:8081",
     schemes: ["http", "https"],
@@ -35,25 +35,25 @@ exports.options = {
           devices: {
             type: "array",
             items: {
-              type: "string",
-            },
-          },
-        },
+              type: "string"
+            }
+          }
+        }
       },
       Device: {
         type: "object",
         properties: {
           name: { type: "string" },
           location: { type: "string", enum: ["Point"] },
-          coordinates: { type: "integer", format: "int64" },
+          coordinates: { type: "integer", format: "int64" }
         },
         feeds: {
           type: "array",
           items: {
-            type: "string",
-          },
+            type: "string"
+          }
         },
-        description: { type: "string" },
+        description: { type: "string" }
       },
       Feed: {
         type: "object",
@@ -68,34 +68,37 @@ exports.options = {
           field8: { type: "number" },
           device: { type: "string" },
           created_at: { type: "string" },
-          updated_at: { type: "string" },
-        },
+          updated_at: { type: "string" }
+        }
       },
       ApiResponse: {
         type: "object",
         properties: {
           code: { type: "integer", format: "int32" },
           type: { type: "string" },
-          message: { type: "string" },
-        },
-      },
+          message: { type: "string" }
+        }
+      }
     },
     securityDefinitions: {
       Bearer: {
         type: "apiKey",
         name: "Authorization",
-        in: "header",
+        in: "header"
       },
       apiKey: {
         type: "apiKey",
-        name: "apiKey",
-        in: "header",
-      },
+        name: "x-api-token",
+        in: "header"
+      }
     },
+    security: {
+      apiKey: []
+    }
   },
   uiConfig: {
     docExpansion: "full",
-    deepLinking: true,
+    deepLinking: true
   },
-  exposeRoute: true,
+  exposeRoute: true
 };

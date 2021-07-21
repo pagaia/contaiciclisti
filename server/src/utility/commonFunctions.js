@@ -23,7 +23,7 @@ exports.compareCreatedAt = (a, b) => {
  * @returns {String}
  */
 exports.formatTimeZone = (date, tzString) => {
-  console.log({ date, tzString });
+  // console.log({ date, tzString });
   if (!date) {
     return null;
   }

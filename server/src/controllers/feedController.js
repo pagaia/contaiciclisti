@@ -6,7 +6,7 @@ const Device = require("../models/device");
 const Feed = require("../models/feed");
 const {
   compareCreatedAt,
-  formatTimeZone,
+  formatTimeZone
 } = require("../utility/commonFunctions");
 const { downloadResource } = require("../utility/downloadCsv");
 
@@ -20,7 +20,7 @@ exports.addFeed = (fastify) => (req, reply) => {
     const deviceId = req.params.id;
     const newFeed = {
       ...req.body,
-      device: deviceId, // link device with feed
+      device: deviceId // link device with feed
     };
 
     Feed.create(newFeed, (err, createdFeed) => {
@@ -33,12 +33,12 @@ exports.addFeed = (fastify) => (req, reply) => {
           {
             // pushing the new feed to link them
             $push: {
-              feeds: createdFeed._id,
-            },
+              feeds: createdFeed._id
+            }
           },
           {
             safe: true,
-            upsert: true,
+            upsert: true
           },
 
           (err, feed) => {
@@ -65,59 +65,65 @@ exports.addFeed = (fastify) => (req, reply) => {
 exports.addMultiFeeds = (fastify) => async (req, reply) => {
   try {
     const deviceId = req.params.id;
-    const error = false;
-    const addedFeed = [];
 
-    const feeds = req.body.map(async (feed) => {
-      const newFeed = {
-        ...feed,
-        device: deviceId, // link device with feed
-      };
+    const feeds = await Promise.all(
+      req.body.map(async (feed) => {
+        // console.log({ feed });
+        const newFeed = {
+          ...feed,
+          device: deviceId // link device with feed
+        };
 
-      const filter = { entry_id: feed.entry_id };
-      // const upInsert = feed;
-      // console.log({ feed });
-      const createdFeed = await Feed.findOneAndUpdate(filter, feed, {
-        new: true,
-        upsert: true, // Make this update into an upsert
-      });
-      // console.log({ createdFeed });
+        const filter = { entry_id: feed.entry_id, "device._id": deviceId };
+        // const upInsert = feed;
+        // console.log({ filter });
+        const createdFeed = await Feed.findOneAndUpdate(filter, feed, {
+          new: true,
+          upsert: true // Make this update into an upsert
+        });
+        // console.log({ createdFeed });
 
-      let updatedDevice = await Device.findById(deviceId);
-      // console.log(updatedDevice.feeds);
-      // if (!updatedDevice.feeds.id(createdFeed._id)) {
-      if (!updatedDevice.feeds.includes(createdFeed._id)) {
-        console.log("device not found");
-        updatedDevice = await Device.findByIdAndUpdate(
-          deviceId,
-          {
-            // pushing the new feed to link them
-            $push: {
-              feeds: createdFeed._id,
+        let updatedDevice = await Device.findById(deviceId);
+        // console.log(updatedDevice.feeds);
+        // if (!updatedDevice.feeds.id(createdFeed._id)) {
+        // if device doesn't include the feed let's add it
+        if (!updatedDevice.feeds.includes(createdFeed._id)) {
+          // console.log("device not found, ", createdFeed._id, updatedDevice);
+          updatedDevice = await Device.findByIdAndUpdate(
+            deviceId,
+            {
+              // pushing the new feed to link them
+              $push: {
+                feeds: createdFeed._id
+              }
             },
-          },
-          {
-            safe: true,
-            upsert: true,
-          }
-        );
-        // console.log({ updatedDevice });
-      } else {
-        console.log("device found");
-      }
+            {
+              safe: true,
+              upsert: true
+            }
+          );
+          // console.log({ updatedDevice });
+        } else {
+          // console.log("device found, nothing to add");
+        }
 
-      return updatedDevice;
-      return "done";
-    });
+        return updatedDevice;
+        return "done";
+      })
+    );
 
-    Promise.all(feeds).then((response, idx) => {
-      // console.log({ response });
-      console.log({ message: `Feeds added ${idx}` });
-      reply.code(201).send({ message: `Feeds added ${idx}` });
-    });
+    // console.log({ feeds });
+    return reply.code(201).send({ message: `Feeds added` });
+
+    // Promise.all(feeds).then((response) => {
+    //   console.log({ response });
+    //   console.log({ message: `Feeds added` });
+    //   reply.code(201).send({ message: `Feeds added` });
+    // });
   } catch (err) {
     boom.boomify(err);
-    fastify.errorHandler(err, req, reply);
+    // fastify.errorHandler(err, req, reply);
+    throw Error(err)
   }
 };
 
@@ -141,9 +147,9 @@ exports.searchFeeds = (fastify) => async (req, reply) => {
         match: {
           created_at: {
             $gte: mindate,
-            $lte: maxdate,
-          },
-        },
+            $lte: maxdate
+          }
+        }
       })
       .lean();
 
@@ -161,24 +167,24 @@ exports.searchFeeds = (fastify) => async (req, reply) => {
     //   },
     // });
 
-    console.log({ count0: foundDevice.feeds.length });
+    // console.log({ count0: foundDevice.feeds.length });
 
     let feeds = foundDevice.feeds.sort(compareCreatedAt);
-    console.log({ count1: feeds.length });
+    // console.log({ count1: feeds.length });
 
     // return created_at with requested timezone
     if (tzString) {
       feeds = feeds.map((feed) => {
         const newFeed = {
           ...feed,
-          created_at: formatTimeZone(feed.created_at, tzString),
+          created_at: formatTimeZone(feed.created_at, tzString)
           // updated_at: formatTimeZone(feed.updated_at, tzString),
         };
         return newFeed;
       });
     }
 
-    console.log({ count2: feeds.length });
+    // console.log({ count2: feeds.length });
     return { ...foundDevice, feeds };
   } catch (err) {
     boom.boomify(err);
@@ -202,8 +208,8 @@ exports.searchFeedsOnly = (fastify) => async (req, reply) => {
     let feeds = await Feed.find({
       created_at: {
         $gte: mindate,
-        $lte: maxdate,
-      },
+        $lte: maxdate
+      }
     })
       .lean()
       .sort({ created_at: "asc" });
@@ -217,7 +223,7 @@ exports.searchFeedsOnly = (fastify) => async (req, reply) => {
         const newFeed = {
           ...feed,
           created_at: formatTimeZone(feed.created_at, tzString),
-          updated_at: formatTimeZone(feed.updated_at, tzString),
+          updated_at: formatTimeZone(feed.updated_at, tzString)
         };
         return newFeed;
       });
@@ -245,8 +251,8 @@ exports.searchFeedsCsv = (fastify) => async (req, reply) => {
     let feeds = await Feed.find({
       created_at: {
         $gte: mindate,
-        $lte: maxdate,
-      },
+        $lte: maxdate
+      }
     })
       .lean()
       .sort({ created_at: "asc" });
@@ -265,7 +271,7 @@ exports.searchFeedsCsv = (fastify) => async (req, reply) => {
       "field5",
       "field6",
       "field7",
-      "field8",
+      "field8"
     ];
 
     if (tzString) {
@@ -273,7 +279,7 @@ exports.searchFeedsCsv = (fastify) => async (req, reply) => {
         const newFeed = {
           ...feed,
           created_at: formatTimeZone(feed.created_at, tzString),
-          updated_at: formatTimeZone(feed.updated_at, tzString),
+          updated_at: formatTimeZone(feed.updated_at, tzString)
         };
         return newFeed;
       });
@@ -290,10 +296,10 @@ exports.searchFeedsCsv = (fastify) => async (req, reply) => {
 exports.deleteFeedsByDeviceID = (fastify) => async (req, reply) => {
   try {
     const id = req.params.id;
-    console.log({ id });
+    // console.log({ id });
 
     const feeds = await Feed.deleteMany({ "device._id": id });
-    console.log({ feeds });
+    // console.log({ feeds });
     if (!feeds) {
       return fastify.notFound(req, reply);
     }

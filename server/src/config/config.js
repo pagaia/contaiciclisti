@@ -1,17 +1,23 @@
 const config = {
   db: {
     url: process.env.MONGO_URL,
+    options: {
+      useFindAndModify: false,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true
+    }
   },
   auth: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID,
       secretId: process.env.GOOGLE_SECREAT_ID,
-      redirection: process.env.AUTH_REDIRECTION,
-    },
+      redirection: process.env.AUTH_REDIRECTION
+    }
   },
   jwt: {
-    secret: process.env.JWT_SECRET,
-  },
+    secret: process.env.JWT_SECRET
+  }
 };
 
 module.exports = config;

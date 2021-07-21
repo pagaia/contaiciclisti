@@ -113,7 +113,7 @@ const routes = (fastify) => {
     {
       method: "POST",
       url: "/api/devices/:id/feeds/multi",
-      preHandler: fastify.auth([fastify.validateToken]),
+      // preHandler: fastify.auth([fastify.validateToken]),
       handler: feedController.addMultiFeeds(fastify),
       schema: {
         description: "Add multi feed to device",
@@ -211,6 +211,7 @@ const routes = (fastify) => {
     {
       method: "DELETE",
       url: "/api/devices/:id/feeds",
+      // preHandler: fastify.auth([fastify.validateToken]),
       handler: feedController.deleteFeedsByDeviceID(fastify),
       schema: {
         description: "Delete all feeds per device",
