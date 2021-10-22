@@ -290,6 +290,9 @@ export const buildDailyMonthsCompare = (feeds, labels, lang) => {
         fill: false,
     };
 
+    if (!feeds?.length) {
+        return [];
+    }
     const dateFound = {};
     const datasets = [];
     // initialise month

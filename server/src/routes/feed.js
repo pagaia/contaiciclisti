@@ -47,7 +47,8 @@ const routes = (fastify) => {
     {
       method: "POST",
       url: "/api/devices/:id/feeds",
-      preHandler: fastify.auth([fastify.validateToken]),
+      // disable preHandler causing multiple reauests
+      // preHandler: fastify.auth([fastify.validateToken]),
       handler: feedController.addFeed(fastify),
       schema: {
         description: "Add feed to device",

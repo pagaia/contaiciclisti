@@ -7,6 +7,7 @@ const Fastify = require("fastify");
 const fp = require("fastify-plugin");
 const App = require("../app");
 const { beforeEach, tearDown, test } = require("tap");
+const configMongo = require("../config/config");
 
 const url = "mongodb://localhost/test";
 const mongoose = require("mongoose");
@@ -23,7 +24,7 @@ let client;
 beforeEach(async function () {
   // if connection is down then open it
   if (!client || client.readyState === 0) {
-    await mongoose.connect(url);
+    await mongoose.connect(url, configMongo.db.options);
     client = mongoose.connection;
   }
 });
