@@ -15,7 +15,7 @@ async function importDevices() {
         coordinates: [...device.geometry.coordinates],
       },
       description: device.properties.description,
-      active: true,
+      active: device.properties.active === 1,
       newColor: device.properties.newColor,
       created_at: new Date(),
     };

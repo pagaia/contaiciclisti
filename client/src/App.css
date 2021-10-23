@@ -92,6 +92,7 @@ header .card {
 .blockquote-footer {
     font-size: 60%;
     color: white;
+    margin-top: -0.5rem;
 }
 
 .last .card-title,

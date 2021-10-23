@@ -28,6 +28,11 @@ exports.formatTimeZone = (date, tzString) => {
     return null;
   }
   return format(utcToZonedTime(date, tzString), "yyyy-MM-dd HH:mm:ssXXX", {
-    timeZone: tzString,
+    timeZone: tzString
   });
+};
+
+exports.getLastDayPreviousMonth = () => {
+  const currentDate = new Date();
+  new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 31);
 };
