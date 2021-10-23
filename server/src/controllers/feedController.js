@@ -6,9 +6,11 @@ const Device = require("../models/device");
 const Feed = require("../models/feed");
 const {
   compareCreatedAt,
-  formatTimeZone
+  formatTimeZone,
+  getLastDayPreviousMonth
 } = require("../utility/commonFunctions");
 const { downloadResource } = require("../utility/downloadCsv");
+const utcToZonedTime = require("date-fns-tz/utcToZonedTime");
 
 /**
  * add a single feed per device
@@ -22,6 +24,14 @@ exports.addFeed = (fastify) => (req, reply) => {
       ...req.body,
       device: deviceId // link device with feed
     };
+
+    let updatedDevice = await Device.findById(deviceId);
+    if (!updatedDevice) {
+      return reply
+        .code(404)
+        .type("application/json")
+        .send({ error: `Device with ID ${deviceId} Not Found` });
+    }
 
     Feed.create(newFeed, (err, createdFeed) => {
       if (err) {
@@ -65,6 +75,13 @@ exports.addFeed = (fastify) => (req, reply) => {
 exports.addMultiFeeds = (fastify) => async (req, reply) => {
   try {
     const deviceId = req.params.id;
+    let updatedDevice = await Device.findById(deviceId);
+    if (!updatedDevice) {
+      return reply
+        .code(404)
+        .type("application/json")
+        .send({ error: `Device with ID ${deviceId} Not Found` });
+    }
 
     const feeds = await Promise.all(
       req.body.map(async (feed) => {
@@ -87,7 +104,7 @@ exports.addMultiFeeds = (fastify) => async (req, reply) => {
         // console.log(updatedDevice.feeds);
         // if (!updatedDevice.feeds.id(createdFeed._id)) {
         // if device doesn't include the feed let's add it
-        if (!updatedDevice.feeds.includes(createdFeed._id)) {
+        if (!updatedDevice?.feeds?.includes(createdFeed._id)) {
           // console.log("device not found, ", createdFeed._id, updatedDevice);
           updatedDevice = await Device.findByIdAndUpdate(
             deviceId,
@@ -123,7 +140,7 @@ exports.addMultiFeeds = (fastify) => async (req, reply) => {
   } catch (err) {
     boom.boomify(err);
     // fastify.errorHandler(err, req, reply);
-    throw Error(err)
+    throw Error(err);
   }
 };
 
@@ -135,11 +152,9 @@ exports.searchFeeds = (fastify) => async (req, reply) => {
     const tzString = req.query.timezone;
 
     // set by default last month if start is not define
-    const mindate =
-      req.query.start ||
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 31);
-
-    const maxdate = req.query.end || currentDate;
+    const isoDate = req.query.start || getLastDayPreviousMonth();
+    const mindate = utcToZonedTime(isoDate, tzString);
+    const maxdate = utcToZonedTime(req.query.end || currentDate, tzString);
 
     const foundDevice = await Device.findById(deviceId)
       .populate({
@@ -199,11 +214,18 @@ exports.searchFeedsOnly = (fastify) => async (req, reply) => {
     const currentDate = new Date();
     const tzString = req.query.timezone;
 
-    // set by default last month if not passed
-    const mindate =
-      req.query.start ||
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 31);
-    const maxdate = req.query.end || currentDate;
+    let updatedDevice = await Device.findById(deviceId);
+    if (!updatedDevice) {
+      return reply
+        .code(404)
+        .type("application/json")
+        .send({ error: `Device with ID ${deviceId} Not Found` });
+    }
+    
+    // set by default last month if start is not define
+    const isoDate = req.query.start || getLastDayPreviousMonth();
+    const mindate = utcToZonedTime(isoDate, tzString);
+    const maxdate = utcToZonedTime(req.query.end || currentDate, tzString);
 
     let feeds = await Feed.find({
       created_at: {
@@ -242,11 +264,10 @@ exports.searchFeedsCsv = (fastify) => async (req, reply) => {
     const currentDate = new Date();
     const tzString = req.query.timezone;
 
-    // set by default last month if not passed
-    const mindate =
-      req.query.start ||
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 31);
-    const maxdate = req.query.end || currentDate;
+    // set by default last month if start is not define
+    const isoDate = req.query.start || getLastDayPreviousMonth();
+    const mindate = utcToZonedTime(isoDate, tzString);
+    const maxdate = utcToZonedTime(req.query.end || currentDate, tzString);
 
     let feeds = await Feed.find({
       created_at: {

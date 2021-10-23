@@ -8,7 +8,7 @@ const ViewMap = (props) => {
     return (
         <MapContainer
             center={[41.883446, 12.475011]}
-            zoom={11}
+            zoom={10}
             scrollWheelZoom={true}
         >
             <TileLayer

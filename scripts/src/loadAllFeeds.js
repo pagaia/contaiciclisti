@@ -80,7 +80,7 @@ function uploadFeeds({ data, accessToken, deviceId }) {
       field5,
       field6,
       field7,
-      field8,
+      field8
     ] = feed.split(",");
 
     return {
@@ -93,7 +93,7 @@ function uploadFeeds({ data, accessToken, deviceId }) {
       field5,
       field6,
       field7,
-      field8,
+      field8
     };
   });
   // filter the row with null created_at
@@ -108,8 +108,8 @@ function uploadFeeds({ data, accessToken, deviceId }) {
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
-        "x-api-token": accessToken,
-      },
+        "x-api-token": accessToken
+      }
     })
     .then((res) => {
       console.log(`statusCode: ${res.status}`);
@@ -134,9 +134,10 @@ async function importAllDeviceFeeds() {
       const { accessToken, channelId, _id } = device;
       const files = await getFiles(channelId);
       files.forEach(async (file, idx) => {
-        if (channelId != "1050873") {
-          return;
-        }
+        // exclude some devices
+        // if ([1259438, 1050873].includes(channelId)) {
+        //   return;
+        // }
 
         const data = await fsPromises
           .readFile(file, "utf8")

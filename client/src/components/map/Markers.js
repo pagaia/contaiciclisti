@@ -18,7 +18,7 @@ function Markers() {
         const { channelId, name, active } = device.properties;
         const lat = device.geometry.coordinates[1];
         const long = device.geometry.coordinates[0];
-        const isActive = active === '1';
+        const isActive = active || active === '1';
         const Inactive = isActive ? null : (
             <span style={{ color: 'red' }}>
                 <FormattedMessage id="device.not-active" />

@@ -12,7 +12,7 @@ const feedSchema = new mongoose.Schema({
   field6: Number,
   field7: Number,
   field8: Number,
-  entry_id: { type: Number, unique: true },
+  entry_id: { type: Number, index: true },
   device: {
     type: Schema.Types.ObjectId,
     ref: "Device",
