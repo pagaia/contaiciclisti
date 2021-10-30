@@ -8,7 +8,7 @@ import './DevicesCompare.css';
 
 const CompareMonths = ({ device }) => {
     const singleChart = useContext(SingleContext);
-    const NUMBER_OF_MONTHS = 8;
+    const NUMBER_OF_MONTHS = 12;
     const { start, end } = getPreviousMonths(undefined, NUMBER_OF_MONTHS);
 
     useEffect(() => {
