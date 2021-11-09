@@ -1,4 +1,7 @@
 import axios from 'axios';
+import PreviousNext from 'components/forms/PreviousNext';
+import { OpenNewWindow } from 'components/OpenNewWindow';
+import { ROUTES } from 'config/routing/routes';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { DEVICE_URL, REGEX_DEVICE } from 'utility/constants';
@@ -8,12 +11,11 @@ import {
     getNextMonth,
     getPreviousMonths,
 } from 'utility/utilityFunctions';
-import PreviousNext from 'components/forms/PreviousNext';
 import SimpleChart from './Chart';
 
 const { start, end } = getLastMonthStartEnd();
 
-function DailyTotal({ device }) {
+function DailyTotal({ device, singleChart }) {
     const [month, setMonth] = useState({});
     const [search, setSearch] = useState({ start, end });
 
@@ -68,10 +70,12 @@ function DailyTotal({ device }) {
                         start={search.start}
                         end={search.end}
                     />
-                    <SimpleChart
-                        data={month}
-                        name="DailyTotal"
-                        title={chartTitle}
+                    <SimpleChart data={month} name="DailyTotal" title={chartTitle} />
+
+                    <OpenNewWindow
+                        singleChart={singleChart}
+                        url={ROUTES.DEVICE_LAST_MONTH_DAY_TOTAL}
+                        id={device?.properties?.channelId}
                     />
                 </div>
             </div>

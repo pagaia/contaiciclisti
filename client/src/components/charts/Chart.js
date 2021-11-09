@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar, Line, Radar } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import { CHART } from 'utility/constants';
 import { datasetKeyProvider } from 'utility/utilityFunctions';
@@ -18,12 +18,7 @@ const SimpleChart = ({ data, name, doubleAxes, title = 'Text testtt' }) => {
     }
 
     const handleChart = (e) => {
-        const { checked } = e.target;
-        if (checked) {
-            setChart(CHART.LINE);
-        } else {
-            setChart(CHART.BAR);
-        }
+        setChart(e?.target?.value);
     };
 
     let myChart;
@@ -60,55 +55,93 @@ const SimpleChart = ({ data, name, doubleAxes, title = 'Text testtt' }) => {
         };
     }
 
-    if (chart === CHART.BAR) {
-        myChart = (
-            <Bar
-                data={data}
-                width={100}
-                height={50}
-                options={options}
-                datasetKeyProvider={datasetKeyProvider}
-                id={chartName}
-                ref={chartRef}
-            />
-        );
-    } else {
-        myChart = (
-            <Line
-                data={data}
-                width={100}
-                height={50}
-                options={options}
-                datasetKeyProvider={datasetKeyProvider}
-                id={chartName}
-                ref={chartRef}
-            />
-        );
+    switch (chart) {
+        case CHART.BAR:
+            myChart = (
+                <Bar
+                    data={data}
+                    width={100}
+                    height={50}
+                    options={options}
+                    datasetKeyProvider={datasetKeyProvider}
+                    id={chartName}
+                    ref={chartRef}
+                />
+            );
+            break;
+        case CHART.LINE:
+            myChart = (
+                <Line
+                    data={data}
+                    width={100}
+                    height={50}
+                    options={options}
+                    datasetKeyProvider={datasetKeyProvider}
+                    id={chartName}
+                    ref={chartRef}
+                />
+            );
+            break;
+        case CHART.RADAR:
+            myChart = (
+                <Radar
+                    data={data}
+                    width={100}
+                    height={50}
+                    options={options}
+                    datasetKeyProvider={datasetKeyProvider}
+                    id={chartName}
+                    ref={chartRef}
+                />
+            );
+            break;
     }
 
     return (
         <div>
-            <div className="custom-control custom-switch d-inline-block">
+            <div className="form-check form-check-inline">
                 <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    id={`switch-chart-${name}`}
+                    className="form-check-input"
+                    type="radio"
                     name={`switch-chart-${name}`}
+                    id={`switch-chart-bar-${name}`}
+                    value={CHART.BAR}
                     onChange={handleChart}
-                    value="switch-chart"
-                    checked={chart === CHART.LINE}
+                    checked={chart === CHART.BAR}
                 />
-                <label
-                    className="custom-control-label"
-                    htmlFor={`switch-chart-${name}`}
-                >
-                    {chart === CHART.BAR ? (
-                        <FormattedMessage id="chart.switch-to-line" />
-                    ) : (
-                        <FormattedMessage id="chart.switch-to-bar" />
-                    )}
+                <label className="form-check-label" htmlFor={`switch-chart-bar-${name}`}>
+                    Bar
                 </label>
             </div>
+            <div className="form-check form-check-inline">
+                <input
+                    className="form-check-input"
+                    type="radio"
+                    name={`switch-chart-${name}`}
+                    id={`switch-chart-line-${name}`}
+                    value={CHART.LINE}
+                    onChange={handleChart}
+                    checked={chart === CHART.LINE}
+                />
+                <label className="form-check-label" htmlFor={`switch-chart-line-${name}`}>
+                    Line
+                </label>
+            </div>
+            <div className="form-check form-check-inline">
+                <input
+                    className="form-check-input"
+                    type="radio"
+                    name={`switch-chart-${name}`}
+                    id={`switch-chart-radar-${name}`}
+                    value={CHART.RADAR}
+                    onChange={handleChart}
+                    checked={chart === CHART.RADAR}
+                />
+                <label className="form-check-label" htmlFor={`switch-chart-radar-${name}`}>
+                    Radar
+                </label>
+            </div>
+
             <DownLoadChart chartId={chartName} chartRef={chartRef} />
             {myChart}
         </div>

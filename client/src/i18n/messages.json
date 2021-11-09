@@ -44,7 +44,8 @@
         "credits.data.description": "The data for all these charts are coming from an experiment on bike counts. Please find here all the data for each device:",
         "credits.tevere": "Data for Tevere Hydrometric level is provided by Protezione Civile via {website}",
         "link.go-to-page": "Go to details page",
-        "device.not-active": " - Not active"
+        "device.not-active": " - Not active",
+        "link.open-new-window": "Open in a new window"
     },
     "it": {
         "home.welcome": "Ciao, benvenuto su Contaiciclisti",
@@ -91,6 +92,7 @@
         "credits.data.description": "I dati per tutti i grafici sono forniti da un progetto sperimlentale di raccolta dati dei contatori di passaggio di bici e persone. Per maggiori informazioni si rimanda alla fonte dei dati per singola stazione:",
         "credits.tevere": "I dati del livello Idrometrico del tevere altezza Ripetta sono forniti dalla Protezione Civile tramite il sito {website}",
         "link.go-to-page": "Vai al dettaglio",
-        "device.not-active": " - Non attiva"
+        "device.not-active": " - Non attiva",
+        "link.open-new-window": "Apri il grafico in una nuova finestra"
     }
 }

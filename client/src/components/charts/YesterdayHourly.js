@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { OpenNewWindow } from 'components/OpenNewWindow';
+import { ROUTES } from 'config/routing/routes';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { DEVICE_URL, REGEX_DEVICE } from 'utility/constants';
@@ -7,7 +9,7 @@ import SimpleChart from './Chart';
 
 const { start: yesterdayStart, end: yesterdayEnd } = getYesterdayStartEnd();
 
-function YesterdayHourly({ device }) {
+function YesterdayHourly({ device, singleChart }) {
     const [yesterday, setYesterday] = useState({});
 
     const intl = useIntl();
@@ -46,6 +48,12 @@ function YesterdayHourly({ device }) {
                         </h3>
                     </div>
                     <SimpleChart data={yesterday} name="YesterdayHourly" title={chartTitle} />
+
+                    <OpenNewWindow
+                        singleChart={singleChart}
+                        url={ROUTES.DEVICE_YESTERDAY}
+                        id={device?.properties?.channelId}
+                    />
                 </div>
             </div>
         </div>
