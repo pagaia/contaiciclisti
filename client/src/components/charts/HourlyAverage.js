@@ -1,21 +1,16 @@
+import { OpenNewWindow } from 'components/OpenNewWindow';
+import { ROUTES } from 'config/routing/routes';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    fetchHourlyAverageCounts,
-    selectDeviceHourlyAverage
-} from 'store/chartsSlide';
-import {
-    getLastMonthStartEnd,
-    getNextMonth,
-    getPreviousMonths
-} from 'utility/utilityFunctions';
+import { fetchHourlyAverageCounts, selectDeviceHourlyAverage } from 'store/chartsSlide';
+import { getLastMonthStartEnd, getNextMonth, getPreviousMonths } from 'utility/utilityFunctions';
 import PreviousNext from '../forms/PreviousNext';
 import SimpleChart from './Chart';
 
 const { start, end } = getLastMonthStartEnd();
 
-function HourlyAverage({ device }) {
+function HourlyAverage({ device, singleChart }) {
     const [search, setSearch] = useState({ start, end });
 
     const dispatch = useDispatch();
@@ -56,7 +51,6 @@ function HourlyAverage({ device }) {
     // create a new object to be override by the chartJs
     const chartData = JSON.parse(JSON.stringify(hourlyAverage));
 
-    console.log({hourlyAverage})
     return (
         <div className="row">
             <div className="col-sm">
@@ -72,10 +66,12 @@ function HourlyAverage({ device }) {
                         start={search.start}
                         end={search.end}
                     />
-                    <SimpleChart
-                        data={chartData}
-                        name="HourlyAverage"
-                        title={chartTitle}
+                    <SimpleChart data={chartData} name="HourlyAverage" title={chartTitle} />
+
+                    <OpenNewWindow
+                        singleChart={singleChart}
+                        url={ROUTES.DEVICE_LAST_MONTH_AVERAGE}
+                        id={device?.properties?.channelId}
                     />
                 </div>
             </div>
