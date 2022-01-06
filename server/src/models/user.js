@@ -22,6 +22,7 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  // devices linked to the user
   devices: [
     {
       type: Schema.Types.ObjectId,

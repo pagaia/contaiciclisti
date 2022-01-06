@@ -2,10 +2,6 @@ const config = {
   db: {
     url: process.env.MONGO_URL,
     options: {
-      useFindAndModify: false,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true
     }
   },
   auth: {

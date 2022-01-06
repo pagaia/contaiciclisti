@@ -37,7 +37,7 @@
     "fastify-jwt": "^2.4.0",
     "fastify-swagger": "^3.5.0",
     "json2csv": "^5.0.6",
-    "mongoose": "^5.11.7",
+    "mongoose": "^6.1.5",
     "pino-pretty": "^4.7.1"
   },
   "devDependencies": {

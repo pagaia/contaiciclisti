@@ -90,10 +90,16 @@ exports.options = {
         type: "apiKey",
         name: "x-api-token",
         in: "header"
-      }
+      },
+      APIKeyHeader: {
+        type: "apiKey",
+        name: "x-api-token",
+        in: "header"
+      },
     },
     security: {
-      apiKey: []
+      apiKey: [],
+      APIKeyHeader: []
     }
   },
   uiConfig: {

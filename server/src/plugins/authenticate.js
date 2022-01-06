@@ -12,10 +12,10 @@ module.exports = fp(async function (fastify, opts) {
     try {
       console.log({ auth: request?.headers });
       // check the token only if the host is different from localhost
-      if (!LOCALHOST_REGEX.test(request?.headers?.host)) {
+      // if (!LOCALHOST_REGEX.test(request?.headers?.host)) {
         console.log("OPS!!!");
         await request.jwtVerify();
-      }
+      // }
     } catch (err) {
       reply.code(401).send(err);
     }
