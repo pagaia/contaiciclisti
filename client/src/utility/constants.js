@@ -91,7 +91,7 @@ export const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Fr
  */
 export const REGEX_SINGLE = /^\/single/;
 
-export const CHART = { BAR: 'BAR', LINE: 'LINE' };
+export const CHART = { BAR: 'BAR', LINE: 'LINE', RADAR: 'RADAR' };
 
 export const LANGUAGES = [
     {

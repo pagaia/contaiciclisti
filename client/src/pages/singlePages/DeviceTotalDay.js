@@ -36,7 +36,7 @@ const DeviceTotalDay = (props) => {
             {!singleChart && <h2>{device.properties.name}</h2>}
             <div className="row">
                 <div className="col-md-12">
-                    <DailyTotal device={device} />
+                    <DailyTotal device={device} singleChart />
                 </div>
             </div>
             {!singleChart && <hr className="mb-5 bg-warning" />}

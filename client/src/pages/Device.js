@@ -39,11 +39,7 @@ const Device = (props) => {
     return (
         <Fragment>
             <h2>{name}</h2>
-            <div className="row">
-                <div className="col-sm-12 col-md-6">
-                    <LastCount device={device} />
-                </div>
-            </div>
+            <LastCount device={device} />
             <div className="row">
                 <div className="col-sm-12 col-md-6">
                     <TodayHourly device={device} />

@@ -35,7 +35,7 @@ const DeviceYesterday = (props) => {
             {!singleChart && <h2>{device.properties.name}</h2>}
             <div className="row">
                 <div className="col-sm-12">
-                    <YesterdayHourly device={device} />
+                    <YesterdayHourly device={device} singleChart/>
                 </div>
             </div>
         </Fragment>

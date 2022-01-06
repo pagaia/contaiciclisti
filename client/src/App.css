@@ -104,7 +104,7 @@ header .card {
 .last-counter {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .compare {

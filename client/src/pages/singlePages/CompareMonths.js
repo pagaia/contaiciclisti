@@ -1,4 +1,6 @@
 import MonthsCompareChart from 'components/charts/MonthsCompareChart';
+import { OpenNewWindow } from 'components/OpenNewWindow';
+import { ROUTES } from 'config/routing/routes';
 import NotFound from 'pages/NotFound';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -8,7 +10,7 @@ import './DevicesCompare.css';
 
 const CompareMonths = ({ device }) => {
     const singleChart = useContext(SingleContext);
-    const NUMBER_OF_MONTHS = 8;
+    const NUMBER_OF_MONTHS = 12;
     const { start, end } = getPreviousMonths(undefined, NUMBER_OF_MONTHS);
 
     useEffect(() => {
@@ -34,8 +36,12 @@ const CompareMonths = ({ device }) => {
                     <FormattedMessage id="title.compare-months-device" />
                 </h3>
             )}
-            {/* <CompareForm updateSearch={setSearch} /> */}
             {search && <MonthsCompareChart search={search} name="device-compare-months" />}
+            <OpenNewWindow
+                singleChart={singleChart}
+                url={ROUTES.DEVICE_LAST_TWELVE_MONTHS}
+                id={device?.properties?.channelId}
+            />
         </Fragment>
     );
 };

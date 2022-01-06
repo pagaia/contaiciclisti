@@ -34,7 +34,7 @@ const PeakTimeSinglePage = (props) => {
     return (
         <div className="row">
             <div className="col-md-12">
-                <PeakCount device={device} />
+                <PeakCount device={device} singlePage />
             </div>
         </div>
     );

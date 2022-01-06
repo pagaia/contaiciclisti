@@ -1,5 +1,8 @@
 import axios from 'axios';
+import PreviousNext from 'components/forms/PreviousNext';
 import Loading from 'components/Loading';
+import { OpenNewWindow } from 'components/OpenNewWindow';
+import { ROUTES } from 'config/routing/routes';
 import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { DEVICE_URL, REGEX_DEVICE } from 'utility/constants';
@@ -11,12 +14,11 @@ import {
     getPreviousMonths,
     replaceWeekendDays,
 } from 'utility/utilityFunctions';
-import PreviousNext from 'components/forms/PreviousNext';
 import SimpleChart from './Chart';
 
 const { start, end } = getLastMonthStartEnd();
 
-function PeakCount({ device }) {
+function PeakCount({ device, singlePage }) {
     // initialize dataset with empty object
     const [datasets, setDatasets] = useState([]);
     const [search, setSearch] = useState({ start, end });
@@ -104,11 +106,12 @@ function PeakCount({ device }) {
                         start={search.start}
                         end={search.end}
                     />
-                    <SimpleChart
-                        data={data}
-                        name="peak-count"
-                        doubleAxes
-                        title={chartTitle}
+                    <SimpleChart data={data} name="peak-count" doubleAxes title={chartTitle} />
+
+                    <OpenNewWindow
+                        singleChart={singlePage}
+                        url={ROUTES.DEVICE_LAST_MONTH_PEAK_TIME}
+                        id={device?.properties?.channelId}
                     />
                 </div>
             </div>
