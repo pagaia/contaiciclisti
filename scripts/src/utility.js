@@ -82,14 +82,14 @@ const buildMail = ({ to, cc, bcc, files }) => {
     </small>
     <br/> 
 
-    </p>`, // html body
+    </p>` // html body
   };
 
   if (files) {
     mail.attachments = files.map((file) => {
       return {
         // filename and content type is derived from path
-        path: file,
+        path: file
       };
     });
   }
@@ -106,8 +106,8 @@ exports.sendMail = ({ to, cc, bcc, files }) => {
     service: "gmail",
     auth: {
       user: process.env.REACT_APP_MAIL_USERNAME,
-      pass: process.env.REACT_APP_MAIL_PASSWORD,
-    },
+      pass: process.env.REACT_APP_MAIL_PASSWORD
+    }
   });
 
   this.log(`Sending email to ${to}`);
@@ -134,4 +134,23 @@ exports.sendMail = ({ to, cc, bcc, files }) => {
 exports.log = (text) => {
   const time = format(new Date(), "yyyy-MM-dd:HH:mm:ss");
   console.log(`[${time}] ${text}`);
+};
+
+/**
+ * this function return yesterday in format yyyy-MM-dd
+ */
+exports.getYesterday = () => {
+  let start = new Date();
+  start.setDate(start.getDate() - 1);
+  start = this.formatDate(start);
+  return start;
+};
+
+/**
+ * this function return today in format yyyy-MM-dd
+ */
+ exports.getToday = () => {
+  let start = new Date();
+  start = this.formatDate(start);
+  return start;
 };

@@ -297,14 +297,16 @@ exports.deleteFeedsByDeviceID = (fastify) => async (req, reply) => {
     if (!feeds) {
       return fastify.notFound(req, reply);
     }
-    await Device.updateMany({ _id: id }, { $set: { feeds: [] } });
 
-    // return feeds;
+    const updateDevice = await Device.updateMany(
+      { _id: id },
+      { $set: { feeds: [] } }
+    );
+
     reply
       .code(200)
       .type("application/json")
       .send({ message: `Deleted all feeds for device with ID: ${id}` });
-      
   } catch (err) {
     boom.boomify(err);
     return fastify.notFound(req, reply);

@@ -9,18 +9,18 @@ const payload = {
   name: "Nomentana",
   location: {
     coordinates: [40, 5],
-    type: "Point",
+    type: "Point"
   },
-  description: "This is my description",
+  description: "This is my description"
 };
 
 const changedPayload = {
   name: "Roma centro",
   location: {
     coordinates: [40, 5],
-    type: "Point",
+    type: "Point"
   },
-  description: "Changed description",
+  description: "Changed description"
 };
 
 const payloadFeed = {
@@ -31,7 +31,7 @@ const payloadFeed = {
   gmsErrorNumber: 50,
   htmlErrorNumber: 60,
   sendErrorNumber: 70,
-  yesterday: 80,
+  yesterday: 80
 };
 
 test('should requests the "/" route', async (t) => {
@@ -42,7 +42,7 @@ test('should requests the "/" route', async (t) => {
 
   const response = await app.inject({
     method: "GET",
-    url: "/",
+    url: "/"
   });
 
   t.strictEqual(response.statusCode, 200, " - Get 200");
@@ -70,27 +70,26 @@ test('should requests the "/" route', async (t) => {
 //     url: "/api/devices",
 //   });
 
+test("should get an empty device list", async (t) => {
+  const app = build(t);
 
-// test("should get an empty device list", async (t) => {
-//   const app = build(t);
+  const conf = config();
+  // close fastify after each test
+  t.tearDown(() => app.close());
 
-//   const conf = config();
-//   // close fastify after each test
-//   t.tearDown(() => app.close());
+  const response = await app.inject({
+    method: "GET",
+    url: "/api/devices"
+  });
 
-//   const response = await app.inject({
-//     method: "GET",
-//     url: "/api/devices",
-//   });
-
-//   t.strictEqual(response.statusCode, 200, " - get 200");
-//   t.strictEqual(
-//     response.headers["content-type"],
-//     "application/json; charset=utf-8",
-//     "- get Json/application"
-//   );
-//   t.deepEqual(response.json(), [], " - get empty array");
-// });
+  t.strictEqual(response.statusCode, 200, " - get 200");
+  t.strictEqual(
+    response.headers["content-type"],
+    "application/json; charset=utf-8",
+    "- get Json/application"
+  );
+  t.deepEqual(response.json(), [], " - get empty array");
+});
 
 // test("should insert a device", async (t) => {
 //   const app = build(t);
@@ -278,7 +277,6 @@ test('should requests the "/" route', async (t) => {
 //   t.equal(update.statusCode, 404, " - return 404 not found");
 // });
 
-
 // test("should delete a device", async (t) => {
 //   const app = build(t);
 
@@ -309,7 +307,6 @@ test('should requests the "/" route', async (t) => {
 //   t.equal(remove.statusCode, 404, " - Not found ");
 // });
 
-
 // test("should return NotFound on deleting an not existing device 2", async (t) => {
 //   const app = build(t);
 
@@ -324,7 +321,6 @@ test('should requests the "/" route', async (t) => {
 
 //   t.equal(remove.statusCode, 404, " - Not found ");
 // });
-
 
 // test("should add a feed for device", async (t) => {
 //   const app = build(t);
@@ -341,7 +337,6 @@ test('should requests the "/" route', async (t) => {
 //   });
 //   const devId = insert.json()._id;
 
-  
 //   const response = await app.inject({
 //     method: "POST",
 //     url: `/api/devices/${devId}/feeds`,
@@ -390,7 +385,7 @@ test('should requests the "/" route', async (t) => {
 //     payload: { ...changedPayload, name: `Feed Device2` },
 //   });
 //   const devId = insert.json()._id;
-  
+
 //   await app.inject({
 //     method: "POST",
 //     url: `/api/devices/${devId}/feeds`,
@@ -430,7 +425,6 @@ test('should requests the "/" route', async (t) => {
 //   t.equal(yesterday, payloadFeed.yesterday, " - check yesterday");
 // });
 
-
 // test("should raise error on adding feed for not existing device", async (t) => {
 //   const app = build(t);
 
@@ -445,12 +439,11 @@ test('should requests the "/" route', async (t) => {
 //     payload: { ...changedPayload, name: `Feed Device3` },
 //   });
 //   const devId = insert.json()._id;
-  
+
 //   const add = await app.inject({
 //     method: "POST",
 //     url: `/api/devices/6057ca5237170c657439b45f/feeds`,
 //   });
-
 
 //   t.equal(add.statusCode, 404, " - return 404");
 //   t.equal(
@@ -459,8 +452,6 @@ test('should requests the "/" route', async (t) => {
 //     " - accept application/json"
 //   );
 // });
-
-
 
 // test("should raise error Not found for get feed for non existing device", async (t) => {
 //   const app = build(t);
@@ -476,12 +467,11 @@ test('should requests the "/" route', async (t) => {
 //     payload: { ...changedPayload, name: `Feed Device3` },
 //   });
 //   const devId = insert.json()._id;
-  
+
 //   const response = await app.inject({
 //     method: "GET",
 //     url: `/api/devices/6057ca5237170c657439b45f/feeds`,
 //   });
-
 
 //   t.equal(response.statusCode, 404, " - return 404");
 //   t.equal(

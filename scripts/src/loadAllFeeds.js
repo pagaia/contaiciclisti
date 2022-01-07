@@ -9,13 +9,24 @@ const readdir = util.promisify(fs.readdir);
 var myArgs = process.argv.slice(2);
 console.log("myArgs: ", myArgs);
 
-// const [deviceId, path] = myArgs;
+// const [token] = myArgs;
+let token;
+
+async function fetchTemporaryToken() {
+  const { data } = await axios.get("http://localhost:8081/api/temporaryToken", {
+    accept: "application/json",
+    "Content-Type": "application/json"
+  });
+  const { token } = data;
+  return token;
+}
 
 /**
  * function to fetch All devices
  * @returns Array
  */
 async function fetchAllDevices() {
+  token = await fetchTemporaryToken();
   const { data } = await axios.get("http://localhost:8081/api/devices");
   return data;
 }
@@ -26,7 +37,14 @@ async function fetchAllDevices() {
  */
 async function fetchDeviceDetails(deviceId) {
   const { data } = await axios.get(
-    `http://localhost:8081/api/devices/${deviceId}`
+    `http://localhost:8081/api/devices/${deviceId}`,
+    {
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      }
+    }
   );
   return data;
 }
@@ -62,13 +80,11 @@ async function getFiles(channelId) {
  */
 function uploadFeeds({ data, accessToken, deviceId }) {
   console.log("Loading feeds for %s %s", accessToken, deviceId);
-  // console.log(data);
+
   const feeds = data.map((feed, idx) => {
     if (!idx) {
       return {};
     }
-    //       created_at,entry_id,field1,field2,field3,field4,field5,field6,field7,field8
-    // 2021-04-01 00:57:01 UTC,3311,0,0,,0,0,0,0,2188
 
     const [
       created_at,
@@ -96,13 +112,9 @@ function uploadFeeds({ data, accessToken, deviceId }) {
       field8
     };
   });
-  // filter the row with null created_at
-  // .filter((el) => el.created_at);
 
   const endPoint = `http://localhost:8081/api/devices/${deviceId}/feeds/multi`;
 
-  // console.log(feeds);
-  // return
   axios
     .post(endPoint, feeds, {
       headers: {
@@ -113,17 +125,11 @@ function uploadFeeds({ data, accessToken, deviceId }) {
     })
     .then((res) => {
       console.log(`statusCode: ${res.status}`);
-      // console.log(res);
     })
     .catch((error) => {
       console.error(error);
     });
 }
-
-// if (!deviceId || !path) {
-//   console.error("Please pass the device ID and the file to load");
-//   process.exit(1);
-// }
 
 async function importAllDeviceFeeds() {
   const devices = await fetchAllDevices();
@@ -134,16 +140,10 @@ async function importAllDeviceFeeds() {
       const { accessToken, channelId, _id } = device;
       const files = await getFiles(channelId);
       files.forEach(async (file, idx) => {
-        // exclude some devices
-        // if ([1259438, 1050873].includes(channelId)) {
-        //   return;
-        // }
-
         const data = await fsPromises
           .readFile(file, "utf8")
           .catch((err) => console.error("Failed to read file", err));
 
-        // console.log({ data });
         uploadFeeds({ data: data.split("\n"), accessToken, deviceId: _id });
       });
     } catch (error) {

@@ -34,5 +34,5 @@ exports.formatTimeZone = (date, tzString) => {
 
 exports.getLastDayPreviousMonth = () => {
   const currentDate = new Date();
-  new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 31);
+  return new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 31);
 };

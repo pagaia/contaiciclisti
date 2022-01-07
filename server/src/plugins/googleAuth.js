@@ -27,7 +27,7 @@ module.exports = function (fastify, options, done) {
     }
 
     // otherwise generate a JWT with the profile inside and return to the Client
-    const token = fastify.jwt.sign({ profile }, { expiresIn: "1s" });
+    const token = fastify.jwt.sign({ profile }, { expiresIn: "30m" });
     reply.header("Authorization", `Bearer ${token}`).send(profile);
   };
 
