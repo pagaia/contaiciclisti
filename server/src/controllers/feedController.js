@@ -10,7 +10,7 @@ const {
   getLastDayPreviousMonth
 } = require("../utility/commonFunctions");
 const { downloadResource } = require("../utility/downloadCsv");
-const utcToZonedTime = require("date-fns-tz/utcToZonedTime");
+const zonedTimeToUtc = require("date-fns-tz/zonedTimeToUtc");
 
 /**
  * add a single feed per device
@@ -137,12 +137,13 @@ exports.searchFeeds = (fastify) => async (req, reply) => {
   try {
     const deviceId = req.params.id;
     const currentDate = new Date();
+
     const tzString = req.query.timezone;
 
     // set by default last month if start is not define
     const isoDate = req.query.start || getLastDayPreviousMonth();
-    const mindate = utcToZonedTime(isoDate, tzString);
-    const maxdate = utcToZonedTime(req.query.end || currentDate, tzString);
+    const mindate = zonedTimeToUtc(isoDate, tzString);
+    const maxdate = zonedTimeToUtc(req.query.end || currentDate, tzString);
 
     const foundDevice = await Device.findById(deviceId)
       .populate({
@@ -198,8 +199,8 @@ exports.searchFeedsOnly = (fastify) => async (req, reply) => {
 
     // set by default last month if start is not define
     const isoDate = req.query.start || getLastDayPreviousMonth();
-    const mindate = utcToZonedTime(isoDate, tzString);
-    const maxdate = utcToZonedTime(req.query.end || currentDate, tzString);
+    const mindate = zonedTimeToUtc(isoDate, tzString);
+    const maxdate = zonedTimeToUtc(req.query.end || currentDate, tzString);
 
     let feeds = await Feed.find({
       created_at: {
@@ -240,8 +241,8 @@ exports.searchFeedsCsv = (fastify) => async (req, reply) => {
 
     // set by default last month if start is not define
     const isoDate = req.query.start || getLastDayPreviousMonth();
-    const mindate = utcToZonedTime(isoDate, tzString);
-    const maxdate = utcToZonedTime(req.query.end || currentDate, tzString);
+    const mindate = zonedTimeToUtc(isoDate, tzString);
+    const maxdate = zonedTimeToUtc(req.query.end || currentDate, tzString);
 
     let feeds = await Feed.find({
       created_at: {
